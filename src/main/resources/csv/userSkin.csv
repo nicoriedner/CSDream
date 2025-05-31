@@ -1,0 +1,4 @@
+skin_id,float_value,exterior,rarity,is_stattrak,price,drop_date,user_id
+1,0.15,FIELD_TESTED,COVERT,true,58.99,2025-05-10,1001
+2,0.04,FACTORY_NEW,CLASSIFIED,false,123.50,2025-05-11,1002
+3,0.88,BATTLE_SCARRED,RESTRICTED,true,7.25,2025-05-12,1001
