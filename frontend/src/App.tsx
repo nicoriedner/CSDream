@@ -1,18 +1,19 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 import {BrowserRouter, Route, Routes} from "react-router-dom";
-import Homepage from "./views/Homepage.tsx";
+import Homepage from "./screens/Homepage.tsx";
+import Header from "./components/Header.tsx";
+import Footer from "./components/Footer.tsx";
 
 function App() {
 
   return (
     <>
         <BrowserRouter>
+            <Header/>
           <Routes>
             <Route path={"/"} element={<Homepage/>}></Route>
           </Routes>
+            <Footer/>
         </BrowserRouter>
     </>
   )

@@ -1,0 +1,77 @@
+:root {
+    --bg-dark: #1d1a39;
+    --bg-glow: #322e5c;
+    --accent: #5c4bc5;
+    --text: #e2e2f2;
+}
+
+.csdream-header {
+    background: linear-gradient(90deg, var(--bg-dark), var(--bg-glow));
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.8rem 2rem;
+    margin: 1rem;
+    border-radius: 20px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
+}
+
+.csdream-logo img {
+    height: 48px;
+    filter: drop-shadow(0 0 4px var(--accent));
+    transition: transform 0.3s ease;
+    border-radius: 12px;
+}
+
+.csdream-logo img:hover {
+    transform: scale(1.05);
+}
+
+.csdream-nav {
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-link {
+    color: var(--text);
+    font-size: 1.1rem;
+    text-decoration: none;
+    position: relative;
+    transition: all 0.25s ease-in-out;
+    transform: scale(1);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.nav-link:hover {
+    color: var(--accent);
+    transform: scale(1.12);
+    text-shadow: 0 0 8px var(--accent);
+}
+
+.nav-link::after {
+    content: "";
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    width: 0%;
+    height: 2px;
+    background-color: var(--accent);
+    transition: all 0.3s ease;
+    transform: translateX(-50%);
+}
+
+.nav-link:hover::after {
+    width: 80%;
+}
+
+.nav-icon {
+    font-size: 1.2rem;
+    transition: transform 0.25s ease-in-out;
+}
+
+.nav-link:hover .nav-icon {
+    transform: scale(1.3);
+}
