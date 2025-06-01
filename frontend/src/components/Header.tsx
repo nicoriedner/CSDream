@@ -1,6 +1,6 @@
 import '../css/Header.css';
 import { Link } from 'react-router-dom';
-import { FaHome, FaStore, FaBoxOpen, FaDice } from 'react-icons/fa';
+import { FaHome, FaStore, FaBoxOpen, FaDice, FaUser } from 'react-icons/fa';
 
 const Header = () => {
     return (
@@ -17,6 +17,11 @@ const Header = () => {
                 </Link>
                 <Link to="/games" className="nav-link">
                     <FaDice className="nav-icon" /> Games
+                </Link>
+            </nav>
+            <nav className="csdream-nav">
+                <Link to="/Login" className="nav-link">
+                    <FaUser className="nav-icon"/> Login
                 </Link>
             </nav>
         </header>
