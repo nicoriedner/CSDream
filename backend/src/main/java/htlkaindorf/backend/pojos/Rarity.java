@@ -1,12 +1,12 @@
 package htlkaindorf.backend.pojos;
 
 public enum Rarity {
-    Consumer,
-    Industrial,
-    MilSpec,
-    Restricted,
-    Classified,
-    Covert,
-    Extraordinary,
-    Contraband
+    CONSUMER,
+    INDUSTRIAL,
+    MIL_SPEC,
+    RESTRICTED,
+    CLASSIFIED,
+    COVERT,
+    EXTRAORDINARY,
+    CONTRABAND;
 }
