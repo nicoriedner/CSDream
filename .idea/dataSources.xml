@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="CSDreamDB@localhost" uuid="f8a87454-d21b-482e-b4fd-9f1df57043a7">
+    <data-source source="LOCAL" name="CSDreamDB" uuid="9c614e62-fc1c-42b7-b252-9321a55e0095">
       <driver-ref>postgresql</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>org.postgresql.Driver</jdbc-driver>
