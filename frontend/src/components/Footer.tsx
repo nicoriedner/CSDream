@@ -9,6 +9,17 @@ const Footer = () => {
             <div className="footer-left">
                 <img src={logo} alt="CSDream Logo" />
             </div>
+            <div>
+                <h2>Tägliche Belohnungen</h2>
+                <p>Melde dich täglich an und sichere dir Skins und Coins!</p>
+                <Link to="/rewards" className="cta-button">Belohnungen ansehen</Link>
+                <div className="footer-links">
+                    <Link to="/terms">AGB</Link> |
+                    <Link to="/privacy"> Datenschutz</Link> |
+                    <Link to="/support"> Support</Link>
+                </div>
+                <p>© {new Date().getFullYear()} CSDream. Alle Rechte vorbehalten.</p>
+            </div>
             <div className="footer-right">
                 <Link to="/" className="footer-link"><FaHome /> Home</Link>
                 <Link to="/marketplace" className="footer-link"><FaStore /> Marketplace</Link>
