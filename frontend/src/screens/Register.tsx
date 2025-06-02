@@ -49,7 +49,12 @@ function Register() {
 
         try {
             await axios.post("http://localhost:8080/api/register", {
-                username, password, email, birthdate, gender, avatar
+                username,
+                password,
+                email,
+                birthdate,
+                gender,
+                avatar
             });
             setError("");
             navigate("/login");

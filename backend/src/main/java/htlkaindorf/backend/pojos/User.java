@@ -4,12 +4,15 @@ import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
+
+@Entity
+@Table(name = "users")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "users")
 public class User {
 
     @Id
@@ -18,4 +21,11 @@ public class User {
 
     private String username;
     private String password;
+
+    private String email;
+
+    @DateTimeFormat(pattern = "dd.MM.yyyy")
+    private LocalDate birthday;
+    private String gender;
+    private String avatar;
 }
