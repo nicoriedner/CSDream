@@ -2,21 +2,30 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
 import "../css/Auth.css";
+import { useAuth } from "../context/AuthContext";
 
 function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
+    const { login } = useAuth();
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            await axios.post("http://localhost:8080/api/login", { username, password });
+            const response = await axios.post("http://localhost:8080/api/login", { username, password }, { withCredentials: true });
+            const avatar = response.data.avatar || "avatar1.jpg";
+            login(username, avatar);
+            setSuccess("Login erfolgreich!");
             setError("");
-            navigate("/");
+            setTimeout(() => {
+                navigate("/", { state: { loginSuccess: true } });
+            }, 1000);
         } catch (err) {
             setError("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");
+            setSuccess("");
         }
     };
 
@@ -30,8 +39,7 @@ function Login() {
                 {error && <p className="error">{error}</p>}
             </form>
             <p className="switch-link">
-                Noch kein Konto bei uns?{" "}
-                <Link to="/register" className="link">Hier registrieren</Link>
+                Noch kein Konto bei uns? <Link to="/register" className="link">Hier registrieren</Link>
             </p>
         </div>
     );

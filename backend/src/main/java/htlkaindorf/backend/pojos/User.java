@@ -25,7 +25,7 @@ public class User {
     private String email;
 
     @DateTimeFormat(pattern = "dd.MM.yyyy")
-    private LocalDate birthday;
+    private LocalDate birthdate;
     private String gender;
     private String avatar;
 }

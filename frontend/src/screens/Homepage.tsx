@@ -1,4 +1,5 @@
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import logo from "../assets/CSDream_Logo.png";
 import upgraderImage from "../assets/upgrader.jpg";
 import rouletteImage from "../assets/roulette.png";
@@ -7,31 +8,32 @@ import slotImage from "../assets/slot.jpeg";
 import "../css/Homepage.css";
 
 const games = [
-    {
-        name: 'Upgrader',
-        image: upgraderImage,
-        link: '/upgrader',
-    },
-    {
-        name: 'Roulette',
-        image: rouletteImage,
-        link: '/roulette',
-    },
-    {
-        name: 'Tower',
-        image: towerImage,
-        link: '/tower',
-    },
-    {
-        name: 'Slotmaschine',
-        image: slotImage,
-        link: '/slot',
-    },
+    { name: 'Upgrader', image: upgraderImage, link: '/upgrader' },
+    { name: 'Roulette', image: rouletteImage, link: '/roulette' },
+    { name: 'Tower', image: towerImage, link: '/tower' },
+    { name: 'Slotmaschine', image: slotImage, link: '/slot' },
 ];
 
 function Homepage() {
+    const location = useLocation();
+    const [showSuccess, setShowSuccess] = useState(false);
+
+    useEffect(() => {
+        if (location.state?.loginSuccess || location.state?.registerSuccess) {
+            setShowSuccess(true);
+            const timeout = setTimeout(() => setShowSuccess(false), 3000);
+            return () => clearTimeout(timeout);
+        }
+    }, [location.state]);
+
     return (
         <div className="homepage-container">
+            {showSuccess && (
+                <div className="login-success-banner">
+                    ✅ {location.state?.loginSuccess ? "Login" : "Registrierung"} erfolgreich!
+                </div>
+            )}
+
             <div className="logo-container">
                 <img src={logo} alt="CSDream Logo" className="homepage-logo" />
             </div>

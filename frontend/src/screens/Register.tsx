@@ -55,7 +55,7 @@ function Register() {
                 birthdate,
                 gender,
                 avatar
-            });
+            }, { withCredentials: true });
             setError("");
             navigate("/login");
         } catch (err) {

@@ -5,11 +5,13 @@ import Header from './components/Header.tsx';
 import Footer from './components/Footer.tsx';
 import Login from "./screens/Login.tsx";
 import Register from "./screens/Register.tsx";
+import {AuthProvider} from "./context/AuthContext.tsx";
 
 function App() {
     return (
         <div className="App">
             <BrowserRouter>
+                <AuthProvider>
                 <Header />
                 <main className="MainContent">
                     <Routes>
@@ -19,6 +21,7 @@ function App() {
                     </Routes>
                 </main>
                 <Footer />
+                </AuthProvider>
             </BrowserRouter>
         </div>
     );

@@ -55,3 +55,30 @@
     font-weight: bold;
     font-size: 1.1rem;
 }
+
+.login-success-banner {
+    position: fixed;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(212, 237, 218, 0.95);
+    color: #155724;
+    padding: 12px 24px;
+    border-radius: 0 0 12px 12px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+    animation: slideDown 0.4s ease-out;
+    font-weight: 600;
+    font-size: 1rem;
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}

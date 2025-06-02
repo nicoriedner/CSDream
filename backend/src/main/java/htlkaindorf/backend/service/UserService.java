@@ -3,10 +3,11 @@ package htlkaindorf.backend.service;
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 @Service
 public class UserService {
@@ -14,27 +15,35 @@ public class UserService {
     @Autowired
     private UserRepository userRepository;
 
-    private final BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
-
-    public boolean authenticate(String username, String rawPassword) {
+    public boolean authenticate(String username, String password) {
         User user = userRepository.findByUsername(username);
         if (user == null) {
             return false;
         }
-        return encoder.matches(rawPassword, user.getPassword());
+        return password.equals(user.getPassword());
     }
 
-    public User register(String username, String password, String email, String birthday, String gender, String avatar) {
-        if (userRepository.findByUsername(username) == null) {
-            User user = new User();
-            user.setUsername(username);
-            user.setPassword(encoder.encode(password));
-            user.setEmail(email);
-            user.setBirthday(LocalDate.parse(birthday));
-            user.setGender(gender);
-            user.setAvatar(avatar);
-            return userRepository.save(user);
+    public User register(String username, String password, String email, String birthdate, String gender, String avatar) {
+        if (userRepository.findByUsername(username) != null) {
+            throw new RuntimeException("Name bereits vorhanden");
         }
-        throw new RuntimeException("Username already taken");
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        LocalDate parsedDate;
+        try {
+            parsedDate = LocalDate.parse(birthdate, formatter);
+        } catch (DateTimeParseException e) {
+            throw new RuntimeException("Ungültiges Datumsformat. Bitte verwende dd.MM.yyyy, z.B. 12.08.2012.");
+        }
+
+        User user = new User();
+        user.setUsername(username);
+        user.setPassword(password);
+        user.setEmail(email);
+        user.setBirthdate(parsedDate);
+        user.setGender(gender);
+        user.setAvatar(avatar);
+
+        return userRepository.save(user);
     }
 }
