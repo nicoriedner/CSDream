@@ -19,7 +19,7 @@ public class RegisterController {
     @PostMapping
     public ResponseEntity<String> register(@RequestBody UserDTO userDTO) {
         try {
-            userService.register(userDTO.getUsername(), userDTO.getPassword() , userDTO.getEmail(), userDTO.getBirthdate(), userDTO.getGender(), userDTO.getAvatar());
+            userService.register(userDTO.getUsername(), userDTO.getPassword() , userDTO.getEmail(), userDTO.getBirthdate(), userDTO.getAvatar());
             return ResponseEntity.ok("User registered successfully");
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body("Error: " + e.getMessage());

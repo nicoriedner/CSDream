@@ -16,16 +16,20 @@ public class UserService {
     private UserRepository userRepository;
 
     public boolean authenticate(String username, String password) {
-        User user = userRepository.findByUsername(username);
+        User user = userRepository.findUserByUsername(username);
         if (user == null) {
             return false;
         }
         return password.equals(user.getPassword());
     }
 
-    public User register(String username, String password, String email, String birthdate, String gender, String avatar) {
-        if (userRepository.findByUsername(username) != null) {
+    public User register(String username, String password, String email, String birthdate, String avatar) {
+        if (userRepository.findUserByUsername(username) != null) {
             throw new RuntimeException("Name bereits vorhanden");
+        }
+
+        if (userRepository.findUserByEmail(email) != null) {
+            throw new RuntimeException("Email bereits vorhanden");
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
@@ -41,7 +45,6 @@ public class UserService {
         user.setPassword(password);
         user.setEmail(email);
         user.setBirthdate(parsedDate);
-        user.setGender(gender);
         user.setAvatar(avatar);
 
         return userRepository.save(user);

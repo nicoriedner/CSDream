@@ -26,6 +26,5 @@ public class User {
 
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate birthdate;
-    private String gender;
     private String avatar;
 }
