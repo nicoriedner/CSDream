@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import axios from "axios";
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 import "../css/Auth.css";
 import avatar1 from '../assets/profile_pics/avatar1.jpg';
 import avatar2 from '../assets/profile_pics/avatar2.jpg';
@@ -9,8 +11,8 @@ function Register() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
-    const [birthdate, setBirthdate] = useState("");
-    const [gender, setGender] = useState<"male" | "female" | "">("");
+    const [birthdate, setBirthdate] = useState<Date | null>(null);
+    const [gender, setGender] = useState<"m" | "f" | "">("");
     const [avatar, setAvatar] = useState<"avatar1.jpg" | "avatar2.jpg" | "">("");
     const [error, setError] = useState("");
     const navigate = useNavigate();
@@ -22,6 +24,13 @@ function Register() {
 
     const validateEmail = (email: string): boolean => {
         return email.includes("@");
+    };
+
+    const formatDateForBackend = (date: Date): string => {
+        const day = ("0" + date.getDate()).slice(-2);
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const year = date.getFullYear();
+        return `${day}.${month}.${year}`;
     };
 
     const handleRegister = async (e: React.FormEvent) => {
@@ -47,14 +56,19 @@ function Register() {
             return;
         }
 
+        if (!birthdate) {
+            setError("Bitte ein Geburtsdatum auswählen.");
+            return;
+        }
+
         try {
             await axios.post("http://localhost:8080/api/register", {
                 username,
                 password,
                 email,
-                birthdate,
+                birthdate: formatDateForBackend(birthdate!),
                 gender,
-                avatar
+                avatar: `/profile_pics/${avatar}`
             }, { withCredentials: true });
             setError("");
             navigate("/login");
@@ -70,26 +84,37 @@ function Register() {
                 <input type="text" placeholder="Benutzername" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 <input type="password" placeholder="Passwort" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <input type="email" placeholder="E-Mail" value={email} onChange={(e) => setEmail(e.target.value)} required />
-                <input type="date" value={birthdate} onChange={(e) => setBirthdate(e.target.value)} required />
+
+                <DatePicker
+                    selected={birthdate}
+                    onChange={(date) => setBirthdate(date)}
+                    dateFormat="yyyy-MM-dd"
+                    placeholderText="Geburtsdatum auswählen"
+                    maxDate={new Date()}
+                    showYearDropdown
+                    scrollableYearDropdown
+                    yearDropdownItemNumber={100}
+                    required
+                />
 
                 <div className="gender-selection">
-                    <label className={`gender-option ${gender === "male" ? "selected" : ""}`}>
+                    <label className={`gender-option ${gender === "m" ? "selected" : ""}`}>
                         <input
                             type="radio"
                             name="gender"
-                            value="male"
-                            checked={gender === "male"}
-                            onChange={() => setGender("male")}
+                            value="m"
+                            checked={gender === "m"}
+                            onChange={() => setGender("m")}
                         />
                         Männlich
                     </label>
-                    <label className={`gender-option ${gender === "female" ? "selected" : ""}`}>
+                    <label className={`gender-option ${gender === "f" ? "selected" : ""}`}>
                         <input
                             type="radio"
                             name="gender"
-                            value="female"
-                            checked={gender === "female"}
-                            onChange={() => setGender("female")}
+                            value="f"
+                            checked={gender === "f"}
+                            onChange={() => setGender("f")}
                         />
                         Weiblich
                     </label>

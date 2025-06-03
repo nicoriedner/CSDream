@@ -28,12 +28,12 @@ public class UserService {
             throw new RuntimeException("Name bereits vorhanden");
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate parsedDate;
         try {
             parsedDate = LocalDate.parse(birthdate, formatter);
         } catch (DateTimeParseException e) {
-            throw new RuntimeException("Ungültiges Datumsformat. Bitte verwende dd.MM.yyyy, z.B. 12.08.2012.");
+            throw new RuntimeException("Ungültiges Datumsformat. Bitte verwende yyyy-MM-dd, z.B. 2012-08-12.");
         }
 
         User user = new User();

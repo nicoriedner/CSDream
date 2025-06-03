@@ -40,7 +40,7 @@ const Header = () => {
                 <Link to="/" className="nav-link"><FaHome className="nav-icon" /> Home</Link>
                 <Link to="/marketplace" className="nav-link"><FaStore className="nav-icon" /> Marketplace</Link>
                 <Link to="/inventory" className="nav-link"><FaBoxOpen className="nav-icon" /> Inventory</Link>
-                <Link to="/games" className="nav-link"><FaDice className="nav-icon" /> Games</Link>
+                <Link to="/freebies" className="nav-link"><FaDice className="nav-icon" /> Freebies</Link>
             </nav>
             <nav className="csdream-nav" ref={dropdownRef}>
                 {username ? (

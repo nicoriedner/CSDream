@@ -4,14 +4,12 @@ import logo from "../assets/CSDream_Logo.png";
 import upgraderImage from "../assets/upgrader.jpg";
 import rouletteImage from "../assets/roulette.png";
 import towerImage from "../assets/tower.jpeg";
-import slotImage from "../assets/slot.jpeg";
 import "../css/Homepage.css";
 
 const games = [
     { name: 'Upgrader', image: upgraderImage, link: '/upgrader' },
-    { name: 'Roulette', image: rouletteImage, link: '/roulette' },
-    { name: 'Tower', image: towerImage, link: '/tower' },
-    { name: 'Slotmaschine', image: slotImage, link: '/slot' },
+    { name: 'Cases', image: rouletteImage, link: '/cases' },
+    { name: 'Duels', image: towerImage, link: '/duels' }
 ];
 
 function Homepage() {

@@ -6,6 +6,8 @@ import Footer from './components/Footer.tsx';
 import Login from "./screens/Login.tsx";
 import Register from "./screens/Register.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
+import Inventory from "./screens/Inventory.tsx";
+import Market from "./screens/Market.tsx";
 
 function App() {
     return (
@@ -16,6 +18,8 @@ function App() {
                 <main className="MainContent">
                     <Routes>
                         <Route path="/" element={<Homepage />} />
+                        <Route path="/inventory" element={<Inventory />} />
+                        <Route path="/market" element={<Market />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                     </Routes>
