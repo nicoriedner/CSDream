@@ -1,0 +1,134 @@
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 999;
+}
+
+.modal-content {
+    background: var(--bg-dark);
+    color: var(--text);
+    padding: 2rem;
+    border-radius: 16px;
+    width: 400px;
+    position: relative;
+    box-shadow: 0 0 20px var(--accent);
+}
+
+.modal-content img {
+    width: 100%;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
+.close-btn {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    color: white;
+    font-size: 1.2rem;
+    border: none;
+    cursor: pointer;
+}
+
+.sell-btn,
+.rename-btn {
+    background: var(--accent);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    cursor: pointer;
+}
+
+.rename-section input {
+    margin-top: 0.5rem;
+    padding: 0.4rem;
+    border-radius: 4px;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
+    width: 100%;
+}
+
+.nametag-info {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: #aaa;
+    margin-bottom: 0.5rem;
+}
+
+.rename-controls {
+    margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.delete-btn {
+    background: none;
+    color: #ff5c5c;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.delete-btn:hover {
+    transform: scale(1.2);
+}
+
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.7);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1001;
+}
+
+.popup-modal {
+    background: #1d1a39;
+    padding: 1.5rem;
+    border-radius: 12px;
+    box-shadow: 0 0 20px var(--accent);
+    color: var(--text);
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.popup-modal input {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #555;
+    background: #222;
+    color: white;
+}
+
+.popup-modal button {
+    padding: 0.5rem;
+    border-radius: 6px;
+    border: none;
+    background-color: var(--accent);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.popup-modal .cancel-btn {
+    background: #444;
+}
