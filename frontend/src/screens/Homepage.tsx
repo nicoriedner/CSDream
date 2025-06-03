@@ -34,11 +34,16 @@ function Homepage() {
                 </div>
             )}
 
-            <div className="logo-container">
+            <section className="hero-section">
                 <img src={logo} alt="CSDream Logo" className="homepage-logo" />
-            </div>
+                <h1>Willkommen bei CSDream</h1>
+                <p>Spiele. Gewinne. Handle mit Skins und mehr.</p>
+                <Link to="/register" className="cta-button">Jetzt starten</Link>
+            </section>
 
-            <div className="carousel-container">
+            <br/>
+
+            <section className="carousel-container">
                 <div className="carousel-track">
                     {games.map((game, index) => (
                         <Link to={game.link} key={index} className="game-card">
@@ -47,7 +52,7 @@ function Homepage() {
                         </Link>
                     ))}
                 </div>
-            </div>
+            </section>
         </div>
     );
 }
