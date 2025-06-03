@@ -23,4 +23,5 @@ public interface SkinCatalogRepository extends JpaRepository<SkinCatalog, Intege
 
     @Query("SELECT s FROM SkinCatalog s WHERE s.floatMin = ?1 AND s.floatMax = ?2")
     List<SkinCatalog> findSkinByFloatRange(float floatMin, float floatMax);
+
 }
