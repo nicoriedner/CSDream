@@ -17,7 +17,7 @@ public class User {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String username;
     private String password;
@@ -27,4 +27,6 @@ public class User {
     @DateTimeFormat(pattern = "dd.MM.yyyy")
     private LocalDate birthdate;
     private String avatar;
+
+    private Float balance;
 }
