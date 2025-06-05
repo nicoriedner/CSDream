@@ -18,7 +18,7 @@ public interface UserSkinRepository extends JpaRepository<UserSkin, Integer> {
     UserSkin findUserSkinByName(SkinCatalog skin);
 
     @Query("SELECT s FROM UserSkin s JOIN User u ON u.id = s.userId WHERE u.id = ?1")
-    List<UserSkin> findAllSkinsByUser(Long userId);
+    List<UserSkin> findAllSkinsByUser(Integer userId);
 
     @Query("SELECT s FROM UserSkin s WHERE s.dropDate = ?1")
     List<UserSkin> findAllSkinsByDate(LocalDate date);

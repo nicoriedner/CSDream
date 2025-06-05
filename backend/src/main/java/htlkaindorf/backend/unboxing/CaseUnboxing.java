@@ -38,14 +38,12 @@ public class CaseUnboxing {
         } else unboxedRarity = Rarity.EXTRAORDINARY;
 
         SkinCatalog unboxedSkin = getSkin(unboxedRarity, caseToUnbox);
-        if (unboxedRarity != Rarity.EXTRAORDINARY) {
-            boolean isStattrak = rand.nextBoolean();
-        }
-        boolean isStattrak = false;
+        long statTrak = rand.nextInt(10);
+            boolean isStattrak = (statTrak == 0);
 
         Float floatValue = getFloatValue(unboxedSkin);
 
-        Float priceOfSkin = calculatePriceOfSkin(unboxedSkin, floatValue);
+        Float priceOfSkin = calculatePriceOfSkin(unboxedSkin, floatValue, isStattrak);
 
         creator.createNewUserSkin(unboxedSkin, floatValue, unboxedSkin.getRarity(), isStattrak, priceOfSkin, userId);
     }
@@ -64,9 +62,51 @@ public class CaseUnboxing {
         return minFloat + rand.nextFloat() * range;
     }
 
-    public Float calculatePriceOfSkin(SkinCatalog skinCatalog, Float floatValue) {
-        Float calculatedPrice = 0f;
+    public Float calculatePriceOfSkin(SkinCatalog skinCatalog, Float floatValue, boolean isStattrak) {
+            float basePrice;
+            switch (skinCatalog.getRarity()) {
+                case MIL_SPEC:
+                    basePrice = 5f;
+                    break;
+                case RESTRICTED:
+                    basePrice = 15f;
+                    break;
+                case CLASSIFIED:
+                    basePrice = 40f;
+                    break;
+                case COVERT:
+                    basePrice = 100f;
+                    break;
+                case EXTRAORDINARY:
+                    basePrice = 300f;
+                    break;
+                default:
+                    basePrice = 1f;
+            }
 
-        return calculatedPrice;
+            float floatMultiplier;
+            if (floatValue <= 0.07) {
+                floatMultiplier = 1.0f;
+            } else if (floatValue <= 0.15) {
+                floatMultiplier = 0.9f;
+            } else if (floatValue <= 0.38) {
+                floatMultiplier = 0.8f;
+            } else if (floatValue <= 0.45) {
+                floatMultiplier = 0.65f;
+            } else {
+                floatMultiplier = 0.5f;
+            }
+
+            float finalPrice = basePrice * floatMultiplier;
+
+            if (isStattrak) {
+                if (skinCatalog.getRarity() != Rarity.EXTRAORDINARY) {
+                    finalPrice *= 1.10f;
+                } else {
+                    finalPrice *= 0.90f;
+                }
+            }
+
+            return Math.round(finalPrice * 100f) / 100f;
+        }
     }
-}
