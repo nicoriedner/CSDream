@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import SkinCard from "../components/SkinCard";
 import SkinDetailsModal from "../components/SkinDetailsModal";
+import "../css/Inventory.css"
 
 export interface Skin {
     id: number;
@@ -22,8 +23,7 @@ export default function Inventory() {
     const [selectedSkin, setSelectedSkin] = useState<Skin | null>(null);
 
     useEffect(() => {
-        // ⬇️ Hier später deine Spring Boot Backend URL eintragen (User-ID z.B. dynamisch holen)
-        fetch("http://localhost:8080/api/skins/user/1001")
+        fetch("http://localhost:8080/userskin")
             .then((res) => res.json())
             .then((data) => setSkins(data))
             .catch((err) => console.error("Fehler beim Laden der Skins", err));
