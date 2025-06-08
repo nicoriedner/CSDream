@@ -20,6 +20,8 @@ public class SkinCatalog {
     @Column(name = "collection_or_case")
     private String collectionOrCase;
 
+    @Enumerated(EnumType.STRING)
+    @Column(name = "rarity")
     private Rarity rarity;
 
     @Column(name = "float_min")
