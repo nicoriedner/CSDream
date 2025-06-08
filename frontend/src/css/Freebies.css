@@ -1,0 +1,62 @@
+.freebies-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    color: white;
+    background: radial-gradient(circle at center, #1b1b2f, #0f0f1f);
+    min-height: 100vh;
+}
+
+.freebies-row {
+    display: flex;
+    gap: 2rem;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 2rem;
+}
+
+.freebie-card {
+    background-color: #2c2c3e;
+    border: none;
+    width: 220px;
+    box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+    transition: transform 0.2s ease;
+}
+
+.freebie-card:hover {
+    transform: scale(1.05);
+}
+
+.freebie-card img {
+    height: 160px;
+    object-fit: contain;
+    background-color: #1c1c2c;
+    padding: 1rem;
+}
+
+.try-button {
+    background-color: #ffc107;
+    border: none;
+    color: #1b1b2f;
+    font-weight: bold;
+    padding: 0.8rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 0 10px #ffc10780;
+    transition: background 0.3s;
+}
+
+.try-button:hover {
+    background-color: #ffb300;
+}
+
+.modal-skin {
+    text-align: center;
+}
+
+.modal-img {
+    width: 160px;
+    height: auto;
+    margin-bottom: 1rem;
+}

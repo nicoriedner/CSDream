@@ -1,90 +1,102 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
-import '../css/CasePage.css';
+import '../css/Cases.css';
+import api from '../../api';
 
-const CasePage = () => {
-    const [cases, setCases] = useState([]);
-    const [selectedCase, setSelectedCase] = useState(null);
-    const [unboxing, setUnboxing] = useState(false);
-    const [dropSkin, setDropSkin] = useState(null);
+interface CaseDTO {
+    id: number;
+    name: string;
+    imageUrl: string;
+    price: number;
+}
+
+interface SkinDTO {
+    name: string;
+    imageUrl: string;
+    rarity: string;
+    price: number;
+    stattrak: boolean;
+}
+
+const CasesPage = () => {
+    const [cases, setCases] = useState<CaseDTO[]>([]);
+    const [selectedSkins, setSelectedSkins] = useState<SkinDTO[]>([]);
+    const [isOpening, setIsOpening] = useState(false);
+    const [highlightedSkin, setHighlightedSkin] = useState<SkinDTO | null>(null);
 
     useEffect(() => {
-        axios.get('/api/cases')
-            .then(res => setCases(res.data))
-            .catch(err => console.error("Fehler beim Laden der Cases", err));
+        api.get('/cases/all').then((res) => {
+            setCases(res.data);
+        });
     }, []);
 
-    const openCase = async (caseName) => {
-        setUnboxing(true);
-        setDropSkin(null);
-        try {
-            const res = await axios.post(`/api/caseunboxing/open?caseName=${caseName}`);
-            setTimeout(() => {
-                setDropSkin(res.data);
-            }, 4000); // Simuliere Dauer des Unbox-Scrollings
-        } catch (err) {
-            console.error("Fehler beim Öffnen der Case", err);
-        }
-    };
+    const openCase = async (caseId: number) => {
+        setIsOpening(true);
+        setHighlightedSkin(null);
 
-    const closeOverlay = () => {
-        setUnboxing(false);
-        setDropSkin(null);
+        const res = await api.post(`/caseunboxing/openCase?caseId=${caseId}&userId=${localStorage.getItem('userId')}`);
+        const finalSkin: SkinDTO = res.data;
+
+        const fakeSkins: SkinDTO[] = Array(30).fill(finalSkin).map((s, i) => ({
+            ...s,
+            name: s.name + ' ' + i,
+        }));
+
+        setSelectedSkins(fakeSkins);
+
+        let counter = 0;
+        const interval = setInterval(() => {
+            setHighlightedSkin(fakeSkins[counter]);
+            counter++;
+            if (counter >= fakeSkins.length) {
+                clearInterval(interval);
+                setTimeout(() => {
+                    setHighlightedSkin(finalSkin);
+                    setIsOpening(false);
+                    alert(`${finalSkin.name} zum Inventar hinzugefügt!`);
+                }, 500);
+            }
+        }, 100);
     };
 
     return (
-        <div className="case-page">
-            <h1>Cases</h1>
-            <div className="case-grid">
-                {cases.map((c, index) => (
-                    <div
-                        key={index}
-                        className="case-card"
-                        onClick={() => setSelectedCase(c)}>
-                        <img src={c.imageUrl || '/placeholder-case.png'} alt={c.name} />
-                        <div className="case-name">{c.name}</div>
-                        <button className="open-btn" onClick={(e) => {
-                            e.stopPropagation();
-                            openCase(c.name);
-                        }}>
-                            Öffnen ({c.price} Coins)
+        <div className="cases-container">
+            {cases.map((cs) => (
+                <div className="case-card" key={cs.id}>
+                    <img
+                        className="case-image"
+                        src={cs.imageUrl || '/avatar1.png'}
+                        alt={cs.name}
+                    />
+                    <div className="case-content">
+                        <div className="case-name">{cs.name}</div>
+                        <button
+                            className="open-button"
+                            onClick={() => openCase(cs.id)}
+                            disabled={isOpening}
+                        >
+                            {isOpening ? 'Öffnet...' : `Öffnen (${cs.price}C)`}
                         </button>
                     </div>
-                ))}
-            </div>
+                </div>
+            ))}
 
-            {unboxing && (
-                <div className="unbox-overlay">
-                    <div className="unbox-strip">
-                        {/* Placeholder-Animation mit Skins */}
-                        <div className="scrolling-skins">
-                            {/* Skins laufen durch */}
-                            {[...Array(30)].map((_, i) => (
-                                <img
-                                    key={i}
-                                    src="/placeholder-skin.png"
-                                    alt="skin"
-                                    className="scroll-item"
-                                />
-                            ))}
-                        </div>
-                        <div className="indicator">▼</div>
-                    </div>
-                    {dropSkin && (
-                        <div className="unbox-result">
-                            <div className="result-card">
-                                <img src={dropSkin.imageUrl || '/placeholder-skin.png'} alt={dropSkin.name} />
-                                <h2>{dropSkin.name}</h2>
-                                <p>{dropSkin.rarity}</p>
-                                <p>Wert: {dropSkin.price} Coins</p>
-                                <button onClick={closeOverlay}>Schließen</button>
+            {isOpening && (
+                <div className="case-overlay">
+                    <div className="scroll-strip">
+                        {selectedSkins.map((skin, index) => (
+                            <div
+                                className={`skin-tile ${skin.name === highlightedSkin?.name ? 'highlighted' : ''}`}
+                                key={index}
+                            >
+                                <img src={skin.imageUrl || '/placeholder_skin.png'} alt={skin.name} />
+                                <div>{skin.name}</div>
                             </div>
-                        </div>
-                    )}
+                        ))}
+                    </div>
                 </div>
             )}
         </div>
     );
 };
 
-export default CasePage;
+export default CasesPage;
