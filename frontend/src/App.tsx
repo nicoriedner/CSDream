@@ -9,6 +9,7 @@ import {AuthProvider} from "./context/AuthContext.tsx";
 import Inventory from "./views/Inventory.tsx";
 import Market from "./views/Market.tsx";
 import Case from "./views/Case.tsx";
+import Freebies from "./views/Freebies.tsx";
 
 function App() {
     return (
@@ -22,6 +23,7 @@ function App() {
                         <Route path="/inventory" element={<Inventory />} />
                         <Route path="/cases" element={<Case />} />
                         <Route path="/market" element={<Market />} />
+                        <Route path="/freebies" element={<Freebies />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
                     </Routes>
