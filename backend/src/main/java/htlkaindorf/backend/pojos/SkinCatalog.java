@@ -27,4 +27,6 @@ public class SkinCatalog {
 
     @Column(name = "float_max")
     private Float floatMax;
+
+    private String imgUrl;
 }

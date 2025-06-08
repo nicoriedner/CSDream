@@ -25,7 +25,7 @@ public class CatalogReader {
     public void readCatalog() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("csv/all_skins.csv");
         if (inputStream == null) {
-            throw new RuntimeException("CSV-Datei 'all_skins.csv' nicht gefunden");
+            throw new RuntimeException("CSV-Datei konnte nicht geladen werden");
         }
 
         List<String> lines = new BufferedReader(new InputStreamReader(inputStream))
@@ -39,7 +39,6 @@ public class CatalogReader {
 
                 if (parts.length < 5) {
                     System.out.println("Ungültige Zeile übersprungen: " + line);
-                    continue;
                 }
 
                 String name = parts[1];
@@ -47,11 +46,7 @@ public class CatalogReader {
                 String rarityRaw = parts[3];
                 String floatRangeRaw = parts[4];
 
-                Rarity rarity = mapRarity(rarityRaw);
-                if (rarity == null) {
-                    System.out.println("Unbekannter Rarity-Wert: '" + rarityRaw + "' → Zeile übersprungen: " + line);
-                    continue;
-                }
+                Rarity rarity = getSkinRarity(rarityRaw);
 
                 float floatMin = 0f;
                 float floatMax = 0f;
@@ -67,6 +62,7 @@ public class CatalogReader {
                 skin.setRarity(rarity);
                 skin.setFloatMin(floatMin);
                 skin.setFloatMax(floatMax);
+                skin.setImgUrl(getSkinImageUrl(getPlainSkinName(skin.getName())));
 
                 catalogSkins.add(skin);
                 skinCatalogRepository.save(skin);
@@ -78,8 +74,8 @@ public class CatalogReader {
         }
     }
 
-    private Rarity mapRarity(String raw) {
-        return switch (raw.trim().toUpperCase()) {
+    private Rarity getSkinRarity(String rarityString) {
+        return switch (rarityString.trim().toUpperCase()) {
             case "CONSUMER GRADE" -> Rarity.CONSUMER;
             case "INDUSTRIAL GRADE" -> Rarity.INDUSTRIAL;
             case "MIL-SPEC", "MILSPEC", "MIL-SPEC GRADE" -> Rarity.MIL_SPEC;
@@ -90,4 +86,47 @@ public class CatalogReader {
             default -> null;
         };
     }
-}
+
+    private String getPlainSkinName(String name) {
+        // Den Präfix von goldenen Skins entfernen
+        name = name.replaceFirst("★ ", "");
+
+        // Damit ich nur die Waffe erhalte & nicht den Skin selbst
+        if (name.contains("|")) {
+            return name.split("\\|")[0].trim();
+        }
+
+        // Für vanilla skins
+        String[] parts = name.split(" ");
+        if (parts.length >= 2) {
+            return parts[0] + " " + parts[1];
+        }
+
+        return name;
+    }
+
+        public String getSkinImageUrl(String skinName) {
+            String basePath = "backend/src/main/resources/images/";
+
+            // Liste aller Bilddateien
+            String[] imageNames = {
+                    "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",
+                    "dual", "falchion", "famas", "fiveseven", "flip", "g3sg1", "galil", "glock", "gloves", "gut", "huntsman",
+                    "karambit", "kukri", "m4a1", "m4a4", "m9", "m249", "mac10", "mag7", "mp5", "mp7", "mp9", "navaja", "negev",
+                    "nomad", "nova", "p90", "p250", "p2000", "parachord", "revolver", "sawedoff", "scar", "sg", "skeleton",
+                    "ssg", "stiletto", "survival", "talon", "tec", "ump", "ursus", "usp", "xm", "zeus"
+            };
+
+            for (String name : imageNames) {
+                if (skinName.toLowerCase().contains(name)) {
+                    return basePath + name + ".png";
+                }
+            }
+            if(skinName.toLowerCase().contains("wraps")) {
+                return basePath + "gloves.png";
+            }
+
+            return null;
+        }
+
+    }
