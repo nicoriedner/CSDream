@@ -31,6 +31,7 @@ public class User {
 
     private Float balance;
 
+
     @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
     private List<UserSkin> userSkins;
 }

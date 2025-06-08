@@ -5,6 +5,7 @@ import htlkaindorf.backend.pojos.SkinCatalog;
 import htlkaindorf.backend.repositories.SkinCatalogRepository;
 import jakarta.annotation.PostConstruct;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;

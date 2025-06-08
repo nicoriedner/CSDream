@@ -6,15 +6,17 @@ import htlkaindorf.backend.pojos.SkinCatalog;
 import htlkaindorf.backend.repositories.SkinCatalogRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
 import htlkaindorf.backend.skincreation.UserSkinCreation;
+import lombok.AllArgsConstructor;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
 
+@Service
+@AllArgsConstructor
 public class CaseUnboxing {
-    UserSkinRepository userSkinRepository;
-    SkinCatalogRepository skinCatalogRepository;
-    UserSkinCreation creator;
+    private final UserSkinCreation creator;
 
     //    MIL_SPEC 79,92%
     //    RESTRICTED 15,98%
@@ -25,7 +27,7 @@ public class CaseUnboxing {
     //79,97 Milspec 15,98 restricted 3,2 classified 0,64 covert 0,26 gold
     public void unboxCase(Case caseToUnbox, Long userId) {
         Random rand = new Random();
-        long unboxIndex = Math.abs(rand.nextLong() % 101);
+        float unboxIndex = rand.nextFloat() * 100;
         Rarity unboxedRarity;
         if (unboxIndex <= 79.92) {
             unboxedRarity = Rarity.MIL_SPEC;

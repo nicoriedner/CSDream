@@ -6,9 +6,11 @@ import htlkaindorf.backend.pojos.SkinCatalog;
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.repositories.UserSkinRepository;
+import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
+@Service
 public class UserSkinCreation {
 
     private final UserSkinRepository userSkinRepository;
