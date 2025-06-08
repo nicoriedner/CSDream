@@ -3,43 +3,44 @@ package htlkaindorf.backend.skincreation;
 import htlkaindorf.backend.pojos.Exterior;
 import htlkaindorf.backend.pojos.Rarity;
 import htlkaindorf.backend.pojos.SkinCatalog;
+import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
-import htlkaindorf.backend.repositories.SkinCatalogRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
 
 import java.time.LocalDate;
 
-//skin_id,float_value,exterior,rarity,is_stattrak,price,drop_date,user_id
 public class UserSkinCreation {
 
-    private UserSkinRepository userSkinRepository;
+    private final UserSkinRepository userSkinRepository;
+
+    public UserSkinCreation(UserSkinRepository userSkinRepository) {
+        this.userSkinRepository = userSkinRepository;
+    }
 
     public UserSkin createNewUserSkin(SkinCatalog skin, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Long userId) {
         UserSkin newSkin = new UserSkin();
-        newSkin.setUserId(userId);
+
+        // User-Objekt mit nur ID setzen
+        User user = new User();
+        user.setId(Math.toIntExact(userId));
+
+        newSkin.setUser(user);
         newSkin.setSkin(skin);
         newSkin.setFloatValue(floatValue);
         newSkin.setExterior(calculateExterior(floatValue));
         newSkin.setRarity(rarity);
-        newSkin.setIsStattrak(isStattrak);
+        newSkin.setStattrak(isStattrak);
         newSkin.setPrice(price);
         newSkin.setDropDate(LocalDate.now());
-        newSkin.setUserId(userId);
-        userSkinRepository.save(newSkin);
-        return newSkin;
+
+        return userSkinRepository.save(newSkin);
     }
 
     private Exterior calculateExterior(Float floatValue) {
-        Exterior exterior;
-        if (floatValue < 0.07) {
-            exterior = Exterior.FACTORY_NEW;
-        } else if (floatValue < 0.15) {
-        exterior = Exterior.MINIMAL_WEAR;
-        } else if (floatValue < 0.38) {
-            exterior = Exterior.FIELD_TESTED;
-        } else if (floatValue < 0.45) {
-            exterior = Exterior.WELL_WORN;
-        } else exterior = Exterior.BATTLE_SCARRED;
-        return exterior;
+        if (floatValue < 0.07f) return Exterior.FACTORY_NEW;
+        if (floatValue < 0.15f) return Exterior.MINIMAL_WEAR;
+        if (floatValue < 0.38f) return Exterior.FIELD_TESTED;
+        if (floatValue < 0.45f) return Exterior.WELL_WORN;
+        return Exterior.BATTLE_SCARRED;
     }
 }

@@ -7,6 +7,7 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -29,4 +30,7 @@ public class User {
     private String avatar;
 
     private Float balance;
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserSkin> userSkins;
 }

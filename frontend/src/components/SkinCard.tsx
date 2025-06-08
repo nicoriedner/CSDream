@@ -1,24 +1,50 @@
-import "../css/SkinCard.css";
-import { Skin } from "../screens/Inventory";
+import React from 'react';
+import '../css/SkinCard.css';
 
-interface SkinCardProps {
-    skin: Skin;
-    onSelect: (skin: Skin) => void;
+interface SkinCatalog {
+    name: string;
+    collectionOrCase: string;
+    rarity: number;
+    floatMin: number;
+    floatMax: number;
 }
 
-export default function SkinCard({ skin, onSelect }: SkinCardProps) {
+interface UserSkin {
+    id: number;
+    floatValue: number;
+    exterior: number;
+    rarity: number;
+    isStattrak: boolean;
+    price: number;
+    dropDate: string;
+    renamedTo?: string;
+    skin: SkinCatalog;
+}
+
+interface Props {
+    skin: UserSkin;
+    onClick: () => void;
+}
+
+const SkinCard: React.FC<Props> = ({ skin, onClick }) => {
+    const imageName = skin.skin.name
+        .replace(/[^a-zA-Z0-9]/g, "_");
+
     return (
-        <div className="skin-card" onClick={() => onSelect(skin)}>
-    {/* ⬇️ Hier später Pfad anpassen, wenn du echte Bilder vom Backend bekommst */}
-    <img src={`/images/skins/${skin.name}.webp`} alt={skin.name} />
-
-    <div className="skin-info">
-        <h4>{skin.name}</h4>
-    {skin.nametag && <p className="nametag">({skin.nametag})</p>}
-        <p className="float">Float: {skin.float_value.toFixed(2)}</p>
-    </div>
-
-    <button className="details-btn">Details</button>
+        <div className="skin-card" onClick={onClick}>
+            <img
+                src={`/images/skins/${imageName}.png`}
+                alt={skin.skin.name}
+                onError={(e) => (e.currentTarget.src = "/images/placeholder.png")}
+            />
+            <div className="skin-name">
+                {skin.renamedTo && <small className="renamed">{skin.renamedTo}</small>}
+                {skin.skin.name}
+            </div>
+            <div className="float-value">Float: {skin.floatValue.toFixed(2)}</div>
+            <button className="details-button">Details</button>
         </div>
     );
-    }
+};
+
+export default SkinCard;

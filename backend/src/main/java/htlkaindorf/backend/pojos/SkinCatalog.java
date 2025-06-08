@@ -14,7 +14,9 @@ public class SkinCatalog {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+
     private String name;
+
     @Column(name = "collection_or_case")
     private String collectionOrCase;
 

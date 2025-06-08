@@ -1,13 +1,13 @@
 import './App.css';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Homepage from './screens/Homepage.tsx';
+import Homepage from './views/Homepage.tsx';
 import Header from './components/Header.tsx';
 import Footer from './components/Footer.tsx';
-import Login from "./screens/Login.tsx";
-import Register from "./screens/Register.tsx";
+import Login from "./views/Login.tsx";
+import Register from "./views/Register.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
-import Inventory from "./screens/Inventory.tsx";
-import Market from "./screens/Market.tsx";
+import Inventory from "./views/Inventory.tsx";
+import Market from "./views/Market.tsx";
 
 function App() {
     return (
