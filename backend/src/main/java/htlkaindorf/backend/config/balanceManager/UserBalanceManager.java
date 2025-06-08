@@ -4,27 +4,31 @@ import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.repositories.UserRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
-import org.springframework.stereotype.Service;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-@Service
+@Component
+@RequiredArgsConstructor
 public class UserBalanceManager {
-    UserRepository userRepository;
-    UserSkinRepository userSkinRepository;
+
+    private final UserRepository userRepository;
+    private final UserSkinRepository userSkinRepository;
 
     public Float manageUserBalance(Integer userId, Integer balanceChange) {
         User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
         user.setBalance(user.getBalance() + balanceChange);
         userRepository.save(user);
-        Float newBalance = user.getBalance();
-        return newBalance;
+        return user.getBalance();
     }
 
     public Float getInventoryValue(Integer userId) {
         Float inventoryValue = 0.0f;
-        User user = userRepository.findUserById(userId);
-        List<UserSkin> userSkins = userSkinRepository.findAllSkinsByUser(userId);
+        List<UserSkin> userSkins = userSkinRepository.findAllByUserId(Long.valueOf(userId));
         for (UserSkin userSkin : userSkins) {
             inventoryValue += userSkin.getPrice();
         }
@@ -33,17 +37,20 @@ public class UserBalanceManager {
 
     public Float sellItem(Integer userId, UserSkin userSkin) {
         User user = userRepository.findUserById(userId);
-        List<UserSkin> userSkins = userSkinRepository.findAllSkinsByUser(userId);
-        Float sellValue = 0.0f;
-        if(userSkins.contains(userSkin)) {
-            sellValue = userSkin.getPrice();
-            userSkins.remove(userSkin);
-            userSkinRepository.delete(userSkin);
-            user.setBalance(user.getBalance() + sellValue);
-            userRepository.save(user);
-        } else {
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+
+        List<UserSkin> userSkins = userSkinRepository.findAllByUserId(Long.valueOf(userId));
+        if (!userSkins.contains(userSkin)) {
             throw new RuntimeException("User besitzt diesen Skin nicht");
         }
-        return user.getBalance();
+
+        Float sellValue = userSkin.getPrice();
+        userSkinRepository.delete(userSkin);
+        user.setBalance(user.getBalance() + sellValue);
+        userRepository.save(user);
+
+        return sellValue;
     }
 }

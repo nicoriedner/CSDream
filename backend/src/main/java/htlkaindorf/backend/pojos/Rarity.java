@@ -8,5 +8,6 @@ public enum Rarity {
     CLASSIFIED,
     COVERT,
     EXTRAORDINARY,
-    CONTRABAND;
+    CONTRABAND,
+    UNKNOWN
 }

@@ -1,0 +1,80 @@
+:root {
+    --bg-dark: #1d1a39;
+    --bg-glow: #322e5c;
+    --accent: #5c4bc5;
+    --text: #e2e2f2;
+    --highlight: #ffd700;
+    --neon-yellow: #ffff55;
+}
+
+.case-page {
+    padding: 2rem;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.case-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.case-card {
+    background: linear-gradient(135deg, var(--bg-dark), var(--bg-glow));
+    border-radius: 16px;
+    padding: 1rem;
+    text-align: center;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+}
+
+.case-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 12px var(--accent);
+}
+
+.case-card img {
+    width: 100%;
+    border-radius: 12px;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease;
+}
+
+.case-card:hover img {
+    transform: scale(1.05);
+}
+
+.case-name {
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+}
+
+.case-price {
+    font-size: 0.95rem;
+    margin-bottom: 1rem;
+    color: var(--highlight);
+}
+
+.open-button {
+    background: transparent;
+    border: 2px solid var(--highlight);
+    color: var(--highlight);
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    font-weight: bold;
+    transition: all 0.3s ease;
+    font-size: 0.95rem;
+}
+
+.case-card:hover .open-button {
+    background-color: var(--highlight);
+    color: var(--bg-dark);
+    box-shadow: 0 0 10px var(--neon-yellow);
+}

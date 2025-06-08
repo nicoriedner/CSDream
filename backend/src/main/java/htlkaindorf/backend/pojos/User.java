@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -32,7 +31,6 @@ public class User {
 
     private Float balance;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<UserSkin> inventory = new ArrayList<>();
-
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<UserSkin> userSkins;
 }

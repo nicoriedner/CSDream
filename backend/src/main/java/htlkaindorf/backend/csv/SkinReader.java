@@ -2,58 +2,74 @@ package htlkaindorf.backend.csv;
 
 import htlkaindorf.backend.pojos.Exterior;
 import htlkaindorf.backend.pojos.Rarity;
+import htlkaindorf.backend.pojos.SkinCatalog;
+import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
+import htlkaindorf.backend.repositories.SkinCatalogRepository;
+import htlkaindorf.backend.repositories.UserRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
 import jakarta.annotation.PostConstruct;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class SkinReader {
 
-    private List<UserSkin> userSkins = new ArrayList<>();
-
-    @Autowired
-    private UserSkinRepository userSkinRepository;
+    private final UserSkinRepository userSkinRepository;
+    private final SkinCatalogRepository skinCatalogRepository;
+    private final UserRepository userRepository;
 
     @PostConstruct
     public void readSkins() {
-
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("csv/userSkin.csv");
-        List<String> lines = new BufferedReader(new InputStreamReader(inputStream))
-                .lines()
-                .skip(1)
-                .toList();
-        //skin_id,float_value,exterior,rarity,is_stattrak,price,drop_date,user_id
-        for(String line : lines) {
-            UserSkin userSkin = new UserSkin();
-            String[] parts = line.split(",");
-            if(parts[1].equals("None - None")) {
-                userSkin.setFloatValue(0f);
-            }
-            userSkin.setFloatValue(Float.parseFloat(parts[1]));
-            userSkin.setExterior(Exterior.valueOf(parts[2]));
-            if (parts[3].endsWith(" Grade")) {
-                parts[3] = parts[2].replace(" Grade", "");
-            }
-            userSkin.setRarity(Rarity.valueOf(parts[3].replace("-","_").toUpperCase()));
-            userSkin.setIsStattrak(Boolean.parseBoolean(parts[4]));
-            userSkin.setPrice(Float.parseFloat(parts[5]));
-            userSkin.setDropDate(LocalDate.parse(parts[6]));
-            userSkin.setUserId(Long.parseLong(parts[7]));
-            userSkins.add(userSkin);
-            userSkinRepository.save(userSkin);
+        if (inputStream == null) {
+            throw new RuntimeException("CSV-Datei nicht gefunden: userSkin.csv");
         }
 
+        List<String> lines = new BufferedReader(new InputStreamReader(inputStream))
+                .lines()
+                .skip(1) // Header überspringen
+                .toList();
+
+        for (String line : lines) {
+            try {
+                String[] parts = line.split(",");
+                int skinId = Integer.parseInt(parts[0]);
+                float floatValue = parts[1].equals("None - None") ? 0f : Float.parseFloat(parts[1]);
+                Exterior exterior = Exterior.valueOf(parts[2]);
+                Rarity rarity = Rarity.valueOf(parts[3].replace("-", "_").toUpperCase());
+                boolean stattrak = Boolean.parseBoolean(parts[4]);
+                float price = Float.parseFloat(parts[5]);
+                LocalDate dropDate = LocalDate.parse(parts[6]);
+                Long userId = Long.parseLong(parts[7]);
+
+                SkinCatalog skin = skinCatalogRepository.findById(skinId).orElse(null);
+                User user = userRepository.findById(userId.intValue()).orElse(null);
+
+                if (skin == null || user == null) continue;
+
+                UserSkin userSkin = new UserSkin();
+                userSkin.setSkin(skin);
+                userSkin.setFloatValue(floatValue);
+                userSkin.setExterior(exterior);
+                userSkin.setRarity(rarity);
+                userSkin.setStattrak(stattrak);
+                userSkin.setPrice(price);
+                userSkin.setDropDate(dropDate);
+                userSkin.setUser(user);
+
+                userSkinRepository.save(userSkin);
+
+            } catch (Exception e) {
+                System.err.println("Fehler bei Zeile: " + line + "\n" + e.getMessage());
+            }
+        }
     }
 }

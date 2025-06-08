@@ -1,51 +1,72 @@
+:root {
+    --bg-dark: #1d1a39;
+    --bg-glow: #322e5c;
+    --accent: #5c4bc5;
+    --text: #e2e2f2;
+    --hover-yellow: #ffd700;
+    --hover-yellow-neon: #ffee00;
+}
+
+.inventory-page {
+    padding: 2rem;
+    background-color: var(--bg-dark);
+    color: var(--text);
+    min-height: 100vh;
+}
+
+.inventory-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
 .skin-card {
     background-color: var(--bg-glow);
-    border-radius: 12px;
-    box-shadow: 0 0 10px rgba(92, 75, 197, 0.3);
     padding: 1rem;
+    border-radius: 16px;
     text-align: center;
-    color: var(--text);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
     position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
     cursor: pointer;
-    overflow: hidden;
 }
 
 .skin-card:hover {
-    transform: translateY(-6px) scale(1.03);
-    box-shadow: 0 0 18px rgba(255, 255, 0, 0.6);
-    border: 1px solid yellow;
+    transform: scale(1.05);
+    box-shadow: 0 0 12px var(--hover-yellow-neon);
 }
 
-.skin-image {
+.skin-card img {
     width: 100%;
     height: auto;
-    border-radius: 8px;
+    border-radius: 10px;
     margin-bottom: 0.5rem;
-    object-fit: contain;
-    background-color: #1d1a39;
 }
 
 .skin-name {
-    font-size: 1rem;
     font-weight: bold;
-    margin-bottom: 0.3rem;
+    margin-bottom: 0.25rem;
 }
 
-.skin-float {
+.skin-name .renamed {
+    display: block;
+    font-size: 0.75rem;
+    color: var(--hover-yellow);
+}
+
+.float-value {
     font-size: 0.85rem;
     color: #ccc;
+    margin-bottom: 0.5rem;
 }
 
 .details-button {
-    margin-top: 0.7rem;
+    background-color: var(--hover-yellow);
+    border: 2px solid transparent;
     padding: 6px 12px;
-    background-color: transparent;
-    border: 1px solid yellow;
-    color: yellow;
-    font-weight: bold;
     border-radius: 8px;
-    transition: all 0.3s ease;
+    font-weight: bold;
+    transition: all 0.2s ease-in-out;
     opacity: 0;
     pointer-events: none;
 }
@@ -53,6 +74,64 @@
 .skin-card:hover .details-button {
     opacity: 1;
     pointer-events: auto;
-    background-color: rgba(255, 255, 0, 0.1);
-    box-shadow: 0 0 10px yellow;
+    border-color: var(--hover-yellow-neon);
+}
+
+/* Modal */
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(6px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999;
+}
+
+.skin-modal {
+    background-color: var(--bg-glow);
+    padding: 2rem;
+    border-radius: 20px;
+    color: var(--text);
+    max-width: 400px;
+    width: 100%;
+    box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+    position: relative;
+}
+
+.renamed-display {
+    color: var(--hover-yellow);
+    margin-bottom: 0.5rem;
+}
+
+.rename-button,
+.sell-button {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    margin-top: 1rem;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.rename-button {
+    background-color: var(--accent);
+    color: white;
+}
+
+.rename-button:hover {
+    background-color: #6d5ae8;
+}
+
+.sell-button {
+    background-color: var(--hover-yellow);
+    color: #1d1a39;
+}
+
+.sell-button:hover {
+    background-color: var(--hover-yellow-neon);
 }
