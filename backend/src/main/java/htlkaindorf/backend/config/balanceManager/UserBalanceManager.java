@@ -4,9 +4,11 @@ import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.repositories.UserRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
+import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+@Service
 public class UserBalanceManager {
     UserRepository userRepository;
     UserSkinRepository userSkinRepository;
@@ -36,11 +38,12 @@ public class UserBalanceManager {
         if(userSkins.contains(userSkin)) {
             sellValue = userSkin.getPrice();
             userSkins.remove(userSkin);
+            userSkinRepository.delete(userSkin);
             user.setBalance(user.getBalance() + sellValue);
             userRepository.save(user);
         } else {
             throw new RuntimeException("User besitzt diesen Skin nicht");
         }
-        return sellValue;
+        return user.getBalance();
     }
 }

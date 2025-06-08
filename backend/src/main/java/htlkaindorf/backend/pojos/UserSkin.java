@@ -18,6 +18,10 @@ public class UserSkin {
     private int id;
 
     @ManyToOne
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne
     @JoinColumn(name = "skin_id")
     private SkinCatalog skin;
 
