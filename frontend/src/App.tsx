@@ -7,7 +7,6 @@ import Login from "./views/Login.tsx";
 import Register from "./views/Register.tsx";
 import {AuthProvider} from "./context/AuthContext.tsx";
 import Inventory from "./views/Inventory.tsx";
-import Market from "./views/Market.tsx";
 import Case from "./views/Case.tsx";
 import Freebies from "./views/Freebies.tsx";
 
@@ -22,7 +21,6 @@ function App() {
                         <Route path="/" element={<Homepage />} />
                         <Route path="/inventory" element={<Inventory />} />
                         <Route path="/cases" element={<Case />} />
-                        <Route path="/market" element={<Market />} />
                         <Route path="/freebies" element={<Freebies />} />
                         <Route path="/login" element={<Login />} />
                         <Route path="/register" element={<Register />} />
