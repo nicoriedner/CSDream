@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.hibernate.annotations.SecondaryRow;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -41,7 +38,7 @@ public class CaseCreator {
 
     public List<SkinCatalog> getRandomSkins(List<Rarity> rarities) {
         List<SkinCatalog> allSkins = skinCatalogRepository.findAll();
-        List<SkinCatalog> selectedSkins = new ArrayList<>();
+        Set<SkinCatalog> selectedSkins = new HashSet<>(); //Damit jeder Skin nur 1x vorkommen kann lol (danke gemini)
         Random random = new Random();
 
         for (Rarity r : rarities) {
@@ -51,11 +48,17 @@ public class CaseCreator {
 
             int skinsToAddCount = Math.min(10, skinsOfCurrentRarity.size());
 
-            for (int i = 0; i < skinsToAddCount; i++) {
+            int addedCount = 0;
+            while (addedCount < 10 && skinsOfCurrentRarity.size() > 0) {
                 int randomIndex = random.nextInt(skinsOfCurrentRarity.size());
-                selectedSkins.add(skinsOfCurrentRarity.get(randomIndex));
+                SkinCatalog chosenSkin = skinsOfCurrentRarity.get(randomIndex);
+
+                if (selectedSkins.add(chosenSkin)) {
+                    addedCount++;
+                }
+
             }
         }
-        return selectedSkins;
+        return new ArrayList<>(selectedSkins);
     }
 }

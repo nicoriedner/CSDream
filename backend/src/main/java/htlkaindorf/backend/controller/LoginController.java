@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/login")
 public class LoginController {
 
-    @Autowired
-    private UserService userLoginService;
+    private final UserService userLoginService;
 
     @PostMapping
     public ResponseEntity<String> login(@RequestBody UserDTO loginDTO) {

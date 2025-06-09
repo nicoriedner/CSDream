@@ -13,8 +13,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/api/register")
 @RequiredArgsConstructor
 public class RegisterController {
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @PostMapping
     public ResponseEntity<String> register(@RequestBody UserDTO userDTO) {

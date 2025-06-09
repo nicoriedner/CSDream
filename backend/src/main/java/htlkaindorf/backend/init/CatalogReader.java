@@ -84,7 +84,7 @@ public class CatalogReader {
             case "CLASSIFIED" -> Rarity.CLASSIFIED;
             case "COVERT" -> Rarity.COVERT;
             case "EXTRAORDINARY" -> Rarity.EXTRAORDINARY;
-            default -> null;
+            default -> Rarity.UNKNOWN;
         };
     }
 

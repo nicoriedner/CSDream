@@ -2,6 +2,7 @@ package htlkaindorf.backend.service;
 
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.repositories.UserRepository;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,10 +11,10 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 @Service
+@AllArgsConstructor
 public class UserService {
 
-    @Autowired
-    private UserRepository userRepository;
+    private final UserRepository userRepository;
 
     public boolean authenticate(String username, String password) {
         User user = userRepository.findUserByUsername(username);

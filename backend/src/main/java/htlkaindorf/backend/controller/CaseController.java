@@ -2,6 +2,7 @@ package htlkaindorf.backend.controller;
 
 import htlkaindorf.backend.pojos.Case;
 import htlkaindorf.backend.service.CaseService;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/api/cases")
+@AllArgsConstructor
 public class CaseController {
 
-    @Autowired
-    private CaseService caseService;
+    private final CaseService caseService;
 
     @GetMapping
     public List<Case> getAllCases() {
