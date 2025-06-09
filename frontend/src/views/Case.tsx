@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../css/Cases.css';
-import api from '../../api';
+import api from '../api.ts';
 
 interface CaseDTO {
     id: number;
