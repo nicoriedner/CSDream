@@ -4,7 +4,7 @@ import '../css/SkinCard.css';
 interface SkinCatalog {
     name: string;
     collectionOrCase: string;
-    rarity: number;
+    rarity: string;
     floatMin: number;
     floatMax: number;
 }
@@ -12,8 +12,8 @@ interface SkinCatalog {
 interface UserSkin {
     id: number;
     floatValue: number;
-    exterior: number;
-    rarity: number;
+    exterior: string;
+    rarity: string;
     isStattrak: boolean;
     price: number;
     dropDate: string;
@@ -27,15 +27,14 @@ interface Props {
 }
 
 const SkinCard: React.FC<Props> = ({ skin, onClick }) => {
-    const imageName = skin.skin.name
-        .replace(/[^a-zA-Z0-9]/g, "_");
+    const imageName = skin.skin.name.replace(/[^a-zA-Z0-9]/g, '_');
 
     return (
         <div className="skin-card" onClick={onClick}>
             <img
                 src={`/images/skins/${imageName}.png`}
                 alt={skin.skin.name}
-                onError={(e) => (e.currentTarget.src = "/images/placeholder.png")}
+                onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
             />
             <div className="skin-name">
                 {skin.renamedTo && <small className="renamed">{skin.renamedTo}</small>}

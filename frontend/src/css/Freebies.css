@@ -1,62 +1,118 @@
 .freebies-container {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
     padding: 2rem;
-    color: white;
-    background: radial-gradient(circle at center, #1b1b2f, #0f0f1f);
-    min-height: 100vh;
+    color: var(--text);
 }
 
-.freebies-row {
+.freebies-grid {
     display: flex;
-    gap: 2rem;
     justify-content: center;
+    gap: 2rem;
+    margin-top: 2rem;
     flex-wrap: wrap;
-    margin-bottom: 2rem;
 }
 
 .freebie-card {
-    background-color: #2c2c3e;
-    border: none;
-    width: 220px;
-    box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
-    transition: transform 0.2s ease;
-}
-
-.freebie-card:hover {
-    transform: scale(1.05);
-}
-
-.freebie-card img {
-    height: 160px;
-    object-fit: contain;
-    background-color: #1c1c2c;
-    padding: 1rem;
-}
-
-.try-button {
-    background-color: #ffc107;
-    border: none;
-    color: #1b1b2f;
-    font-weight: bold;
-    padding: 0.8rem 2rem;
-    border-radius: 12px;
-    box-shadow: 0 0 10px #ffc10780;
-    transition: background 0.3s;
-}
-
-.try-button:hover {
-    background-color: #ffb300;
-}
-
-.modal-skin {
+    background-color: var(--bg-glow);
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+    width: 180px;
     text-align: center;
 }
 
-.modal-img {
-    width: 160px;
-    height: auto;
-    margin-bottom: 1rem;
+.freebie-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: contain;
+    padding: 10px;
+}
+
+.freebie-card:hover {
+    transform: scale(1.08);
+    box-shadow: 0 0 12px var(--accent);
+}
+
+.freebie-info {
+    padding: 0.5rem;
+}
+
+.claimed {
+    opacity: 0.4;
+    pointer-events: none;
+    filter: grayscale(1);
+}
+
+.freebie-modal-bg {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(6px);
+    z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.freebie-modal {
+    background-color: var(--bg-dark);
+    border-radius: 16px;
+    padding: 2rem;
+    text-align: center;
+    box-shadow: 0 0 15px var(--accent);
+    max-width: 300px;
+    width: 100%;
+    position: relative;
+    animation: popIn 0.4s ease;
+}
+
+.freebie-modal img {
+    width: 100%;
+    max-height: 180px;
+    object-fit: contain;
+}
+
+.claim-btn {
+    margin-top: 1rem;
+    background-color: yellow;
+    border: 2px solid yellow;
+    border-radius: 10px;
+    padding: 0.5rem 1rem;
+    font-weight: bold;
+    transition: all 0.3s ease;
+}
+
+.claim-btn:hover {
+    background-color: black;
+    color: yellow;
+    box-shadow: 0 0 10px yellow;
+}
+
+.close-btn {
+    margin-top: 0.5rem;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.claimed-text {
+    margin-top: 1rem;
+    font-weight: bold;
+    color: limegreen;
+    font-size: 1rem;
+}
+
+@keyframes popIn {
+    0% {
+        transform: scale(0.7);
+        opacity: 0;
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
 }

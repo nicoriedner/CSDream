@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import '../css/Cases.css';
-import api from '../../api';
+import api from '../api';
 
 interface CaseDTO {
     id: number;
@@ -22,6 +22,7 @@ const CasesPage = () => {
     const [selectedSkins, setSelectedSkins] = useState<SkinDTO[]>([]);
     const [isOpening, setIsOpening] = useState(false);
     const [highlightedSkin, setHighlightedSkin] = useState<SkinDTO | null>(null);
+    const [claimedSkin, setClaimedSkin] = useState<SkinDTO | null>(null);
 
     useEffect(() => {
         api.get('/cases/all').then((res) => {
@@ -51,6 +52,7 @@ const CasesPage = () => {
                 clearInterval(interval);
                 setTimeout(() => {
                     setHighlightedSkin(finalSkin);
+                    setClaimedSkin(finalSkin);
                     setIsOpening(false);
                     alert(`${finalSkin.name} zum Inventar hinzugefügt!`);
                 }, 500);
@@ -60,25 +62,21 @@ const CasesPage = () => {
 
     return (
         <div className="cases-container">
-            {cases.map((cs) => (
-                <div className="case-card" key={cs.id}>
-                    <img
-                        className="case-image"
-                        src={cs.imageUrl || '/avatar1.png'}
-                        alt={cs.name}
-                    />
-                    <div className="case-content">
-                        <div className="case-name">{cs.name}</div>
-                        <button
-                            className="open-button"
-                            onClick={() => openCase(cs.id)}
-                            disabled={isOpening}
-                        >
-                            {isOpening ? 'Öffnet...' : `Öffnen (${cs.price}C)`}
-                        </button>
+            <h2>Case Öffnen</h2>
+
+            <div className="cases-grid">
+                {cases.map((cs) => (
+                    <div className="case-card" key={cs.id}>
+                        <img className="case-image" src={cs.imageUrl || '/avatar1.png'} alt={cs.name} />
+                        <div className="case-content">
+                            <div className="case-name">{cs.name}</div>
+                            <button className="open-button" onClick={() => openCase(cs.id)} disabled={isOpening}>
+                                {isOpening ? 'Öffnet...' : `Öffnen (${cs.price}C)`}
+                            </button>
+                        </div>
                     </div>
-                </div>
-            ))}
+                ))}
+            </div>
 
             {isOpening && (
                 <div className="case-overlay">
@@ -93,6 +91,14 @@ const CasesPage = () => {
                             </div>
                         ))}
                     </div>
+                </div>
+            )}
+
+            {claimedSkin && (
+                <div className="claimed-skin">
+                    <h3>Du hast gewonnen!</h3>
+                    <img src={claimedSkin.imageUrl || '/placeholder_skin.png'} alt={claimedSkin.name} />
+                    <p>{claimedSkin.name}</p>
                 </div>
             )}
         </div>
