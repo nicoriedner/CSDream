@@ -1,11 +1,11 @@
-package htlkaindorf.backend.csv;
+package htlkaindorf.backend.init;
 
 import htlkaindorf.backend.pojos.Rarity;
 import htlkaindorf.backend.pojos.SkinCatalog;
 import htlkaindorf.backend.repositories.SkinCatalogRepository;
 import jakarta.annotation.PostConstruct;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
 import java.io.BufferedReader;
@@ -15,12 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Component
+@RequiredArgsConstructor
 public class CatalogReader {
 
     private final List<SkinCatalog> catalogSkins = new ArrayList<>();
 
-    @Autowired
-    private SkinCatalogRepository skinCatalogRepository;
+    private final SkinCatalogRepository skinCatalogRepository;
 
     @PostConstruct
     public void readCatalog() {
