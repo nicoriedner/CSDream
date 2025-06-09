@@ -12,7 +12,6 @@ const Footer = () => {
             <div>
                 <h2>Tägliche Belohnungen</h2>
                 <p>Melde dich täglich an und sichere dir Skins und Coins!</p>
-                <Link to="/rewards" className="cta-button">Belohnungen ansehen</Link>
                 <div className="footer-links">
                     <Link to="/terms">AGB</Link> |
                     <Link to="/privacy"> Datenschutz</Link> |
