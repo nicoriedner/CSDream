@@ -10,6 +10,8 @@ import htlkaindorf.backend.repositories.UserRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.DependsOn;
 import org.springframework.stereotype.Component;
 
@@ -23,6 +25,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class SkinReader {
 
+    private static final Logger log = LoggerFactory.getLogger(SkinReader.class);
     private final UserSkinRepository userSkinRepository;
     private final SkinCatalogRepository skinCatalogRepository;
     private final UserRepository userRepository;
@@ -54,8 +57,6 @@ public class SkinReader {
                 SkinCatalog skin = skinCatalogRepository.findById(skinId).orElse(null);
                 User user = userRepository.findById(userId.intValue()).orElse(null);
 
-                if (skin == null || user == null) continue;
-
                 UserSkin userSkin = new UserSkin();
                 userSkin.setSkin(skin);
                 userSkin.setFloatValue(floatValue);
@@ -69,7 +70,7 @@ public class SkinReader {
                 userSkinRepository.save(userSkin);
 
             } catch (Exception e) {
-                System.err.println("Fehler bei Zeile: " + line + "\n" + e.getMessage());
+                System.err.println("Fehler bei Zeile: " + line + "\n" + e);
             }
         }
     }
