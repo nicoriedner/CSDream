@@ -25,7 +25,7 @@ public class CaseUnboxing {
     //    EXTRAORDINARY 0,26%
 
     //79,97 Milspec 15,98 restricted 3,2 classified 0,64 covert 0,26 gold
-    public void unboxCase(Case caseToUnbox, Long userId) {
+    public void unboxCase(Case caseToUnbox, Integer userId) {
         Random rand = new Random();
         float unboxIndex = rand.nextFloat() * 100;
         Rarity unboxedRarity;

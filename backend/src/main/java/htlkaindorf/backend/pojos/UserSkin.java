@@ -28,7 +28,7 @@ public class UserSkin {
     @Enumerated(EnumType.STRING)
     private Exterior exterior;
 
-    @Enumerated(EnumType.STRING)
+    @Enumerated(EnumType.ORDINAL)
     private Rarity rarity;
 
     private Boolean stattrak;
