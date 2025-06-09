@@ -19,12 +19,12 @@ public class UserSkinCreation {
         this.userSkinRepository = userSkinRepository;
     }
 
-    public UserSkin createNewUserSkin(SkinCatalog skin, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Long userId) {
+    public UserSkin createNewUserSkin(SkinCatalog skin, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Integer userId) {
         UserSkin newSkin = new UserSkin();
 
         // User-Objekt mit nur ID setzen
         User user = new User();
-        user.setId(Math.toIntExact(userId));
+        user.setId(userId);
 
         newSkin.setUser(user);
         newSkin.setSkin(skin);

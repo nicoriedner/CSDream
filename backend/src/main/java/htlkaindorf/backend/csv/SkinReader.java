@@ -34,7 +34,7 @@ public class SkinReader {
     public void readSkins() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("csv/userSkin.csv");
         if (inputStream == null) {
-            throw new RuntimeException("CSV-Datei nicht gefunden: userSkin.csv");
+            throw new RuntimeException("CSV-Datei konnte nicht geladen werden.");
         }
 
         List<String> lines = new BufferedReader(new InputStreamReader(inputStream))
