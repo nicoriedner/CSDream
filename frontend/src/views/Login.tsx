@@ -8,7 +8,6 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
-    const [success, setSuccess] = useState("");
     const navigate = useNavigate();
     const { login } = useAuth();
 
@@ -18,14 +17,12 @@ function Login() {
             const response = await axios.post("http://localhost:8080/api/login", { username, password }, { withCredentials: true });
             const avatar = response.data.avatar || "avatar1.jpg";
             login(username, avatar);
-            setSuccess("Login erfolgreich!");
-            setError("");
+            setError("");  // Reset error message on successful login
             setTimeout(() => {
                 navigate("/", { state: { loginSuccess: true } });
             }, 1000);
         } catch (err) {
             setError("Login fehlgeschlagen. Bitte überprüfe deine Eingaben.");
-            setSuccess("");
         }
     };
 
@@ -36,7 +33,7 @@ function Login() {
                 <input type="text" placeholder="Benutzername" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 <input type="password" placeholder="Passwort" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Anmelden</button>
-                {error && <p className="error">{error}</p>}
+                {error && <p className="error">{error}</p>} {/* Only show error if it exists */}
             </form>
             <p className="switch-link">
                 Noch kein Konto bei uns? <Link to="/register" className="link">Hier registrieren</Link>

@@ -1,134 +1,73 @@
-.modal {
+.modal-overlay {
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0, 0, 0, 0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .modal-content {
-    background: var(--bg-dark);
-    color: var(--text);
+    background-color: var(--bg-glow);
     padding: 2rem;
-    border-radius: 16px;
-    width: 400px;
-    position: relative;
-    box-shadow: 0 0 20px var(--accent);
+    border-radius: 12px;
+    max-width: 300px;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
 }
 
 .modal-content img {
     width: 100%;
-    border-radius: 8px;
+    height: 150px;
+    object-fit: contain;
     margin-bottom: 1rem;
 }
 
-.close-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    background: none;
-    color: white;
-    font-size: 1.2rem;
-    border: none;
-    cursor: pointer;
+.stattrak {
+    color: orange;
 }
 
-.sell-btn,
-.rename-btn {
-    background: var(--accent);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0.5rem 1rem;
+.rename-section {
     margin-top: 1rem;
-    cursor: pointer;
 }
 
 .rename-section input {
-    margin-top: 0.5rem;
-    padding: 0.4rem;
-    border-radius: 4px;
-    border: 1px solid #555;
-    background: #222;
-    color: white;
-    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    margin-right: 0.5rem;
+    border-radius: 6px;
+    border: 1px solid #ccc;
 }
 
-.nametag-info {
-    font-style: italic;
-    font-size: 0.85rem;
-    color: #aaa;
-    margin-bottom: 0.5rem;
-}
-
-.rename-controls {
-    margin-top: 1rem;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-}
-
-.delete-btn {
-    background: none;
-    color: #ff5c5c;
+.rename-section button {
+    padding: 0.5rem;
+    background-color: yellow;
+    border-radius: 6px;
     border: none;
-    font-size: 1.2rem;
     cursor: pointer;
-    transition: transform 0.2s;
-}
-
-.delete-btn:hover {
-    transform: scale(1.2);
-}
-
-.popup-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.7);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 1001;
-}
-
-.popup-modal {
-    background: #1d1a39;
-    padding: 1.5rem;
-    border-radius: 12px;
-    box-shadow: 0 0 20px var(--accent);
-    color: var(--text);
-    min-width: 300px;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.popup-modal input {
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: 1px solid #555;
-    background: #222;
-    color: white;
-}
-
-.popup-modal button {
-    padding: 0.5rem;
-    border-radius: 6px;
-    border: none;
-    background-color: var(--accent);
-    color: white;
     font-weight: bold;
+}
+
+.sell-button {
+    margin-top: 1rem;
+    background-color: green;
+    border: none;
+    color: white;
+    padding: 0.6rem 1.2rem;
+    border-radius: 10px;
     cursor: pointer;
 }
 
-.popup-modal .cancel-btn {
-    background: #444;
+.close-btn {
+    margin-top: 1rem;
+    background: none;
+    border: none;
+    color: var(--text);
+    font-size: 0.9rem;
+    text-decoration: underline;
+    cursor: pointer;
 }

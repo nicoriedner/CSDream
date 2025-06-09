@@ -1,13 +1,11 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api.ts'
+import { useEffect, useState } from 'react';
+import api from '../api';
 import '../css/Inventory.css';
-import SkinCard from '../components/SkinCard';
-import SkinDetailsModal from '../components/SkinDetailsModal';
 
 interface SkinCatalog {
     name: string;
     collectionOrCase: string;
-    rarity: number;
+    rarity: string;
     floatMin: number;
     floatMax: number;
 }
@@ -15,8 +13,8 @@ interface SkinCatalog {
 interface UserSkin {
     id: number;
     floatValue: number;
-    exterior: number;
-    rarity: number;
+    exterior: string;
+    rarity: string;
     isStattrak: boolean;
     price: number;
     dropDate: string;
@@ -29,19 +27,19 @@ const Inventory: React.FC = () => {
     const [selectedSkin, setSelectedSkin] = useState<UserSkin | null>(null);
 
     useEffect(() => {
-        const userId = localStorage.getItem("userId");
+        const userId = localStorage.getItem('userId');
         if (!userId) {
-            console.warn("Kein userId im localStorage gefunden.");
+            console.warn('Kein userId im localStorage gefunden.');
             return;
         }
 
         api.get(`/userskin/allByUserId/${userId}`)
-            .then(res => {
+            .then((res) => {
                 const data = Array.isArray(res.data) ? res.data : [];
-                console.log("Geladene Skins:", data);
+                console.log('Geladene Skins:', data);
                 setSkins(data);
             })
-            .catch(err => console.error("Fehler beim Laden des Inventars:", err));
+            .catch((err) => console.error('Fehler beim Laden des Inventars:', err));
     }, []);
 
     return (
@@ -50,18 +48,37 @@ const Inventory: React.FC = () => {
 
             <div className="inventory-grid">
                 {skins.map((skin) => (
-                    <SkinCard
-                        key={skin.id}
-                        skin={skin}
-                        onClick={() => setSelectedSkin(skin)}
-                    />
+                    <div className="skin-card" key={skin.id} onClick={() => setSelectedSkin(skin)}>
+                        <img
+                            src={`/images/skins/${skin.skin.name.replace(/[^a-zA-Z0-9]/g, "_")}.png`}
+                            alt={skin.skin.name}
+                            onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
+                        />
+                        <div className="skin-name">
+                            {skin.renamedTo && <small className="renamed">{skin.renamedTo}</small>}
+                            {skin.skin.name}
+                        </div>
+                        <div className="float-value">Float: {skin.floatValue.toFixed(2)}</div>
+                        <button className="details-button">Details</button>
+                    </div>
                 ))}
             </div>
+
             {selectedSkin && (
-                <SkinDetailsModal
-                    skin={selectedSkin}
-                    onClose={() => setSelectedSkin(null)}
-                />
+                <div className="skin-details-modal">
+                    <h3>{selectedSkin.renamedTo || selectedSkin.skin.name}</h3>
+                    <img
+                        src={`/images/skins/${selectedSkin.skin.name.replace(/[^a-zA-Z0-9]/g, "_")}.png`}
+                        alt={selectedSkin.skin.name}
+                        onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
+                    />
+                    <p>Collection: {selectedSkin.skin.collectionOrCase}</p>
+                    <p>Rarity: {selectedSkin.skin.rarity}</p>
+                    <p>Float: {selectedSkin.floatValue}</p>
+                    <p>Stattrak: {selectedSkin.isStattrak ? 'Ja' : 'Nein'}</p>
+                    <p>Preis: {selectedSkin.price} Coins</p>
+                    <button onClick={() => setSelectedSkin(null)}>Schließen</button>
+                </div>
             )}
         </div>
     );

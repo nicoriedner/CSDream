@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import { FaHome, FaStore, FaBoxOpen, FaDice, FaUser, FaCaretDown } from 'react-icons/fa';
+import { FaHome, FaStore, FaBoxOpen, FaDice, FaUser, FaCaretDown, FaCoins } from 'react-icons/fa';
 import '../css/Header.css';
 import { useAuth } from '../context/AuthContext';
 import avatar1 from '../assets/profile_pics/avatar1.jpg';
 import avatar2 from '../assets/profile_pics/avatar2.jpg';
 import { useState, useEffect, useRef } from 'react';
+import api from '../api';
 
 const avatarMap: Record<string, string> = {
     "avatar1.jpg": avatar1,
@@ -16,6 +17,21 @@ const Header = () => {
     const avatarSrc = avatar && avatarMap[avatar] ? avatarMap[avatar] : avatar1;
     const [dropdownOpen, setDropdownOpen] = useState(false);
     const dropdownRef = useRef<HTMLDivElement>(null);
+    const [balance, setBalance] = useState<number>(0);
+
+    const fetchBalance = () => {
+        if (username) {
+            api.get(`/users/balance/${username}`).then((res) => {
+                setBalance(Math.max(0, res.data.balance));
+            });
+        }
+    };
+
+    useEffect(() => {
+        fetchBalance();
+        const interval = setInterval(() => fetchBalance(), 5000);
+        return () => clearInterval(interval);
+    }, [username]);
 
     const handleLogout = () => {
         logout();
@@ -44,14 +60,19 @@ const Header = () => {
             </nav>
             <nav className="csdream-nav" ref={dropdownRef}>
                 {username ? (
-                    <div className="user-info" onClick={() => setDropdownOpen(!dropdownOpen)}>
-                        <img src={avatarSrc} alt="avatar" className="avatar-small" />
-                        <span>{username}</span>
-                        <FaCaretDown className="dropdown-icon" />
-                        <div className={`dropdown-menu ${dropdownOpen ? 'open' : ''}`}>
-                            <button className="dropdown-item" onClick={handleLogout}>Abmelden</button>
+                    <>
+                        <div className="balance-display">
+                            <FaCoins className="nav-icon" /> {balance.toFixed(2)} C
                         </div>
-                    </div>
+                        <div className="user-info" onClick={() => setDropdownOpen(!dropdownOpen)}>
+                            <img src={avatarSrc} alt="avatar" className="avatar-small" />
+                            <span>{username}</span>
+                            <FaCaretDown className="dropdown-icon" />
+                            <div className={`dropdown-menu ${dropdownOpen ? 'open' : ''}`}>
+                                <button className="dropdown-item" onClick={handleLogout}>Abmelden</button>
+                            </div>
+                        </div>
+                    </>
                 ) : (
                     <Link to="/login" className="nav-link">
                         <FaUser className="nav-icon" /> Login

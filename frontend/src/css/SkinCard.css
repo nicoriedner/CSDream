@@ -1,63 +1,40 @@
 .skin-card {
-    background: var(--bg-dark);
-    border-radius: 12px;
-    padding: 1rem;
+    background-color: var(--bg-glow);
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.5);
     text-align: center;
-    position: relative;
-    transition: transform 0.3s, box-shadow 0.3s;
-    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    padding: 10px;
+    transition: transform 0.3s;
     cursor: pointer;
 }
 
 .skin-card:hover {
     transform: scale(1.05);
-    box-shadow: 0 0 20px var(--accent);
 }
 
-.skin-card img {
-    width: 100%;
-    border-radius: 8px;
-}
-
-.skin-info {
-    margin-top: 0.5rem;
-    color: var(--text);
-}
-
-.nametag {
-    display: none;
-    font-size: 0.75rem;
-    color: #ccc;
-    font-style: italic;
-}
-
-.skin-card:hover .nametag {
-    display: block;
-}
-
-.float {
-    font-size: 0.85rem;
-    color: #aaa;
-}
-
-.details-btn {
-    display: none;
-    margin-top: 1rem;
-    background-color: #ffcc00;
-    border: 2px solid #ffcc00;
-    color: #000;
+.skin-name {
     font-weight: bold;
-    border-radius: 8px;
+}
+
+.float-value {
+    margin-top: 0.5rem;
+    font-size: 0.9rem;
+    color: gray;
+}
+
+.details-button {
+    background-color: yellow;
+    border: 2px solid yellow;
+    border-radius: 10px;
     padding: 0.5rem 1rem;
     cursor: pointer;
-    transition: border 0.3s;
+    font-weight: bold;
+    transition: all 0.3s ease;
 }
 
-.skin-card:hover .details-btn {
-    display: block;
-}
-
-.details-btn:hover {
-    border-color: #fff700;
-    box-shadow: 0 0 10px #fff700;
+.details-button:hover {
+    background-color: black;
+    color: yellow;
+    box-shadow: 0 0 8px yellow;
 }

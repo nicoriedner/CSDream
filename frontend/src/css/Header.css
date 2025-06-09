@@ -187,3 +187,12 @@
 .dropdown-menu button:hover {
     background-color: #333;
 }
+
+.balance-display {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text);
+    font-size: 1.1rem;
+    font-weight: bold;
+}
