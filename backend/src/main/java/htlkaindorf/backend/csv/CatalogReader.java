@@ -106,28 +106,28 @@ public class CatalogReader {
         return name;
     }
 
-        public String getSkinImageUrl(String skinName) {
-            String basePath = "backend/src/main/resources/images/";
+    public String getSkinImageUrl(String skinName) {
+        String basePath = "backend/src/main/resources/images/";
 
-            // Liste aller Bilddateien
-            String[] imageNames = {
-                    "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",
-                    "dual", "falchion", "famas", "fiveseven", "flip", "g3sg1", "galil", "glock", "gloves", "gut", "huntsman",
-                    "karambit", "kukri", "m4a1", "m4a4", "m9", "m249", "mac10", "mag7", "mp5", "mp7", "mp9", "navaja", "negev",
-                    "nomad", "nova", "p90", "p250", "p2000", "parachord", "revolver", "sawedoff", "scar", "sg", "skeleton",
-                    "ssg", "stiletto", "survival", "talon", "tec", "ump", "ursus", "usp", "xm", "zeus"
-            };
+        // Liste aller Bilddateien
+        String[] imageNames = {
+                "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",
+                "dual", "falchion", "famas", "fiveseven", "flip", "g3sg1", "galil", "glock", "gloves", "gut", "huntsman",
+                "karambit", "kukri", "m4a1", "m4a4", "m9", "m249", "mac10", "mag7", "mp5", "mp7", "mp9", "navaja", "negev",
+                "nomad", "nova", "p90", "p250", "p2000", "parachord", "revolver", "sawedoff", "scar", "sg", "skeleton",
+                "ssg", "stiletto", "survival", "talon", "tec", "ump", "ursus", "usp", "xm", "zeus"
+        };
 
-            for (String name : imageNames) {
-                if (skinName.toLowerCase().contains(name)) {
-                    return basePath + name + ".png";
-                }
+        for (String name : imageNames) {
+            if (skinName.toLowerCase().contains(name)) {
+                return basePath + name + ".png";
             }
-            if(skinName.toLowerCase().contains("wraps")) {
-                return basePath + "gloves.png";
-            }
-
-            return null;
+        }
+        if(skinName.toLowerCase().contains("wraps")) {
+            return basePath + "gloves.png";
         }
 
+        return null;
     }
+
+}
