@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import "../css/Freebies.css";
 import api from "../api";
 
-const imageBasePath = "/images_weapons/";
+const imageBasePath = "/images_weapons/"; // Basis-Pfad für Skin-Bilder
 
+// Interface beschreibt den Aufbau eines Skin-Objekts
 interface Skin {
     id: number;
     name: string;
@@ -18,24 +19,27 @@ interface Skin {
 }
 
 const Freebies = () => {
+    // Zustand für Anzeige und Auswahl
     const [chanceSkins, setChanceSkins] = useState<Skin[]>([]);
     const [freeCase, setFreeCase] = useState<Skin | null>(null);
     const [selectedSkin, setSelectedSkin] = useState<Skin | null>(null);
     const [confirmed, setConfirmed] = useState(false);
     const [claimedToday, setClaimedToday] = useState(false);
 
+    // Wird beim Laden der Seite ausgeführt
     useEffect(() => {
         const today = new Date().toDateString();
         const lastClaim = localStorage.getItem("freebieClaimedAt");
 
         if (lastClaim === today) {
-            setClaimedToday(true);
+            setClaimedToday(true); // Bereits heute beansprucht
         }
 
         const allSkins = ["ak-47-redline", "usp-s-kill-confirmed", "m4a4-howl", "awp-dragon-lore"];
         const shuffle = [...allSkins].sort(() => 0.5 - Math.random());
         const userId = Number(localStorage.getItem("userId"));
 
+        // Zwei Zufallsskins mit Chance
         setChanceSkins(shuffle.slice(0, 2).map((id, idx) => ({
             id: idx,
             name: id.replace(/-/g, " ").toUpperCase(),
@@ -49,6 +53,7 @@ const Freebies = () => {
             userId,
         })));
 
+        // Garantierter Freebie-Skin (wird später geöffnet)
         setFreeCase({
             id: 999,
             name: shuffle[2].replace(/-/g, " ").toUpperCase(),
@@ -63,11 +68,13 @@ const Freebies = () => {
         });
     }, []);
 
+    // Öffnet das Freebie-Popup
     const openFreeCase = () => {
         if (!freeCase || claimedToday) return;
         setSelectedSkin(freeCase);
     };
 
+    // Wenn Nutzer den Freebie bestätigt (speichert in DB)
     const confirmClaim = async () => {
         if (!selectedSkin) return;
         try {
@@ -88,6 +95,7 @@ const Freebies = () => {
         }
     };
 
+    // Modal schließen
     const closeModal = () => {
         setSelectedSkin(null);
         setConfirmed(false);
@@ -96,6 +104,8 @@ const Freebies = () => {
     return (
         <div className="freebies-container">
             <h2>Tägliche Freebies</h2>
+
+            {/* Zwei Zufalls-Skins (nicht klickbar) + garantierter Skin (klickbar) */}
             <div className="freebies-row">
                 {chanceSkins.map((skin, idx) => (
                     <div className="freebie-card chance" key={idx}>
@@ -122,12 +132,15 @@ const Freebies = () => {
                 )}
             </div>
 
+            {/* Modal für das ausgewählte Freebie */}
             {selectedSkin && (
                 <div className="freebie-modal-bg">
                     <div className="freebie-modal">
                         <img src={selectedSkin.image} alt={selectedSkin.name} />
                         <h3>{selectedSkin.name}</h3>
                         <p>{selectedSkin.value} Coins</p>
+
+                        {/* Entweder "Claim" Button oder Bestätigung */}
                         {!confirmed ? (
                             <button className="claim-btn" onClick={confirmClaim}>Claim</button>
                         ) : (

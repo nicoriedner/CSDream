@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import '../css/Inventory.css';
 
+/* --------- Interfaces zur Beschreibung der Datenstruktur --------- */
+
+// Einzelne Skin-Infos aus dem Katalog (Name, Seltenheit, usw.)
 interface SkinCatalog {
     name: string;
     collectionOrCase: string;
@@ -10,6 +13,7 @@ interface SkinCatalog {
     floatMax: number;
 }
 
+// Ein Skin, den der Benutzer besitzt (mit Preis, Stattrak, usw.)
 interface UserSkin {
     id: number;
     floatValue: number;
@@ -22,21 +26,24 @@ interface UserSkin {
     skin: SkinCatalog;
 }
 
-const Inventory: React.FC = () => {
-    const [skins, setSkins] = useState<UserSkin[]>([]);
-    const [selectedSkin, setSelectedSkin] = useState<UserSkin | null>(null);
+/* --------------------- Hauptkomponente --------------------- */
 
+const Inventory: React.FC = () => {
+    const [skins, setSkins] = useState<UserSkin[]>([]); // Liste aller Skins des Nutzers
+    const [selectedSkin, setSelectedSkin] = useState<UserSkin | null>(null); // Für das Detail-Popup
+
+    // Lädt die Skins einmal beim ersten Laden der Seite
     useEffect(() => {
-        const userId = localStorage.getItem('userId');
+        const userId = localStorage.getItem('userId'); // Holt Nutzer-ID aus dem Browser
         if (!userId) {
             console.warn('Kein userId im localStorage gefunden.');
             return;
         }
 
+        // API-Aufruf: Alle Skins für diesen Nutzer laden
         api.get(`/userskin/allByUserId/${userId}`)
             .then((res) => {
                 const data = Array.isArray(res.data) ? res.data : [];
-                console.log('Geladene Skins:', data);
                 setSkins(data);
             })
             .catch((err) => console.error('Fehler beim Laden des Inventars:', err));
@@ -46,6 +53,7 @@ const Inventory: React.FC = () => {
         <div className="inventory-page">
             <h1>Inventar</h1>
 
+            {/* Skin-Gitter mit allen Skins */}
             <div className="inventory-grid">
                 {skins.map((skin) => (
                     <div className="skin-card" key={skin.id} onClick={() => setSelectedSkin(skin)}>
@@ -64,6 +72,7 @@ const Inventory: React.FC = () => {
                 ))}
             </div>
 
+            {/* Detail-Popup für den aktuell ausgewählten Skin */}
             {selectedSkin && (
                 <div className="skin-details-modal">
                     <h3>{selectedSkin.renamedTo || selectedSkin.skin.name}</h3>

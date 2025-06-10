@@ -4,37 +4,47 @@ import '../css/Upgrader.css';
 import { UserSkin } from '../types';
 
 const UpgraderPage = () => {
+    // Zustand für alle Skins des Benutzers und Auswahl
     const [userSkins, setUserSkins] = useState<UserSkin[]>([]);
     const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]);
+
+    // Upgrade-Chance (Prozent), Erfolg/Fehler-Nachricht, Kontostand
     const [chance, setChance] = useState<number>(50);
     const [resultMessage, setResultMessage] = useState<string>('');
     const [balance, setBalance] = useState<number>(0);
+
+    // Steuerung, ob die Skin-Auswahlliste sichtbar ist
     const [showSkinList, setShowSkinList] = useState<boolean>(false);
 
+    /* Lädt beim ersten Laden der Seite:
+       - alle User-Skins
+       - aktuellen Kontostand */
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
 
         api.get(`/userskin/allByUserId/${userId}`).then((res) => {
             setUserSkins(res.data);
-        }).catch(err => console.error(err));
+        });
 
         api.get(`/users/balance/${userId}`).then(res => {
             setBalance(res.data.balance);
-        }).catch(err => console.error(err));
+        });
     }, []);
 
+    /* Fügt einen Skin zur Auswahl hinzu oder entfernt ihn wieder,
+       falls er schon ausgewählt war */
     const handleSkinSelection = (skin: UserSkin) => {
-        setSelectedSkins(prev => {
-            if (prev.includes(skin)) {
-                return prev.filter(s => s !== skin);
-            } else {
-                return [...prev, skin];
-            }
-        });
+        setSelectedSkins(prev =>
+            prev.includes(skin)
+                ? prev.filter(s => s !== skin)
+                : [...prev, skin]
+        );
         setShowSkinList(false);
     };
 
+    /* Sendet die ausgewählten Skins ans Backend mit Upgrade-Chance.
+       Antwort enthält neues Guthaben oder Fehler. */
     const handleUpgrade = async () => {
         if (selectedSkins.length === 0) {
             setResultMessage('Bitte wähle mindestens einen Skin aus.');
@@ -53,7 +63,7 @@ const UpgraderPage = () => {
 
             setBalance(res.data.newBalance);
             setResultMessage(`Erfolg! Dein neues Guthaben beträgt ${res.data.newBalance} Coins.`);
-        } catch (err) {
+        } catch {
             setResultMessage('Upgrade fehlgeschlagen. Versuche es noch einmal.');
         }
     };
@@ -82,6 +92,7 @@ const UpgraderPage = () => {
                         )}
                     </div>
 
+                    {/* Skin-Auswahlliste wird als Modal angezeigt */}
                     {showSkinList && (
                         <>
                             <div className="skin-list-overlay" onClick={() => setShowSkinList(false)}></div>
