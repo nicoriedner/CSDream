@@ -34,8 +34,6 @@ function Homepage() {
                 <img src={logo} alt="CSDream Logo" className="homepage-logo" />
                 <h1>Willkommen bei CSDream</h1>
                 <p>Spiele. Gewinne. Handle mit Skins und mehr.</p>
-                {/* Entferne den "Jetzt starten" Button */}
-                {/* <Link to="/register" className="cta-button">Jetzt starten</Link> */}
             </section>
 
             <section className="carousel-container">

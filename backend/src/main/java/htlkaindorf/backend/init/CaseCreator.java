@@ -38,7 +38,7 @@ public class CaseCreator {
 
     public List<SkinCatalog> getRandomSkins(List<Rarity> rarities) {
         List<SkinCatalog> allSkins = skinCatalogRepository.findAll();
-        Set<SkinCatalog> selectedSkins = new HashSet<>(); //Damit jeder Skin nur 1x vorkommen kann lol (danke gemini)
+        Set<SkinCatalog> selectedSkins = new HashSet<>();
         Random random = new Random();
 
         for (Rarity r : rarities) {

@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaHome, FaStore, FaBoxOpen, FaDice, FaUser, FaCaretDown, FaCoins } from 'react-icons/fa';
+import { FaHome, FaBoxOpen, FaDice, FaUser, FaCaretDown, FaCoins } from 'react-icons/fa';
 import '../css/Header.css';
 import { useAuth } from '../context/AuthContext';
 import avatar1 from '../assets/profile_pics/avatar1.jpg';

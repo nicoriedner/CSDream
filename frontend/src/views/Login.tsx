@@ -17,7 +17,7 @@ function Login() {
             const response = await axios.post("http://localhost:8080/api/login", { username, password }, { withCredentials: true });
             const avatar = response.data.avatar || "avatar1.jpg";
             login(username, avatar);
-            setError("");  // Reset error message on successful login
+            setError("");
             setTimeout(() => {
                 navigate("/", { state: { loginSuccess: true } });
             }, 1000);
@@ -33,7 +33,7 @@ function Login() {
                 <input type="text" placeholder="Benutzername" value={username} onChange={(e) => setUsername(e.target.value)} required />
                 <input type="password" placeholder="Passwort" value={password} onChange={(e) => setPassword(e.target.value)} required />
                 <button type="submit">Anmelden</button>
-                {error && <p className="error">{error}</p>} {/* Only show error if it exists */}
+                {error && <p className="error">{error}</p>}
             </form>
             <p className="switch-link">
                 Noch kein Konto bei uns? <Link to="/register" className="link">Hier registrieren</Link>

@@ -22,7 +22,6 @@ public class UserSkinCreation {
     public UserSkin createNewUserSkin(SkinCatalog skin, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Integer userId) {
         UserSkin newSkin = new UserSkin();
 
-        // User-Objekt mit nur ID setzen
         User user = new User();
         user.setId(userId);
 

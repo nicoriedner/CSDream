@@ -89,15 +89,12 @@ public class CatalogReader {
     }
 
     private String getPlainSkinName(String name) {
-        // Den Präfix von goldenen Skins entfernen
         name = name.replaceFirst("★ ", "");
 
-        // Damit ich nur die Waffe erhalte & nicht den Skin selbst
         if (name.contains("|")) {
             return name.split("\\|")[0].trim();
         }
 
-        // Für vanilla skins
         String[] parts = name.split(" ");
         if (parts.length >= 2) {
             return parts[0] + " " + parts[1];
@@ -109,7 +106,6 @@ public class CatalogReader {
     public String getSkinImageUrl(String skinName) {
         String basePath = "backend/src/main/resources/images/";
 
-        // Liste aller Bilddateien
         String[] imageNames = {
                 "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",
                 "dual", "falchion", "famas", "fiveseven", "flip", "g3sg1", "galil", "glock", "gloves", "gut", "huntsman",

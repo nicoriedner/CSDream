@@ -38,7 +38,7 @@ public class SkinReader {
 
         List<String> lines = new BufferedReader(new InputStreamReader(inputStream))
                 .lines()
-                .skip(1) // Header überspringen
+                .skip(1)
                 .toList();
 
         for (String line : lines) {

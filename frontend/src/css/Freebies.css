@@ -13,7 +13,7 @@
     justify-content: center;
     gap: 2rem;
     margin-top: 2rem;
-    flex-wrap: nowrap; /* Keine Umbrüche */
+    flex-wrap: nowrap;
 }
 
 .freebie-card {
@@ -23,8 +23,8 @@
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
     transition: transform 0.3s, box-shadow 0.3s;
     cursor: pointer;
-    width: 250px; /* Größere Karten */
-    height: 300px; /* Größere Karten */
+    width: 250px;
+    height: 300px;
     text-align: center;
     display: flex;
     flex-direction: column;

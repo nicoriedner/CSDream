@@ -8,7 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface SkinCatalogRepository extends JpaRepository<SkinCatalog, Integer> {
-    //name,collection_or_case,rarity,float_category
     @Query("SELECT s FROM SkinCatalog s")
     List<SkinCatalog> findAllSkins();
 
