@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface UserSkinRepository extends JpaRepository<UserSkin, Integer> {
     @Query("SELECT u FROM UserSkin u WHERE u.user.id = :userId")
-    List<UserSkin> findAllByUserId(Long userId);
+    List<UserSkin> findAllByUserId(Integer userId);
 }

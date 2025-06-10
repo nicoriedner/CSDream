@@ -31,7 +31,7 @@ public class UserBalanceManager {
     // Rechnet den Wert aller Skins eines Users zusammengerechnet aus
     public Float getInventoryValue(Integer userId) {
         Float inventoryValue = 0.0f;
-        List<UserSkin> userSkins = userSkinRepository.findAllByUserId(Long.valueOf(userId));
+        List<UserSkin> userSkins = userSkinRepository.findAllByUserId(userId);
         for (UserSkin userSkin : userSkins) {
             inventoryValue += userSkin.getPrice();
         }
@@ -45,7 +45,7 @@ public class UserBalanceManager {
             throw new RuntimeException("User not found");
         }
 
-        List<UserSkin> userSkins = userSkinRepository.findAllByUserId(Long.valueOf(userId));
+        List<UserSkin> userSkins = userSkinRepository.findAllByUserId(userId);
         if (!userSkins.contains(userSkin)) {
             throw new RuntimeException("User besitzt diesen Skin nicht");
         }

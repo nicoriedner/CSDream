@@ -14,7 +14,7 @@ public class UserSkinService {
     private final UserSkinRepository userSkinRepository;
     private final UserSkinMapper userSkinMapper;
 
-    public List<UserSkinDTO> getAllByUser(Long userId) {
+    public List<UserSkinDTO> getAllByUser(Integer userId) {
         return userSkinMapper.toDtoList(userSkinRepository.findAllByUserId(userId));
     }
 }

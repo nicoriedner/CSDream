@@ -13,7 +13,7 @@ public class UserSkinController {
     private final UserSkinService userSkinService;
 
     @GetMapping("/allByUserId/{userId}")
-    public List<UserSkinDTO> getByUserId(@PathVariable Long userId) {
+    public List<UserSkinDTO> getByUserId(@PathVariable Integer userId) {
         return userSkinService.getAllByUser(userId);
     }
 }

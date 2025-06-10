@@ -48,7 +48,12 @@ public class UserService {
         user.setEmail(email);
         user.setBirthdate(parsedDate);
         user.setAvatar(avatar);
+        user.setBalance(100f);
 
         return userRepository.save(user);
+    }
+
+    public Float getUserBalance(Integer userId) {
+        return userRepository.findUserById(userId).getBalance();
     }
 }
