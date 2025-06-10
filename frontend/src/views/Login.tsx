@@ -33,7 +33,7 @@ function Login() {
             const avatar = response.data.avatar || "avatar1.jpg";
 
             // Nutzer global einloggen (z.B. für Navbar/Balance)
-            login(username, avatar);
+            login(username, avatar, response.data.id);
             setError("");
 
             // Nach kurzem Timeout weiterleiten zur Startseite

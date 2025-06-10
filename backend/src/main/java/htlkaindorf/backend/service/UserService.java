@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -16,12 +17,12 @@ public class UserService {
 
     private final UserRepository userRepository;
 
-    public boolean authenticate(String username, String password) {
+    public Optional<User> authenticate(String username, String password) {
         User user = userRepository.findUserByUsername(username);
-        if (user == null) {
-            return false;
+        if (user == null || !password.equals(user.getPassword())) {
+            return Optional.empty();
         }
-        return password.equals(user.getPassword());
+        return Optional.of(user);
     }
 
     public User register(String username, String password, String email, String birthdate, String avatar) {

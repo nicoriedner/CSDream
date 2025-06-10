@@ -4,7 +4,8 @@ import React, { createContext, useContext, useState } from 'react';
 interface AuthContextType {
     username: string | null;
     avatar: string | null;
-    login: (username: string, avatar: string) => void;
+    userId: string | null;
+    login: (username: string, avatar: string, id: string) => void;
     logout: () => void;
 }
 
@@ -12,6 +13,7 @@ interface AuthContextType {
 const AuthContext = createContext<AuthContextType>({
     username: null,
     avatar: null,
+    userId: null,
     login: () => {},
     logout: () => {}
 });
@@ -21,13 +23,16 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     // Hole gespeicherte Daten aus dem localStorage (z. B. nach Seiten-Neuladen)
     const [username, setUsername] = useState<string | null>(localStorage.getItem("username"));
     const [avatar, setAvatar] = useState<string | null>(localStorage.getItem("avatar"));
+    const [userId, setUserId] = useState<string | null>(localStorage.getItem("userId"));
 
     // Login-Funktion speichert Daten im localStorage und Zustand
-    const login = (uname: string, avat: string) => {
+    const login = (uname: string, avat: string, id: string) => {
         localStorage.setItem("username", uname);
         localStorage.setItem("avatar", avat);
+        localStorage.setItem("userId", id);
         setUsername(uname);
         setAvatar(avat);
+        setUserId(id)
     };
 
     // Logout-Funktion entfernt Daten und setzt Zustand zurück
@@ -35,11 +40,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         localStorage.clear();
         setUsername(null);
         setAvatar(null);
+        setUserId(null);
     };
 
     // Gib die Daten und Funktionen an alle Kinderkomponenten weiter
     return (
-        <AuthContext.Provider value={{ username, avatar, login, logout }}>
+        <AuthContext.Provider value={{ username, avatar, userId, login, logout }}>
             {children}
         </AuthContext.Provider>
     );

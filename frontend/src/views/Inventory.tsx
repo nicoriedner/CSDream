@@ -33,7 +33,7 @@ const Inventory: React.FC = () => {
     // Lade Skins beim ersten Aufruf
     useEffect(() => {
         const userId = localStorage.getItem('userId');
-        if (!userId) {
+        if (userId == null) {
             console.warn('Kein userId im localStorage gefunden.');
             return;
         }
