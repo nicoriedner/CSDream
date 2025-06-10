@@ -29,6 +29,7 @@ public class SkinReader {
     private final SkinCatalogRepository skinCatalogRepository;
     private final UserRepository userRepository;
 
+    // im Grunde nur Testklasse für bereits erstelle Skins.
     @PostConstruct
     public void readSkins() {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("csv/userSkin.csv");
@@ -45,6 +46,7 @@ public class SkinReader {
             try {
                 String[] parts = line.split(",");
                 int skinId = Integer.parseInt(parts[0]);
+                // Überprüfen, ob der Skin einen Float haben kann
                 float floatValue = parts[1].equals("None - None") ? 0f : Float.parseFloat(parts[1]);
                 Exterior exterior = Exterior.valueOf(parts[2]);
                 Rarity rarity = Rarity.valueOf(parts[3].replace("-", "_").toUpperCase());
