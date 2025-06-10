@@ -44,7 +44,7 @@ public class CaseCreator {
         // pro Rarity gibt es bis zu 10 Skins
         for (Rarity r : rarities) {
             List<SkinCatalog> skinsOfCurrentRarity = allSkins.stream()
-                    .filter(s -> s.getRarity().equals(r))
+                    .filter(s -> s.getRarity() != null && s.getRarity().equals(r))
                     .collect(Collectors.toList());
             // Math.min nimmt den kleineren der beiden Werte, falls es pro Rarity keine 10 geben würde
             int skinsToAddCount = Math.min(10, skinsOfCurrentRarity.size());

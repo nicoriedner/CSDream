@@ -2,30 +2,39 @@ import { useEffect, useState } from 'react';
 import '../css/Cases.css';
 import api from '../api';
 
-interface CaseDTO {
+// Struktur eines Cases aus dem Backend
+interface Case {
     id: number;
     name: string;
-    imageUrl: string;
     price: number;
 }
 
-interface SkinDTO {
+// SkinCatalog + UserSkin vom Backend
+interface SkinCatalog {
     name: string;
     imageUrl: string;
+}
+
+interface UserSkin {
+    id: number;
+    skin: SkinCatalog;
+    floatValue: number;
+    exterior: string;
     rarity: string;
-    price: number;
     stattrak: boolean;
+    price: number;
+    dropDate: string;
 }
 
 const CasesPage = () => {
-    const [cases, setCases] = useState<CaseDTO[]>([]);
-    const [selectedSkins, setSelectedSkins] = useState<SkinDTO[]>([]);
+    const [cases, setCases] = useState<Case[]>([]);
+    const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]);
     const [isOpening, setIsOpening] = useState(false);
-    const [highlightedSkin, setHighlightedSkin] = useState<SkinDTO | null>(null);
-    const [claimedSkin, setClaimedSkin] = useState<SkinDTO | null>(null);
+    const [highlightedSkin, setHighlightedSkin] = useState<UserSkin | null>(null);
+    const [claimedSkin, setClaimedSkin] = useState<UserSkin | null>(null);
 
     useEffect(() => {
-        api.get('/cases/all').then((res) => {
+        api.get('/api/cases').then((res) => {
             setCases(res.data);
         });
     }, []);
@@ -35,11 +44,14 @@ const CasesPage = () => {
         setHighlightedSkin(null);
 
         const res = await api.post(`/caseunboxing/openCase?caseId=${caseId}&userId=${localStorage.getItem('userId')}`);
-        const finalSkin: SkinDTO = res.data;
+        const finalSkin: UserSkin = res.data;
 
-        const fakeSkins: SkinDTO[] = Array(30).fill(finalSkin).map((s, i) => ({
+        const fakeSkins: UserSkin[] = Array(30).fill(finalSkin).map((s, i) => ({
             ...s,
-            name: s.name + ' ' + i,
+            skin: {
+                ...s.skin,
+                name: `${s.skin.name} ${i}`
+            }
         }));
 
         setSelectedSkins(fakeSkins);
@@ -54,7 +66,7 @@ const CasesPage = () => {
                     setHighlightedSkin(finalSkin);
                     setClaimedSkin(finalSkin);
                     setIsOpening(false);
-                    alert(`${finalSkin.name} zum Inventar hinzugefügt!`);
+                    alert(`${finalSkin.skin.name} zum Inventar hinzugefügt!`);
                 }, 500);
             }
         }, 100);
@@ -67,7 +79,12 @@ const CasesPage = () => {
             <div className="cases-grid">
                 {cases.map((cs) => (
                     <div className="case-card" key={cs.id}>
-                        <img className="case-image" src={cs.imageUrl || '/avatar1.png'} alt={cs.name} />
+                        {/* Verwende überall das gleiche Case-Bild */}
+                        <img
+                            className="case-image"
+                            src="/images/case.png"
+                            alt={cs.name}
+                        />
                         <div className="case-content">
                             <div className="case-name">{cs.name}</div>
                             <button className="open-button" onClick={() => openCase(cs.id)} disabled={isOpening}>
@@ -83,11 +100,11 @@ const CasesPage = () => {
                     <div className="scroll-strip">
                         {selectedSkins.map((skin, index) => (
                             <div
-                                className={`skin-tile ${skin.name === highlightedSkin?.name ? 'highlighted' : ''}`}
+                                className={`skin-tile ${skin.skin.name === highlightedSkin?.skin.name ? 'highlighted' : ''}`}
                                 key={index}
                             >
-                                <img src={skin.imageUrl || '/placeholder_skin.png'} alt={skin.name} />
-                                <div>{skin.name}</div>
+                                <img src={skin.skin.imageUrl || '/placeholder_skin.png'} alt={skin.skin.name} />
+                                <div>{skin.skin.name}</div>
                             </div>
                         ))}
                     </div>
@@ -97,8 +114,11 @@ const CasesPage = () => {
             {claimedSkin && (
                 <div className="claimed-skin">
                     <h3>Du hast gewonnen!</h3>
-                    <img src={claimedSkin.imageUrl || '/placeholder_skin.png'} alt={claimedSkin.name} />
-                    <p>{claimedSkin.name}</p>
+                    <img src={claimedSkin.skin.imageUrl || '/placeholder_skin.png'} alt={claimedSkin.skin.name} />
+                    <p>{claimedSkin.skin.name}</p>
+                    <p>Rarity: {claimedSkin.rarity}</p>
+                    <p>Float: {claimedSkin.floatValue.toFixed(4)}</p>
+                    <p>Stattrak: {claimedSkin.stattrak ? 'Ja' : 'Nein'}</p>
                 </div>
             )}
         </div>

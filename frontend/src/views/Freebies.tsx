@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import "../css/Freebies.css";
 import api from "../api";
+import "../css/Freebies.css";
 
-const imageBasePath = "/images_weapons/";
-
+// Interface beschreibt den Aufbau eines Skin-Objekts aus der Datenbank
 interface Skin {
     id: number;
     name: string;
@@ -15,59 +14,52 @@ interface Skin {
     stattrak: boolean;
     skinId: number;
     userId: number;
+    imgUrl: string; // Bildpfad direkt vom Server
 }
 
 const Freebies = () => {
-    const [chanceSkins, setChanceSkins] = useState<Skin[]>([]);
-    const [freeCase, setFreeCase] = useState<Skin | null>(null);
+    // Zustände für Anzeige und Auswahl
+    const [freeSkins, setFreeSkins] = useState<Skin[]>([]);
     const [selectedSkin, setSelectedSkin] = useState<Skin | null>(null);
     const [confirmed, setConfirmed] = useState(false);
     const [claimedToday, setClaimedToday] = useState(false);
 
+    // Wird beim ersten Laden ausgeführt
     useEffect(() => {
         const today = new Date().toDateString();
         const lastClaim = localStorage.getItem("freebieClaimedAt");
+        if (lastClaim === today) setClaimedToday(true);
 
-        if (lastClaim === today) {
-            setClaimedToday(true);
-        }
-
-        const allSkins = ["ak-47-redline", "usp-s-kill-confirmed", "m4a4-howl", "awp-dragon-lore"];
-        const shuffle = [...allSkins].sort(() => 0.5 - Math.random());
         const userId = Number(localStorage.getItem("userId"));
 
-        setChanceSkins(shuffle.slice(0, 2).map((id, idx) => ({
-            id: idx,
-            name: id.replace(/-/g, " ").toUpperCase(),
-            image: imageBasePath + id + ".png",
-            value: 10 + idx * 15,
-            rarity: "Random",
-            floatValue: 0.1 + Math.random() * 0.8,
-            exterior: "Field-Tested",
-            stattrak: Math.random() < 0.3,
-            skinId: 1,
-            userId,
-        })));
-
-        setFreeCase({
-            id: 999,
-            name: shuffle[2].replace(/-/g, " ").toUpperCase(),
-            image: imageBasePath + shuffle[2] + ".png",
-            value: 40,
-            rarity: "Rare",
-            floatValue: 0.05,
-            exterior: "Factory New",
-            stattrak: true,
-            skinId: 1,
-            userId,
+        // Alle Skins aus der Datenbank laden und 3 zufällige anzeigen
+        api.get("/skinCatalog/all").then((res) => {
+            const all = res.data;
+            const shuffled = [...all].sort(() => 0.5 - Math.random()).slice(0, 3);
+            const enriched = shuffled.map((skin: any, idx: number) => ({
+                id: idx,
+                name: skin.name,
+                image: skin.imgUrl,
+                value: 10 + idx * 15,
+                rarity: skin.rarity,
+                floatValue: 0.1 + Math.random() * 0.8,
+                exterior: "Field-Tested",
+                stattrak: Math.random() < 0.3,
+                skinId: skin.id,
+                userId,
+                imgUrl: skin.imgUrl,
+            }));
+            setFreeSkins(enriched);
         });
     }, []);
 
-    const openFreeCase = () => {
-        if (!freeCase || claimedToday) return;
-        setSelectedSkin(freeCase);
+    // Öffnet das Modal für den ausgewählten Skin
+    const openSkin = (skin: Skin) => {
+        if (claimedToday) return;
+        setSelectedSkin(skin);
     };
 
+    // Speichert den Skin im Inventar über die API
     const confirmClaim = async () => {
         if (!selectedSkin) return;
         try {
@@ -84,10 +76,11 @@ const Freebies = () => {
             setClaimedToday(true);
             localStorage.setItem("freebieClaimedAt", new Date().toDateString());
         } catch (err) {
-            alert("Freebie bereits beansprucht.");
+            alert("Freebie bereits beansprucht oder Fehler aufgetreten.");
         }
     };
 
+    // Schließt das Modal
     const closeModal = () => {
         setSelectedSkin(null);
         setConfirmed(false);
@@ -96,38 +89,34 @@ const Freebies = () => {
     return (
         <div className="freebies-container">
             <h2>Tägliche Freebies</h2>
+
+            {/* Alle drei Freebie-Skins klickbar */}
             <div className="freebies-row">
-                {chanceSkins.map((skin, idx) => (
-                    <div className="freebie-card chance" key={idx}>
-                        <img src={skin.image} alt={skin.name} />
+                {freeSkins.map((skin, idx) => (
+                    <div
+                        key={idx}
+                        className={`freebie-card ${claimedToday ? "claimed" : ""}`}
+                        onClick={() => openSkin(skin)}
+                    >
+                        <img src={skin.imgUrl} alt={skin.name} />
                         <div className="freebie-info">
                             <h4>{skin.name}</h4>
                             <p>{skin.value} Coins</p>
-                            <small>Chance</small>
+                            <small>Freebie</small>
                         </div>
                     </div>
                 ))}
-                {freeCase && (
-                    <div
-                        className={`freebie-card guaranteed ${claimedToday ? "claimed" : ""}`}
-                        onClick={openFreeCase}
-                    >
-                        <img src={freeCase.image} alt={freeCase.name} />
-                        <div className="freebie-info">
-                            <h4>{freeCase.name}</h4>
-                            <p>{freeCase.value} Coins</p>
-                            <strong>Gratis Case</strong>
-                        </div>
-                    </div>
-                )}
             </div>
 
+            {/* Modal für den ausgewählten Skin */}
             {selectedSkin && (
                 <div className="freebie-modal-bg">
                     <div className="freebie-modal">
-                        <img src={selectedSkin.image} alt={selectedSkin.name} />
+                        <img src={selectedSkin.imgUrl} alt={selectedSkin.name} />
                         <h3>{selectedSkin.name}</h3>
                         <p>{selectedSkin.value} Coins</p>
+
+                        {/* Button oder Bestätigung je nach Zustand */}
                         {!confirmed ? (
                             <button className="claim-btn" onClick={confirmClaim}>Claim</button>
                         ) : (
