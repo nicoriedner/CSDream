@@ -34,7 +34,7 @@ const CasesPage = () => {
     const [claimedSkin, setClaimedSkin] = useState<UserSkin | null>(null);
 
     useEffect(() => {
-        api.get('/api/cases').then((res) => {
+        api.get('/cases').then((res) => {
             setCases(res.data);
         });
     }, []);

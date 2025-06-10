@@ -34,7 +34,7 @@ const UpgraderPage = () => {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
 
-        api.get(`/api/userskin/allByUserId/${userId}`).then((res) => {
+        api.get(`/userskin/allByUserId/${userId}`).then((res) => {
             setUserSkins(res.data);
         });
 
@@ -88,7 +88,7 @@ const UpgraderPage = () => {
 
                 {/* Coins */}
                 <div className="balance-display">
-                    <h3>Aktuelles Guthaben: {balance.toFixed(2)} Coins</h3>
+                    <h3>Aktuelles Guthaben: {balance?.toFixed(2)} Coins</h3>
                 </div>
 
                 {/* Skin-Auswahl */}

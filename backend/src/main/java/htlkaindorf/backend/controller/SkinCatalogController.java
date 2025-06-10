@@ -11,12 +11,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:5173", allowCredentials = "true")
-@RequestMapping("/skincatalog")
+@RequestMapping("/api/skinCatalog")
 @RequiredArgsConstructor
 public class SkinCatalogController {
     private final SkinCatalogService skinCatalogService;
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<Iterable<SkinCatalogDTO>> getSkinCatalog() {
         return ResponseEntity.ok(skinCatalogService.findAllSkinFromCatalog());
     }

@@ -39,7 +39,7 @@ const Inventory: React.FC = () => {
         }
 
         // Alle Skins vom Server abrufen
-        api.get(`/api/userskin/allByUserId/${userId}`)
+        api.get(`/userskin/allByUserId/${userId}`)
             .then((res) => {
                 const data = Array.isArray(res.data) ? res.data : [];
                 setSkins(data);
