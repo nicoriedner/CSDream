@@ -29,6 +29,7 @@ public class Upgrader {
 
         float calculatedOdds = random.nextFloat() * 100;
 
+        // Überprüft, ob die übergebenen Odds eingetroffen sind.
         if (calculatedOdds < chanceInPercentage) {
             float wonAmount = coinValue * (chanceInPercentage / 100f);
             coinValue += wonAmount;

@@ -17,15 +17,18 @@ public class UserBalanceManager {
     private final UserSkinRepository userSkinRepository;
 
     public Float manageUserBalance(Integer userId, Integer balanceChange) {
+        // sucht den übergebenen User
         User user = userRepository.findUserById(userId);
         if (user == null) {
             throw new RuntimeException("User not found");
         }
+        // Ändert das Guthaben
         user.setBalance(user.getBalance() + balanceChange);
         userRepository.save(user);
         return user.getBalance();
     }
 
+    // Rechnet den Wert aller Skins eines Users zusammengerechnet aus
     public Float getInventoryValue(Integer userId) {
         Float inventoryValue = 0.0f;
         List<UserSkin> userSkins = userSkinRepository.findAllByUserId(Long.valueOf(userId));
@@ -35,6 +38,7 @@ public class UserBalanceManager {
         return inventoryValue;
     }
 
+    // Verkauft einen Skin von einem User mit der übergebenen UserId
     public Float sellItem(Integer userId, UserSkin userSkin) {
         User user = userRepository.findUserById(userId);
         if (user == null) {

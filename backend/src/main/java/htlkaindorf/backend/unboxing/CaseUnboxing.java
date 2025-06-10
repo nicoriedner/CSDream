@@ -29,6 +29,8 @@ public class CaseUnboxing {
         Random rand = new Random();
         float unboxIndex = rand.nextFloat() * 100;
         Rarity unboxedRarity;
+
+        // unboxIndex ist von den oben angegebenen Chancen abhängig.
         if (unboxIndex <= 79.92) {
             unboxedRarity = Rarity.MIL_SPEC;
         } else if (unboxIndex <= 95.9) {
@@ -66,6 +68,8 @@ public class CaseUnboxing {
 
     public Float calculatePriceOfSkin(SkinCatalog skinCatalog, Float floatValue, boolean isStattrak) {
             float basePrice;
+
+            // Base Preis von Rarity
             switch (skinCatalog.getRarity()) {
                 case MIL_SPEC:
                     basePrice = 5f;
@@ -86,6 +90,7 @@ public class CaseUnboxing {
                     basePrice = 1f;
             }
 
+            // Preis abhängig von Exterior machen
             float floatMultiplier;
             if (floatValue <= 0.07) {
                 floatMultiplier = 1.0f;
@@ -101,6 +106,7 @@ public class CaseUnboxing {
 
             float finalPrice = basePrice * floatMultiplier;
 
+            // Falls stattrak +10% Wert, außer bei Extraordinary, da -10%
             if (isStattrak) {
                 if (skinCatalog.getRarity() != Rarity.EXTRAORDINARY) {
                     finalPrice *= 1.10f;

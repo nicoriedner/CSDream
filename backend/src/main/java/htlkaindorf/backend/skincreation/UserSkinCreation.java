@@ -38,6 +38,7 @@ public class UserSkinCreation {
     }
 
     private Exterior calculateExterior(Float floatValue) {
+        // Setzen von Exterior abhängig vom Float.
         if (floatValue < 0.07f) return Exterior.FACTORY_NEW;
         if (floatValue < 0.15f) return Exterior.MINIMAL_WEAR;
         if (floatValue < 0.38f) return Exterior.FIELD_TESTED;
