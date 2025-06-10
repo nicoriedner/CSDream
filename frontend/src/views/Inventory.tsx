@@ -2,18 +2,17 @@ import { useEffect, useState } from 'react';
 import api from '../api';
 import '../css/Inventory.css';
 
-/* --------- Interfaces zur Beschreibung der Datenstruktur --------- */
-
-// Einzelne Skin-Infos aus dem Katalog (Name, Seltenheit, usw.)
+// Struktur eines Skins im Katalog (inkl. Bildpfad aus der Datenbank)
 interface SkinCatalog {
     name: string;
     collectionOrCase: string;
     rarity: string;
     floatMin: number;
     floatMax: number;
+    imgUrl: string; // ← Pfad zum Bild aus der Datenbank
 }
 
-// Ein Skin, den der Benutzer besitzt (mit Preis, Stattrak, usw.)
+// Struktur eines Skins, den der Nutzer besitzt
 interface UserSkin {
     id: number;
     floatValue: number;
@@ -26,22 +25,21 @@ interface UserSkin {
     skin: SkinCatalog;
 }
 
-/* --------------------- Hauptkomponente --------------------- */
-
+// Hauptkomponente für die Inventarseite
 const Inventory: React.FC = () => {
-    const [skins, setSkins] = useState<UserSkin[]>([]); // Liste aller Skins des Nutzers
-    const [selectedSkin, setSelectedSkin] = useState<UserSkin | null>(null); // Für das Detail-Popup
+    const [skins, setSkins] = useState<UserSkin[]>([]); // Alle Skins des Users
+    const [selectedSkin, setSelectedSkin] = useState<UserSkin | null>(null); // Für das Detailfenster
 
-    // Lädt die Skins einmal beim ersten Laden der Seite
+    // Lade Skins beim ersten Aufruf
     useEffect(() => {
-        const userId = localStorage.getItem('userId'); // Holt Nutzer-ID aus dem Browser
+        const userId = localStorage.getItem('userId');
         if (!userId) {
             console.warn('Kein userId im localStorage gefunden.');
             return;
         }
 
-        // API-Aufruf: Alle Skins für diesen Nutzer laden
-        api.get(`/userskin/allByUserId/${userId}`)
+        // Alle Skins vom Server abrufen
+        api.get(`/api/userskin/allByUserId/${userId}`)
             .then((res) => {
                 const data = Array.isArray(res.data) ? res.data : [];
                 setSkins(data);
@@ -53,12 +51,12 @@ const Inventory: React.FC = () => {
         <div className="inventory-page">
             <h1>Inventar</h1>
 
-            {/* Skin-Gitter mit allen Skins */}
+            {/* Gitteranzeige für Skins */}
             <div className="inventory-grid">
                 {skins.map((skin) => (
                     <div className="skin-card" key={skin.id} onClick={() => setSelectedSkin(skin)}>
                         <img
-                            src={`/images/skins/${skin.skin.name.replace(/[^a-zA-Z0-9]/g, "_")}.png`}
+                            src={skin.skin.imgUrl}
                             alt={skin.skin.name}
                             onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
                         />
@@ -72,12 +70,12 @@ const Inventory: React.FC = () => {
                 ))}
             </div>
 
-            {/* Detail-Popup für den aktuell ausgewählten Skin */}
+            {/* Detailansicht im Modal */}
             {selectedSkin && (
                 <div className="skin-details-modal">
                     <h3>{selectedSkin.renamedTo || selectedSkin.skin.name}</h3>
                     <img
-                        src={`/images/skins/${selectedSkin.skin.name.replace(/[^a-zA-Z0-9]/g, "_")}.png`}
+                        src={selectedSkin.skin.imgUrl}
                         alt={selectedSkin.skin.name}
                         onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
                     />

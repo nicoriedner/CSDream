@@ -2,93 +2,89 @@ import { useEffect, useState } from 'react';
 import '../css/Cases.css';
 import api from '../api';
 
-// Interface beschreibt ein Case (eine Kiste)
-interface CaseDTO {
+// Struktur eines Cases aus dem Backend
+interface Case {
     id: number;
     name: string;
-    imageUrl: string;
     price: number;
 }
 
-// Interface beschreibt einen Skin (Inhalt der Kiste)
-interface SkinDTO {
+// SkinCatalog + UserSkin vom Backend
+interface SkinCatalog {
     name: string;
     imageUrl: string;
+}
+
+interface UserSkin {
+    id: number;
+    skin: SkinCatalog;
+    floatValue: number;
+    exterior: string;
     rarity: string;
-    price: number;
     stattrak: boolean;
+    price: number;
+    dropDate: string;
 }
 
 const CasesPage = () => {
-    // Zustand für die Liste aller Cases
-    const [cases, setCases] = useState<CaseDTO[]>([]);
-
-    // Zustand für die Skins, die im Öffnungsstreifen angezeigt werden
-    const [selectedSkins, setSelectedSkins] = useState<SkinDTO[]>([]);
-
-    // Wird gerade eine Kiste geöffnet?
+    const [cases, setCases] = useState<Case[]>([]);
+    const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]);
     const [isOpening, setIsOpening] = useState(false);
+    const [highlightedSkin, setHighlightedSkin] = useState<UserSkin | null>(null);
+    const [claimedSkin, setClaimedSkin] = useState<UserSkin | null>(null);
 
-    // Welcher Skin wird im Strip gerade hervorgehoben?
-    const [highlightedSkin, setHighlightedSkin] = useState<SkinDTO | null>(null);
-
-    // Welcher Skin wurde final gezogen?
-    const [claimedSkin, setClaimedSkin] = useState<SkinDTO | null>(null);
-
-    // Beim ersten Laden: Alle Cases vom Server holen
     useEffect(() => {
-        api.get('/cases/all').then((res) => {
+        api.get('/api/cases').then((res) => {
             setCases(res.data);
         });
     }, []);
 
-    // Funktion zum Öffnen einer Case
     const openCase = async (caseId: number) => {
-        setIsOpening(true); // Öffnung beginnt
-        setHighlightedSkin(null); // Noch kein Skin hervorgehoben
+        setIsOpening(true);
+        setHighlightedSkin(null);
 
-        // Anfrage an Backend: Skin öffnen und Ergebnis bekommen
         const res = await api.post(`/caseunboxing/openCase?caseId=${caseId}&userId=${localStorage.getItem('userId')}`);
-        const finalSkin: SkinDTO = res.data;
+        const finalSkin: UserSkin = res.data;
 
-        // Erstelle eine Liste mit "Fake"-Skins für die Animation
-        const fakeSkins: SkinDTO[] = Array(30).fill(finalSkin).map((s, i) => ({
+        const fakeSkins: UserSkin[] = Array(30).fill(finalSkin).map((s, i) => ({
             ...s,
-            name: s.name + ' ' + i, // Name leicht ändern für Unterschied
+            skin: {
+                ...s.skin,
+                name: `${s.skin.name} ${i}`
+            }
         }));
 
         setSelectedSkins(fakeSkins);
 
-        // Animation: Skins nacheinander anzeigen
         let counter = 0;
         const interval = setInterval(() => {
             setHighlightedSkin(fakeSkins[counter]);
             counter++;
-
-            // Am Ende der Liste: Animation stoppen
             if (counter >= fakeSkins.length) {
                 clearInterval(interval);
-
-                // Nach kleiner Pause: Finalen Skin anzeigen
                 setTimeout(() => {
                     setHighlightedSkin(finalSkin);
                     setClaimedSkin(finalSkin);
                     setIsOpening(false);
-                    alert(`${finalSkin.name} zum Inventar hinzugefügt!`);
+                    alert(`${finalSkin.skin.name} zum Inventar hinzugefügt!`);
                 }, 500);
             }
-        }, 100); // 100ms zwischen jedem Skin
+        }, 100);
     };
 
     return (
         <div className="cases-container">
             <h2>Case Öffnen</h2>
 
-            {/* Anzeige aller verfügbaren Cases */}
             <div className="cases-grid">
                 {cases.map((cs) => (
                     <div className="case-card" key={cs.id}>
-                        <img className="case-image" src={cs.imageUrl || '/avatar1.png'} alt={cs.name} />
+                        {/* Verwende überall das gleiche Case-Bild */}
+                        <img
+                            className="case-image"
+                            src="/images/case.png"
+                            alt={cs.name}
+                        />
                         <div className="case-content">
                             <div className="case-name">{cs.name}</div>
                             <button className="open-button" onClick={() => openCase(cs.id)} disabled={isOpening}>
@@ -99,29 +95,30 @@ const CasesPage = () => {
                 ))}
             </div>
 
-            {/* Animation: horizontale Skin-Scroll-Leiste */}
             {isOpening && (
                 <div className="case-overlay">
                     <div className="scroll-strip">
                         {selectedSkins.map((skin, index) => (
                             <div
-                                className={`skin-tile ${skin.name === highlightedSkin?.name ? 'highlighted' : ''}`}
+                                className={`skin-tile ${skin.skin.name === highlightedSkin?.skin.name ? 'highlighted' : ''}`}
                                 key={index}
                             >
-                                <img src={skin.imageUrl || '/placeholder_skin.png'} alt={skin.name} />
-                                <div>{skin.name}</div>
+                                <img src={skin.skin.imageUrl || '/placeholder_skin.png'} alt={skin.skin.name} />
+                                <div>{skin.skin.name}</div>
                             </div>
                         ))}
                     </div>
                 </div>
             )}
 
-            {/* Zeige final gewonnenen Skin nach Abschluss */}
             {claimedSkin && (
                 <div className="claimed-skin">
                     <h3>Du hast gewonnen!</h3>
-                    <img src={claimedSkin.imageUrl || '/placeholder_skin.png'} alt={claimedSkin.name} />
-                    <p>{claimedSkin.name}</p>
+                    <img src={claimedSkin.skin.imageUrl || '/placeholder_skin.png'} alt={claimedSkin.skin.name} />
+                    <p>{claimedSkin.skin.name}</p>
+                    <p>Rarity: {claimedSkin.rarity}</p>
+                    <p>Float: {claimedSkin.floatValue.toFixed(4)}</p>
+                    <p>Stattrak: {claimedSkin.stattrak ? 'Ja' : 'Nein'}</p>
                 </div>
             )}
         </div>

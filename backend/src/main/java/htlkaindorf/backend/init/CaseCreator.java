@@ -43,7 +43,7 @@ public class CaseCreator {
 
         for (Rarity r : rarities) {
             List<SkinCatalog> skinsOfCurrentRarity = allSkins.stream()
-                    .filter(s -> s.getRarity().equals(r))
+                    .filter(s -> s.getRarity() != null && s.getRarity().equals(r))
                     .collect(Collectors.toList());
 
             int skinsToAddCount = Math.min(10, skinsOfCurrentRarity.size());
