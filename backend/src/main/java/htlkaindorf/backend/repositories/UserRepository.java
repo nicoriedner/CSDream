@@ -21,6 +21,7 @@ public interface UserRepository extends JpaRepository<User, Integer> {
     @Query("SELECT u FROM User u WHERE u.email = ?1")
     User findUserByEmail(String email);
 
+    // Fixed: Changed parameter type from int to Integer to match the controller
     @Query("SELECT u FROM User u WHERE u.id = ?1")
-    User findUserById(int id);
+    User findUserById(Integer id);
 }

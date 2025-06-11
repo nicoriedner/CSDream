@@ -20,7 +20,7 @@ const AuthContext = createContext<AuthContextType>({
 
 /* Provider-Komponente, die den Zustand global verfügbar macht */
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-    // Hole gespeicherte Daten aus dem localStorage (z. B. nach Seiten-Neuladen)
+    // Hole gespeicherte Daten aus dem localStorage (z.B. nach Seiten-Neuladen)
     const [username, setUsername] = useState<string | null>(localStorage.getItem("username"));
     const [avatar, setAvatar] = useState<string | null>(localStorage.getItem("avatar"));
     const [userId, setUserId] = useState<string | null>(localStorage.getItem("userId"));

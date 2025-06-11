@@ -23,26 +23,39 @@ const Header = () => {
     // Holt das aktuelle Guthaben vom Backend
     const fetchBalance = () => {
         const userId = localStorage.getItem('userId');
-        if (userId) {
+        console.log('Stored userId:', userId); // Debug log
+
+        if (userId && userId !== 'null' && userId !== 'undefined') {
+            console.log(`Fetching balance for user ID: ${userId}`); // Debug log
             api.get(`/users/balance/${userId}`).then((res) => {
-                setBalance(Math.max(0, res.data.balance)); // Kein negativer Wert
-            }).catch(() => {
+                console.log('Balance response:', res.data); // Debug log
+                setBalance(Math.max(0, res.data));
+            }).catch((error) => {
+                console.error('Error fetching balance:', error);
+                console.error('Error response:', error.response?.data);
                 setBalance(0); // Fallback bei Fehler
             });
+        } else {
+            console.log('No valid userId found in localStorage');
+            setBalance(0);
         }
     };
 
     // Intervall für regelmäßige Aktualisierung der Coins
     useEffect(() => {
-        fetchBalance();
-        const interval = setInterval(fetchBalance, 5000); // alle 5 Sekunden
-        return () => clearInterval(interval);
-    }, []);
+        // Nur Balance fetchen wenn User eingeloggt ist
+        if (username) {
+            fetchBalance();
+            const interval = setInterval(fetchBalance, 5000); // alle 5 Sekunden
+            return () => clearInterval(interval);
+        }
+    }, [username]); // Abhängigkeit von username hinzugefügt
 
     // Logout-Funktion
     const handleLogout = () => {
         logout();
         setDropdownOpen(false);
+        setBalance(0); // Balance zurücksetzen beim Logout
     };
 
     // Klick außerhalb des Dropdowns schließt das Menü
@@ -54,6 +67,17 @@ const Header = () => {
         };
         document.addEventListener('mousedown', handleClickOutside);
         return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
+
+    // Debug: Zeige alle localStorage Werte
+    useEffect(() => {
+        console.log('All localStorage items:');
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            if (key) {
+                console.log(`${key}: ${localStorage.getItem(key)}`);
+            }
+        }
     }, []);
 
     return (
