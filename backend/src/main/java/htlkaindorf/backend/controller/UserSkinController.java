@@ -20,7 +20,7 @@ public class UserSkinController {
     }
 
     @PostMapping("/freebie")
-    public ResponseEntity<Boolean> saveFreebie(@RequestBody UserSkin userSkin) {
-        return ResponseEntity.ok(userSkinService.saveUserSkin(userSkin));
+    public ResponseEntity<Boolean> saveFreebie(@RequestBody UserSkinDTO userSkinDTO) {
+        return ResponseEntity.ok(userSkinService.saveUserSkin(userSkinDTO));
     }
 }

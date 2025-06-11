@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserSkinDTO {
     private int id;
-    private SkinCatalog skin;
+    private SkinCatalogDTO skin;
     private Float floatValue;
     private Exterior exterior;
     private Rarity rarity;

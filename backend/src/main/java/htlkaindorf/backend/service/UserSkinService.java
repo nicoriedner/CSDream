@@ -19,8 +19,9 @@ public class UserSkinService {
         return userSkinMapper.toDtoList(userSkinRepository.findAllByUserId(userId));
     }
 
-    public Boolean saveUserSkin(UserSkin userSkin) {
+    public Boolean saveUserSkin(UserSkinDTO userSkinDTO) {
         try {
+            UserSkin userSkin = userSkinMapper.toEntity(userSkinDTO);
             userSkinRepository.save(userSkin);
             return true;
         } catch (Exception e) {
