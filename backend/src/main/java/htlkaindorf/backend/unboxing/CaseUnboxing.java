@@ -48,8 +48,9 @@ public class CaseUnboxing {
         Float floatValue = getFloatValue(unboxedSkin);
 
         Float priceOfSkin = calculatePriceOfSkin(unboxedSkin, floatValue, isStattrak);
+        Integer skinId = unboxedSkin.getId();
 
-        creator.createNewUserSkin(unboxedSkin, floatValue, unboxedSkin.getRarity(), isStattrak, priceOfSkin, userId);
+        creator.createNewUserSkin(skinId, floatValue, unboxedSkin.getRarity(), isStattrak, priceOfSkin, userId);
     }
 
     public SkinCatalog getSkin(Rarity rarity, Case caseToUnbox) {

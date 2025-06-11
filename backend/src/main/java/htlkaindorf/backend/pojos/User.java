@@ -31,7 +31,7 @@ public class User {
 
     private Float balance;
 
-
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true)
+    @JoinColumn(name = "user_id")
     private List<UserSkin> userSkins;
 }

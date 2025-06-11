@@ -55,18 +55,18 @@ public class SkinReader {
                 LocalDate dropDate = LocalDate.parse(parts[6]);
                 Long userId = Long.parseLong(parts[7]);
 
+                Integer skinCatalogId = skinCatalogRepository.findById(skinId).get().getId();
                 SkinCatalog skin = skinCatalogRepository.findById(skinId).orElse(null);
                 User user = userRepository.findById(userId.intValue()).orElse(null);
 
                 UserSkin userSkin = new UserSkin();
-                userSkin.setSkin(skin);
+                userSkin.setSkinCatalogId(skinCatalogId);
                 userSkin.setFloatValue(floatValue);
                 userSkin.setExterior(exterior);
                 userSkin.setRarity(rarity);
                 userSkin.setStattrak(stattrak);
                 userSkin.setPrice(price);
                 userSkin.setDropDate(dropDate);
-                userSkin.setUser(user);
 
                 userSkinRepository.save(userSkin);
 

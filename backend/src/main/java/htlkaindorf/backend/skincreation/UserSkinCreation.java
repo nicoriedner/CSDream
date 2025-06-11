@@ -19,14 +19,13 @@ public class UserSkinCreation {
         this.userSkinRepository = userSkinRepository;
     }
 
-    public UserSkin createNewUserSkin(SkinCatalog skin, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Integer userId) {
+    public UserSkin createNewUserSkin(Integer skinCatalogId, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Integer userId) {
         UserSkin newSkin = new UserSkin();
 
         User user = new User();
         user.setId(userId);
 
-        newSkin.setUser(user);
-        newSkin.setSkin(skin);
+        newSkin.setSkinCatalogId(skinCatalogId);
         newSkin.setFloatValue(floatValue);
         newSkin.setExterior(calculateExterior(floatValue));
         newSkin.setRarity(rarity);

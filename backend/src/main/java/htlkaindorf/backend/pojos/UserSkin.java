@@ -14,13 +14,11 @@ public class UserSkin {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @ManyToOne
-    @JoinColumn(name = "skin_id", referencedColumnName = "id")
-    private SkinCatalog skin;
+    @Column(name = "skin_catalog_id", nullable = false)
+    private Integer skinCatalogId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", referencedColumnName = "id")
-    private User user;
+    @Column(name = "user_id")
+    private Integer userReferenceId;
 
     @Column(name = "float_value")
     private Float floatValue;

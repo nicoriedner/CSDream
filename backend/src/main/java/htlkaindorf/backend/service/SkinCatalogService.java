@@ -3,6 +3,7 @@ package htlkaindorf.backend.service;
 import htlkaindorf.backend.dto.SkinCatalogDTO;
 import htlkaindorf.backend.mapper.SkinCatalogMapper;
 import htlkaindorf.backend.pojos.SkinCatalog;
+import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.repositories.SkinCatalogRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -24,6 +25,11 @@ public class SkinCatalogService {
         return skinCatalogList.stream()
                 .map(skinCatalogMapper::toDTO)
                 .collect(Collectors.toList());
+    }
+
+    public SkinCatalog getAssociatedSkinCatalog(UserSkin userSkin) {
+        return skinCatalogRepository.findById(userSkin.getSkinCatalogId())
+                .orElseThrow(() -> new RuntimeException("SkinCatalog nicht gefunden mit ID: " + userSkin.getSkinCatalogId()));
     }
 
 }
