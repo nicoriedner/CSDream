@@ -19,8 +19,8 @@ public class UserSkinController {
         return ResponseEntity.ok(userSkinService.getAllByUser(userId));
     }
 
-    @GetMapping("/freebie")
-    public ResponseEntity<Boolean> saveFreebie(@PathVariable UserSkin userSkin) {
+    @PostMapping("/freebie")
+    public ResponseEntity<Boolean> saveFreebie(@RequestBody UserSkin userSkin) {
         return ResponseEntity.ok(userSkinService.saveUserSkin(userSkin));
     }
 }
