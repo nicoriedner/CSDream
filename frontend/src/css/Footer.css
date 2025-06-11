@@ -1,21 +1,3 @@
-:root {
-    --bg-dark: #1d1a39;
-    --bg-glow: #322e5c;
-    --accent: #5c4bc5;
-    --text: #e2e2f2;
-}
-
-html, body, #root {
-    height: 100%;
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-}
-
-main {
-    flex: 1;
-}
-
 .csdream-footer {
     background: linear-gradient(90deg, var(--bg-dark), var(--bg-glow));
     color: var(--text);

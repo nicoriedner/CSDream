@@ -54,6 +54,10 @@ public class UserService {
     }
 
     public Float getUserBalance(Integer userId) {
-        return userRepository.findUserById(userId).getBalance();
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found with ID: " + userId);
+        }
+        return user.getBalance();
     }
 }

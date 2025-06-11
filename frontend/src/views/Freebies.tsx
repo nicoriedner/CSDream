@@ -2,130 +2,197 @@ import { useEffect, useState } from "react";
 import api from "../api";
 import "../css/Freebies.css";
 
-// Interface beschreibt den Aufbau eines Skin-Objekts aus der Datenbank
+interface SkinCatalog {
+    id: number;
+    name: string;
+    float_min: number;
+    float_max: number;
+    rarity: string;
+    collection_or_case: string;
+    img_url: string;
+}
+
+interface UserSkinDTO {
+    floatValue: number;
+    dropDate?: string;
+    price: number;
+    skinId: number;
+    rarity: string;
+    stattrak: boolean;
+    userId: number;
+    exterior: string;
+}
+
 interface Skin {
     id: number;
     name: string;
-    image: string;
-    value: number;
+    price: number;
     rarity: string;
     floatValue: number;
     exterior: string;
     stattrak: boolean;
     skinId: number;
     userId: number;
-    imgUrl: string; // Bildpfad direkt vom Server
+    dropDate: Date;
+    imgUrl: string;
+    skinCatalog?: SkinCatalog;
 }
 
+const getExterior = (floatValue: number): string => {
+    if (floatValue < 0.07) return "FACTORY_NEW";
+    if (floatValue < 0.15) return "MINIMAL_WEAR";
+    if (floatValue < 0.38) return "FIELD_TESTED";
+    if (floatValue < 0.45) return "WELL_WORN";
+    return "BATTLE_SCARRED";
+};
+
 const Freebies = () => {
-    // Zustände für Anzeige und Auswahl
     const [freeSkins, setFreeSkins] = useState<Skin[]>([]);
     const [selectedSkin, setSelectedSkin] = useState<Skin | null>(null);
-    const [confirmed, setConfirmed] = useState(false);
-    const [claimedToday, setClaimedToday] = useState(false);
+    const [claimedIds, setClaimedIds] = useState<number[]>([]);
+    const [confirmedThisSession, setConfirmedThisSession] = useState<number[]>([]);
+    const [todayKey, setTodayKey] = useState("");
 
-    // Wird beim ersten Laden ausgeführt
     useEffect(() => {
-        const today = new Date().toDateString();
-        const lastClaim = localStorage.getItem("freebieClaimedAt");
-        if (lastClaim === today) setClaimedToday(true);
-
+        const today = new Date().toISOString().split("T")[0];
         const userId = Number(localStorage.getItem("userId"));
+        const key = `freebieClaimedSkins_${today}`;
+        setTodayKey(key);
 
-        // Alle Skins aus der Datenbank laden und 3 zufällige anzeigen
+        const claimed = localStorage.getItem(key);
+        if (claimed) {
+            const parsed = JSON.parse(claimed);
+            setClaimedIds(parsed);
+            setConfirmedThisSession(parsed);
+        }
+
         api.get("/skinCatalog/all").then((res) => {
             const all = res.data;
             const shuffled = [...all].sort(() => 0.5 - Math.random()).slice(0, 3);
-            const enriched = shuffled.map((skin: any, idx: number) => ({
-                id: idx,
-                name: skin.name,
-                image: skin.imgUrl,
-                value: 10 + idx * 15,
-                rarity: skin.rarity,
-                floatValue: 0.1 + Math.random() * 0.8,
-                exterior: "Field-Tested",
-                stattrak: Math.random() < 0.3,
-                skinId: skin.id,
-                userId,
-                imgUrl: skin.imgUrl,
-            }));
+            const enriched = shuffled.map((skin: SkinCatalog, idx: number) => {
+                const floatVal = parseFloat((0.1 + Math.random() * 0.8).toFixed(4));
+                return {
+                    id: idx,
+                    name: skin.name,
+                    price: 10 + idx * 15,
+                    rarity: skin.rarity,
+                    floatValue: floatVal,
+                    exterior: getExterior(floatVal),
+                    stattrak: Math.random() < 0.3,
+                    skinId: skin.id,
+                    userId,
+                    imgUrl: skin.img_url,
+                    dropDate: new Date(),
+                    skinCatalog: skin
+                };
+            });
             setFreeSkins(enriched);
         });
     }, []);
 
-    // Öffnet das Modal für den ausgewählten Skin
+    const isClaimed = (id: number) => claimedIds.includes(id);
+
     const openSkin = (skin: Skin) => {
-        if (claimedToday) return;
         setSelectedSkin(skin);
     };
 
-    // Speichert den Skin im Inventar über die API
     const confirmClaim = async () => {
-        if (!selectedSkin) return;
+        if (!selectedSkin || isClaimed(selectedSkin.id)) return;
+
         try {
-            await api.post("/userSkin/freebie", {
-                userId: selectedSkin.userId,
-                skinId: selectedSkin.skinId,
+            const userSkinDTO: UserSkinDTO = {
                 floatValue: selectedSkin.floatValue,
-                exterior: selectedSkin.exterior,
+                price: selectedSkin.price,
+                skinId: selectedSkin.skinId,
                 rarity: selectedSkin.rarity,
-                isStattrak: selectedSkin.stattrak,
-                price: selectedSkin.value,
-            });
-            setConfirmed(true);
-            setClaimedToday(true);
-            localStorage.setItem("freebieClaimedAt", new Date().toDateString());
-        } catch (err) {
-            alert("Freebie bereits beansprucht oder Fehler aufgetreten.");
+                stattrak: selectedSkin.stattrak,
+                userId: selectedSkin.userId,
+                exterior: selectedSkin.exterior,
+                dropDate: new Date().toISOString().split("T")[0]
+            };
+
+            await api.post("/userSkin/freebie", userSkinDTO);
+
+            const newClaimed = [...claimedIds, selectedSkin.id];
+            setClaimedIds(newClaimed);
+            setConfirmedThisSession([...confirmedThisSession, selectedSkin.id]);
+            localStorage.setItem(todayKey, JSON.stringify(newClaimed));
+
+            setSelectedSkin(null);
+        } catch (err: any) {
+            console.error("Error claiming freebie:", err);
+            alert("Fehler beim Beanspruchen.");
         }
     };
 
-    // Schließt das Modal
     const closeModal = () => {
         setSelectedSkin(null);
-        setConfirmed(false);
+    };
+
+    const resetFreebies = () => {
+        localStorage.removeItem(todayKey);
+        setClaimedIds([]);
+        setConfirmedThisSession([]);
+        alert("Freebies zurückgesetzt!");
     };
 
     return (
         <div className="freebies-container">
             <h2>Tägliche Freebies</h2>
 
-            {/* Alle drei Freebie-Skins klickbar */}
             <div className="freebies-row">
                 {freeSkins.map((skin, idx) => (
                     <div
                         key={idx}
-                        className={`freebie-card ${claimedToday ? "claimed" : ""}`}
+                        className={`freebie-card ${isClaimed(skin.id) ? "claimed" : ""}`}
                         onClick={() => openSkin(skin)}
                     >
                         <img src={skin.imgUrl} alt={skin.name} />
                         <div className="freebie-info">
                             <h4>{skin.name}</h4>
-                            <p>{skin.value} Coins</p>
-                            <small>Freebie</small>
+                            <p>{skin.price} Coins</p>
+                            <small>{isClaimed(skin.id) ? "✔️ Geclaimt" : "Freebie"}</small>
                         </div>
                     </div>
                 ))}
             </div>
 
-            {/* Modal für den ausgewählten Skin */}
             {selectedSkin && (
                 <div className="freebie-modal-bg">
                     <div className="freebie-modal">
                         <img src={selectedSkin.imgUrl} alt={selectedSkin.name} />
                         <h3>{selectedSkin.name}</h3>
-                        <p>{selectedSkin.value} Coins</p>
+                        <p>{selectedSkin.price} Coins</p>
 
-                        {/* Button oder Bestätigung je nach Zustand */}
-                        {!confirmed ? (
-                            <button className="claim-btn" onClick={confirmClaim}>Claim</button>
-                        ) : (
+                        {confirmedThisSession.includes(selectedSkin.id) ? (
                             <p className="claimed-text">✔️ Dem Inventar hinzugefügt</p>
+                        ) : isClaimed(selectedSkin.id) ? (
+                            <p className="claimed-text">✔️ Bereits geclaimt</p>
+                        ) : (
+                            <button className="claim-btn" onClick={confirmClaim}>Claim</button>
                         )}
+
                         <button className="close-btn" onClick={closeModal}>Schließen</button>
                     </div>
                 </div>
             )}
+
+            {/* Test-Reset-Button */}
+            <div style={{ textAlign: "center", marginTop: "2rem" }}>
+                <button
+                    onClick={resetFreebies}
+                    style={{
+                        backgroundColor: "#5c4bc5",
+                        color: "white",
+                        border: "none",
+                        padding: "0.5rem 1rem",
+                        borderRadius: "8px",
+                        cursor: "pointer",
+                    }}
+                >
+                    Freebie Reset (Test)
+                </button>
+            </div>
         </div>
     );
 };
