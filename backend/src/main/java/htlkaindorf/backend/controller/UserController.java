@@ -7,10 +7,7 @@ import htlkaindorf.backend.service.UserSkinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -26,14 +23,40 @@ public class UserController {
             Float balance = userService.getUserBalance(userId);
             return ResponseEntity.ok(balance);
         } catch (RuntimeException e) {
-            // Log the error for debugging
             System.err.println("Error getting balance for user " + userId + ": " + e.getMessage());
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(0.0f);
         } catch (Exception e) {
-            // Handle any other unexpected errors
             System.err.println("Unexpected error getting balance for user " + userId + ": " + e.getMessage());
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(0.0f);
+        }
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<List<UserDTO>> getAllUsers() {
+        try {
+            List<UserDTO> users = userService.getAllUsers();
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            System.err.println("Error fetching all users: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PatchMapping("/{userId}/balanceChange")
+    public ResponseEntity<Void> updateBalance(
+            @PathVariable Integer userId,
+            @RequestParam Float newBalance
+    ) {
+        try {
+            userService.updateBalance(userId, newBalance);
+            return ResponseEntity.ok().build();
+        } catch (RuntimeException e) {
+            System.err.println("Balance update failed for user " + userId + ": " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+        } catch (Exception e) {
+            System.err.println("Unexpected error updating balance: " + e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

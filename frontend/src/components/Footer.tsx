@@ -1,7 +1,7 @@
 import "../css/Footer.css"
 import { Link } from 'react-router-dom';
 import logo from '../assets/CSDream_Logo.png';
-import { FaHome, FaStore, FaBoxOpen, FaDice } from 'react-icons/fa';
+import { FaHome, FaBoxOpen, FaDice } from 'react-icons/fa';
 
 const Footer = () => {
     return (
@@ -30,7 +30,6 @@ const Footer = () => {
             {/* Rechte Seite mit Navigation zu Unterseiten */}
             <div className="footer-right">
                 <Link to="/" className="footer-link"><FaHome /> Home</Link>
-                <Link to="/marketplace" className="footer-link"><FaStore /> Marketplace</Link>
                 <Link to="/inventory" className="footer-link"><FaBoxOpen /> Inventory</Link>
                 <Link to="/games" className="footer-link"><FaDice /> Games</Link>
                 <Link to="/impressum" className="footer-link">Impressum</Link>

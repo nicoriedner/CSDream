@@ -1,29 +1,7 @@
 import { useEffect, useState } from 'react';
 import api from '../api';
+import { UserSkin } from '../types/UserSkin.ts'
 import '../css/Inventory.css';
-
-// Struktur eines Skins im Katalog (inkl. Bildpfad aus der Datenbank)
-interface SkinCatalog {
-    name: string;
-    collectionOrCase: string;
-    rarity: string;
-    floatMin: number;
-    floatMax: number;
-    imgUrl: string; // ← Pfad zum Bild aus der Datenbank
-}
-
-// Struktur eines Skins, den der Nutzer besitzt
-interface UserSkin {
-    id: number;
-    floatValue: number;
-    exterior: string;
-    rarity: string;
-    isStattrak: boolean;
-    price: number;
-    dropDate: string;
-    renamedTo?: string;
-    skin: SkinCatalog;
-}
 
 // Hauptkomponente für die Inventarseite
 const Inventory: React.FC = () => {
@@ -38,8 +16,7 @@ const Inventory: React.FC = () => {
             return;
         }
 
-        // Alle Skins vom Server abrufen
-        api.get(`/userskin/allByUserId/${userId}`)
+        api.get(`/userSkin/allByUserId/${userId}`)
             .then((res) => {
                 const data = Array.isArray(res.data) ? res.data : [];
                 setSkins(data);
@@ -55,11 +32,11 @@ const Inventory: React.FC = () => {
             <div className="inventory-grid">
                 {skins.map((skin) => (
                     <div className="skin-card" key={skin.id} onClick={() => setSelectedSkin(skin)}>
-                        <img
+                        {/*<img
                             src={skin.skin.imgUrl}
                             alt={skin.skin.name}
                             onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
-                        />
+                        />*/}
                         <div className="skin-name">
                             {skin.renamedTo && <small className="renamed">{skin.renamedTo}</small>}
                             {skin.skin.name}
@@ -74,11 +51,11 @@ const Inventory: React.FC = () => {
             {selectedSkin && (
                 <div className="skin-details-modal">
                     <h3>{selectedSkin.renamedTo || selectedSkin.skin.name}</h3>
-                    <img
+                    {/*<img
                         src={selectedSkin.skin.imgUrl}
                         alt={selectedSkin.skin.name}
                         onError={(e) => (e.currentTarget.src = '/images/placeholder.png')}
-                    />
+                    />*/}
                     <p>Collection: {selectedSkin.skin.collectionOrCase}</p>
                     <p>Rarity: {selectedSkin.skin.rarity}</p>
                     <p>Float: {selectedSkin.floatValue}</p>

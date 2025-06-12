@@ -16,7 +16,7 @@ interface UserSkinDTO {
     floatValue: number;
     dropDate?: string;
     price: number;
-    skinId: number;
+    skinCatalogId: number;
     rarity: string;
     stattrak: boolean;
     userId: number;
@@ -31,7 +31,7 @@ interface Skin {
     floatValue: number;
     exterior: string;
     stattrak: boolean;
-    skinId: number;
+    skinCatalogId: number;
     userId: number;
     dropDate: Date;
     imgUrl: string;
@@ -56,7 +56,7 @@ const Freebies = () => {
     useEffect(() => {
         const today = new Date().toISOString().split("T")[0];
         const userId = Number(localStorage.getItem("userId"));
-        const key = `freebieClaimedSkins_${today}`;
+        const key = `freebieClaimedSkins_${today}_${userId}`;
         setTodayKey(key);
 
         const claimed = localStorage.getItem(key);
@@ -79,7 +79,7 @@ const Freebies = () => {
                     floatValue: floatVal,
                     exterior: getExterior(floatVal),
                     stattrak: Math.random() < 0.3,
-                    skinId: skin.id,
+                    skinCatalogId: skin.id,
                     userId,
                     imgUrl: skin.img_url,
                     dropDate: new Date(),
@@ -103,7 +103,7 @@ const Freebies = () => {
             const userSkinDTO: UserSkinDTO = {
                 floatValue: selectedSkin.floatValue,
                 price: selectedSkin.price,
-                skinId: selectedSkin.skinId,
+                skinCatalogId: selectedSkin.skinCatalogId,
                 rarity: selectedSkin.rarity,
                 stattrak: selectedSkin.stattrak,
                 userId: selectedSkin.userId,

@@ -1,53 +1,28 @@
 import React, { useState } from 'react';
-import '../css/SkinDetailsModal.css';
+import { UserSkin } from '../types/UserSkin';
 import api from "../api.ts";
+import '../css/SkinDetailsModal.css';
 
-// Struktur eines Skins aus dem Katalog
-interface SkinCatalog {
-    name: string;
-    collectionOrCase: string;
-    rarity: string;
-    floatMin: number;
-    floatMax: number;
-}
-
-// Struktur eines Skins, der dem Nutzer gehört
-interface UserSkin {
-    id: number;
-    floatValue: number;
-    exterior: string;
-    rarity: string;
-    isStattrak: boolean;
-    price: number;
-    dropDate: string;
-    renamedTo?: string;
-    skin: SkinCatalog;
-}
-
-// Requisiten für die Modal-Komponente
 interface Props {
     skin: UserSkin;
-    onClose: () => void; // Funktion zum Schließen des Modals
+    onClose: () => void;
 }
 
 const SkinDetailsModal: React.FC<Props> = ({ skin, onClose }) => {
     const [newName, setNewName] = useState('');
     const [sold, setSold] = useState(false);
 
-    // Skin-Bildname wird aus dem originalen Namen erzeugt
     const imageName = skin.skin.name.replace(/[^a-zA-Z0-9]/g, '_');
 
-    // Funktion zum lokalen Umbenennen des Skins (frontend-only)
     const renameSkin = () => {
         if (!newName.trim()) return;
-        skin.renamedTo = newName; // Kein Backend-Call – nur optisch
+        skin.renamedTo = newName;
     };
 
-    // Funktion zum Verkauf des Skins an das Backend
     const sellSkin = async () => {
         try {
             await api.post(`/userskin/sell/${skin.id}`);
-            setSold(true); // Verkauf erfolgreich – Button deaktivieren
+            setSold(true);
         } catch (err) {
             console.error('Fehler beim Verkaufen:', err);
         }
@@ -66,14 +41,12 @@ const SkinDetailsModal: React.FC<Props> = ({ skin, onClose }) => {
                 <p>Rarity: {skin.skin.rarity}</p>
                 <p>Float: {skin.floatValue}</p>
 
-                {/* Zeige Stattrak-Info nur wenn aktiv */}
                 <p className="stattrak">
                     {skin.isStattrak && <strong style={{ color: 'orange' }}>★ | STATTRACK</strong>}
                 </p>
 
                 <p>Preis: {skin.price} Coins</p>
 
-                {/* Eingabefeld zum Umbenennen */}
                 <div className="rename-section">
                     <input
                         type="text"
@@ -84,7 +57,6 @@ const SkinDetailsModal: React.FC<Props> = ({ skin, onClose }) => {
                     <button onClick={renameSkin}>Umbenennen</button>
                 </div>
 
-                {/* Verkaufsknopf (einmalig nutzbar) */}
                 <button className="sell-button" onClick={sellSkin} disabled={sold}>
                     {sold ? 'Verkauft' : `Verkaufen für ${skin.price} Coins`}
                 </button>

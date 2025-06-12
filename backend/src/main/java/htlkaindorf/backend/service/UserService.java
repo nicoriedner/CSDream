@@ -1,5 +1,7 @@
 package htlkaindorf.backend.service;
 
+import htlkaindorf.backend.dto.UserDTO;
+import htlkaindorf.backend.mapper.UserMapper;
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.repositories.UserRepository;
 import lombok.AllArgsConstructor;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +19,7 @@ import java.util.Optional;
 public class UserService {
 
     private final UserRepository userRepository;
+    private final UserMapper userMapper;
 
     public Optional<User> authenticate(String username, String password) {
         User user = userRepository.findUserByUsername(username);
@@ -59,5 +63,21 @@ public class UserService {
             throw new RuntimeException("User not found with ID: " + userId);
         }
         return user.getBalance();
+    }
+
+    public List<UserDTO> getAllUsers() {
+        List<User> users = userRepository.findAll();
+        return users.stream()
+                .map(userMapper::toDto)
+                .toList();
+    }
+
+    public void updateBalance(Integer userId, Float newBalance) {
+        User user = userRepository.findUserById(userId);
+        if (user == null) {
+            throw new RuntimeException("User not found");
+        }
+        user.setBalance(newBalance);
+        userRepository.save(user);
     }
 }
