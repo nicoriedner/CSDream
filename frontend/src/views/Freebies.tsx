@@ -52,10 +52,26 @@ const Freebies = () => {
     const [claimedIds, setClaimedIds] = useState<number[]>([]);
     const [confirmedThisSession, setConfirmedThisSession] = useState<number[]>([]);
     const [todayKey, setTodayKey] = useState("");
+    const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
     useEffect(() => {
         const today = new Date().toISOString().split("T")[0];
-        const userId = Number(localStorage.getItem("userId"));
+        const userIdStr = localStorage.getItem("userId");
+
+        // Bessere userId Validierung
+        if (!userIdStr) {
+            console.error("No userId found in localStorage");
+            return;
+        }
+
+        const userId = parseInt(userIdStr, 10);
+        if (isNaN(userId)) {
+            console.error("Invalid userId in localStorage:", userIdStr);
+            return;
+        }
+
+        setCurrentUserId(userId);
+
         const key = `freebieClaimedSkins_${today}_${userId}`;
         setTodayKey(key);
 
@@ -80,13 +96,15 @@ const Freebies = () => {
                     exterior: getExterior(floatVal),
                     stattrak: Math.random() < 0.3,
                     skinCatalogId: skin.id,
-                    userId,
+                    userId: userId, // Verwende die validierte userId
                     imgUrl: skin.img_url,
                     dropDate: new Date(),
                     skinCatalog: skin
                 };
             });
             setFreeSkins(enriched);
+        }).catch((err) => {
+            console.error("Error loading skin catalog:", err);
         });
     }, []);
 
@@ -97,7 +115,10 @@ const Freebies = () => {
     };
 
     const confirmClaim = async () => {
-        if (!selectedSkin || isClaimed(selectedSkin.id)) return;
+        if (!selectedSkin || isClaimed(selectedSkin.id) || !currentUserId) {
+            console.error("Cannot claim: missing skin or userId", { selectedSkin, currentUserId });
+            return;
+        }
 
         try {
             const userSkinDTO: UserSkinDTO = {
@@ -106,12 +127,15 @@ const Freebies = () => {
                 skinCatalogId: selectedSkin.skinCatalogId,
                 rarity: selectedSkin.rarity,
                 stattrak: selectedSkin.stattrak,
-                userId: selectedSkin.userId,
+                userId: currentUserId, // Verwende die validierte currentUserId
                 exterior: selectedSkin.exterior,
                 dropDate: new Date().toISOString().split("T")[0]
             };
 
-            await api.post("/userSkin/freebie", userSkinDTO);
+            console.log("Sending UserSkinDTO:", userSkinDTO); // Debug log
+
+            const response = await api.post("/userSkin/freebie", userSkinDTO);
+            console.log("API Response:", response.data); // Debug log
 
             const newClaimed = [...claimedIds, selectedSkin.id];
             setClaimedIds(newClaimed);
@@ -121,6 +145,7 @@ const Freebies = () => {
             setSelectedSkin(null);
         } catch (err: any) {
             console.error("Error claiming freebie:", err);
+            console.error("Error details:", err.response?.data); // Mehr Debug-Info
             alert("Fehler beim Beanspruchen.");
         }
     };
@@ -135,6 +160,16 @@ const Freebies = () => {
         setConfirmedThisSession([]);
         alert("Freebies zurückgesetzt!");
     };
+
+    // Zeige Loading oder Error wenn keine userId vorhanden
+    if (!currentUserId) {
+        return (
+            <div className="freebies-container">
+                <h2>Tägliche Freebies</h2>
+                <p>Fehler: Benutzer nicht gefunden. Bitte melden Sie sich an.</p>
+            </div>
+        );
+    }
 
     return (
         <div className="freebies-container">
