@@ -1,35 +1,36 @@
 import { useState, useEffect } from 'react';
-import api from '../api';
-import '../css/Upgrader.css';
+import api from '../api'; // API-Import
+import '../css/Upgrader.css'; // Styles
 
-// Struktur eines Skins im Katalog (inkl. Bild)
+// Interface für die Skins
 interface SkinCatalog {
+    id: number;
     name: string;
     imgUrl: string;
 }
 
-// Struktur eines Skins, den der Nutzer besitzt
 interface UserSkin {
     id: number;
+    skinCatalogId: number;
     floatValue: number;
     exterior: string;
     rarity: string;
     isStattrak: boolean;
     price: number;
     dropDate: string;
-    renamedTo?: string;
     skin: SkinCatalog;
+    userReferenceId: number;
 }
 
 const UpgraderPage = () => {
-    const [userSkins, setUserSkins] = useState<UserSkin[]>([]); // Alle Skins
+    const [userSkins, setUserSkins] = useState<UserSkin[]>([]); // Alle Skins des Users
     const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]); // Auswahl für Upgrade
     const [chance, setChance] = useState<number>(50); // Prozent-Chance für Erfolg
     const [resultMessage, setResultMessage] = useState<string>(''); // Nachricht
     const [balance, setBalance] = useState<number>(0); // Coins
     const [showSkinList, setShowSkinList] = useState<boolean>(false); // Skinliste ein-/ausblenden
 
-    // Lade Skins & Kontostand beim Start
+    // Lade Skins und Kontostand beim Start
     useEffect(() => {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
@@ -48,7 +49,6 @@ const UpgraderPage = () => {
         setSelectedSkins(prev =>
             prev.includes(skin) ? prev.filter(s => s !== skin) : [...prev, skin]
         );
-        setShowSkinList(false);
     };
 
     // Sende Upgrade-Request ans Backend
@@ -68,16 +68,16 @@ const UpgraderPage = () => {
                 userId
             });
 
-            setBalance(res.data.newBalance);
-            setResultMessage(`Erfolg! Neues Guthaben: ${res.data.newBalance} Coins.`);
-            setSelectedSkins([]);
+            setBalance(res.data); // Balance aktualisieren
+            setResultMessage(`Erfolg! Neues Guthaben: ${res.data} Coins.`); // Ergebnis anzeigen
+            setSelectedSkins([]); // Auswahl zurücksetzen
 
             // Lade Skins neu (verlorene werden entfernt)
-            const updatedSkins = await api.get(`/api/userskin/allByUserId/${userId}`);
+            const updatedSkins = await api.get(`/userskin/allByUserId/${userId}`);
             setUserSkins(updatedSkins.data);
 
-        } catch {
-            setResultMessage('Upgrade fehlgeschlagen. Versuche es erneut.');
+        } catch (error) {
+            setResultMessage('Upgrade fehlgeschlagen. Versuche es erneut.' + error);
         }
     };
 
@@ -86,7 +86,7 @@ const UpgraderPage = () => {
             <div className="upgrader-container">
                 <h2>Skin Upgrader</h2>
 
-                {/* Coins */}
+                {/* Coins Anzeige */}
                 <div className="balance-display">
                     <h3>Aktuelles Guthaben: {balance?.toFixed(2)} Coins</h3>
                 </div>
@@ -105,23 +105,20 @@ const UpgraderPage = () => {
                         )}
                     </div>
 
-                    {/* Skinliste als Overlay */}
+                    {/* Skinliste direkt anzeigen, wenn das Pluszeichen geklickt wird */}
                     {showSkinList && (
-                        <>
-                            <div className="skin-list-overlay" onClick={() => setShowSkinList(false)}></div>
-                            <div className="skin-selection-list">
-                                {userSkins.map((skin) => (
-                                    <div
-                                        key={skin.id}
-                                        className="skin-option"
-                                        onClick={() => handleSkinSelection(skin)}
-                                    >
-                                        <img src={skin.skin.imgUrl} alt={skin.skin.name} />
-                                        <div>{skin.skin.name}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </>
+                        <div className="skin-selection-list">
+                            {userSkins.map((skin) => (
+                                <div
+                                    key={skin.id}
+                                    className="skin-option"
+                                    onClick={() => handleSkinSelection(skin)}
+                                >
+                                    <img src={skin.skin.imgUrl} alt={skin.skin.name} />
+                                    <div>{skin.skin.name}</div>
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
 
@@ -138,7 +135,7 @@ const UpgraderPage = () => {
                     <span>%</span>
                 </div>
 
-                {/* Start Upgrade */}
+                {/* Start Upgrade Button */}
                 <button onClick={handleUpgrade} className="upgrade-button">Upgrade Skins</button>
 
                 {/* Ergebnis anzeigen */}

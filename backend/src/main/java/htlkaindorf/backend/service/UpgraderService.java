@@ -1,6 +1,5 @@
-package htlkaindorf.backend.unboxing;
+package htlkaindorf.backend.service;
 
-import htlkaindorf.backend.pojos.SkinCatalog;
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.repositories.UserRepository;
@@ -13,7 +12,7 @@ import java.util.Random;
 
 @Service
 @AllArgsConstructor
-public class Upgrader {
+public class UpgraderService {
 
     private final UserSkinRepository userSkinRepository;
     private final UserRepository userRepository;

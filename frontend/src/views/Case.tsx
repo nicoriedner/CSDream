@@ -1,83 +1,47 @@
-import { useEffect, useState } from 'react';
-import '../css/Cases.css';
+import React, { useEffect, useState } from 'react';
 import api from '../api';
+import '../css/Cases.css';
 
-interface Case {
+export interface SkinCatalog {
     id: number;
     name: string;
-    price: number;
-}
-
-interface SkinCatalog {
-    name: string;
-    imageUrl: string;
-}
-
-interface UserSkin {
-    id: number;
-    skin: SkinCatalog;
-    floatValue: number;
-    exterior: string;
+    collectionOrCase: string;
     rarity: string;
-    stattrak: boolean;
-    price: number;
-    dropDate: string;
+    floatMin: number;
+    floatMax: number;
+    imgUrl: string | null;
 }
 
-const CasesPage = () => {
+export interface Case {
+    id: number;
+    name: string;
+    price: number;
+    possibleSkins: SkinCatalog[];
+}
+
+const CasesPage: React.FC = () => {
     const [cases, setCases] = useState<Case[]>([]);
-    const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]);
-    const [highlightedSkin, setHighlightedSkin] = useState<UserSkin | null>(null);
-    const [claimedSkin, setClaimedSkin] = useState<UserSkin | null>(null);
     const [isOpening, setIsOpening] = useState(false);
+    const [claimedSkin, setClaimedSkin] = useState<SkinCatalog | null>(null);
 
     useEffect(() => {
-        api.get('/cases').then((res) => setCases(res.data));
+        api.get('/api/cases/allCases')
+            .then((res) => setCases(res.data))
+            .catch((err) => console.error('Fehler beim Laden der Cases:', err));
     }, []);
 
     const openCase = async (caseId: number) => {
         setIsOpening(true);
         setClaimedSkin(null);
-        setHighlightedSkin(null);
 
         const res = await api.post(`/caseunboxing/openCase?caseId=${caseId}&userId=${localStorage.getItem('userId')}`);
-        const finalSkin: UserSkin = res.data;
+        const finalSkin: SkinCatalog = res.data;
 
-        const fakeSkins: UserSkin[] = Array.from({ length: 60 }, (_, i) => ({
-            ...finalSkin,
-            skin: {
-                ...finalSkin.skin,
-                name: `${finalSkin.skin.name} ${i}`
-            }
-        }));
+        // Speicher den Skin im Inventar des Benutzers
+        await api.post(`/api/userSkin/add/${localStorage.getItem('userId')}`, finalSkin);
 
-        setSelectedSkins(fakeSkins);
-
-        const strip = document.getElementById('scroll-strip');
-        if (!strip) return;
-
-        let position = 0;
-        let velocity = 50; // px/frame
-        const friction = 0.97;
-        const finalStop = 120 * 30; // center index * tile width
-
-        const animate = () => {
-            if (!strip) return;
-            if (velocity < 1 || position > finalStop) {
-                setTimeout(() => {
-                    setClaimedSkin(finalSkin);
-                    setIsOpening(false);
-                }, 700);
-                return;
-            }
-
-            position += velocity;
-            velocity *= friction;
-            strip.style.transform = `translateX(-${position}px)`;
-            requestAnimationFrame(animate);
-        };
-
-        requestAnimationFrame(animate);
+        setClaimedSkin(finalSkin);
+        setIsOpening(false);
     };
 
     return (
@@ -87,10 +51,18 @@ const CasesPage = () => {
             <div className="cases-grid">
                 {cases.map((cs) => (
                     <div className="case-card" key={cs.id}>
-                        <img className="case-image" src="/images/case.png" alt={cs.name} />
+                        <img
+                            className="case-image"
+                            src={cs.possibleSkins[0]?.imgUrl || '/images/case.png'}
+                            alt={cs.name}
+                        />
                         <div className="case-content">
                             <div className="case-name">{cs.name}</div>
-                            <button className="open-button" onClick={() => openCase(cs.id)} disabled={isOpening}>
+                            <button
+                                className="open-button"
+                                onClick={() => openCase(cs.id)}
+                                disabled={isOpening}
+                            >
                                 {isOpening ? 'Öffnet...' : `Öffnen (${cs.price}C)`}
                             </button>
                         </div>
@@ -98,16 +70,20 @@ const CasesPage = () => {
                 ))}
             </div>
 
-            {isOpening && (
-                <div className="case-overlay">
-                    <div className="spin-indicator"></div>
-                    <div className="scroll-strip" id="scroll-strip">
-                        {selectedSkins.map((skin, index) => (
-                            <div className="skin-tile" key={index}>
-                                <img src={skin.skin.imageUrl || '/placeholder_skin.png'} alt={skin.skin.name} />
-                                <div>{skin.skin.name}</div>
-                            </div>
-                        ))}
+            {claimedSkin && (
+                <div className="claimed-skin">
+                    <h3>Gratulation! Du hast einen neuen Skin gewonnen:</h3>
+                    <div className="skin-card">
+                        <img
+                            src={claimedSkin.imgUrl || '/images/placeholder.png'}
+                            alt={claimedSkin.name}
+                            className="skin-image"
+                        />
+                        <div className="skin-info">
+                            <h3>{claimedSkin.name}</h3>
+                            <p>Rarity: {claimedSkin.rarity}</p>
+                            <p>Float: {claimedSkin.floatMin} - {claimedSkin.floatMax}</p>
+                        </div>
                     </div>
                 </div>
             )}

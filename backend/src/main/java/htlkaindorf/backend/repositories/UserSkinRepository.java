@@ -3,6 +3,7 @@ package htlkaindorf.backend.repositories;
 import htlkaindorf.backend.pojos.UserSkin;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -16,4 +17,6 @@ public interface UserSkinRepository extends JpaRepository<UserSkin, Integer> {
     boolean existsByUserReferenceIdAndSkinCatalogId(Integer userId, Integer skinCatalogId);
 
     Optional<UserSkin> findByUserReferenceIdAndSkinCatalogId(Integer userId, Integer skinCatalogId);
+
+    Optional<UserSkin> findByUserReferenceIdAndId(Integer userId, Integer skinId);
 }

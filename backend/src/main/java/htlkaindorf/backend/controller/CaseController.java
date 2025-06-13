@@ -19,7 +19,7 @@ public class CaseController {
 
     private final CaseService caseService;
 
-    @GetMapping("/all")
+    @GetMapping("/allCases")
     public List<Case> getAllCases() {
         return caseService.getAllCases();
     }
