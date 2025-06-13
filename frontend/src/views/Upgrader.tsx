@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import api from '../api'; // API-Import
-import '../css/Upgrader.css';
+import '../css/Upgrader.css'; // Styles
 
 // Interface für die Skins
 interface SkinCatalog {
@@ -22,7 +22,7 @@ interface UserSkin {
     userReferenceId: number;
 }
 
-const Upgrader = () => {
+const UpgraderPage = () => {
     const [userSkins, setUserSkins] = useState<UserSkin[]>([]); // Alle Skins des Users
     const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]); // Auswahl für Upgrade
     const [chance, setChance] = useState<number>(50); // Prozent-Chance für Erfolg
@@ -49,7 +49,6 @@ const Upgrader = () => {
         setSelectedSkins(prev =>
             prev.includes(skin) ? prev.filter(s => s !== skin) : [...prev, skin]
         );
-        setShowSkinList(false);
     };
 
     // Sende Upgrade-Request ans Backend
@@ -106,23 +105,20 @@ const Upgrader = () => {
                         )}
                     </div>
 
-                    {/* Skinliste als Overlay */}
+                    {/* Skinliste direkt anzeigen, wenn das Pluszeichen geklickt wird */}
                     {showSkinList && (
-                        <>
-                            <div className="skin-list-overlay" onClick={() => setShowSkinList(false)}></div>
-                            <div className="skin-selection-list">
-                                {userSkins.map((skin) => (
-                                    <div
-                                        key={skin.id}
-                                        className="skin-option"
-                                        onClick={() => handleSkinSelection(skin)}
-                                    >
-                                        <img src={skin.skin.imgUrl} alt={skin.skin.name} />
-                                        <div>{skin.skin.name}</div>
-                                    </div>
-                                ))}
-                            </div>
-                        </>
+                        <div className="skin-selection-list">
+                            {userSkins.map((skin) => (
+                                <div
+                                    key={skin.id}
+                                    className="skin-option"
+                                    onClick={() => handleSkinSelection(skin)}
+                                >
+                                    <img src={skin.skin.imgUrl} alt={skin.skin.name} />
+                                    <div>{skin.skin.name}</div>
+                                </div>
+                            ))}
+                        </div>
                     )}
                 </div>
 
@@ -149,4 +145,4 @@ const Upgrader = () => {
     );
 };
 
-export default Upgrader;
+export default UpgraderPage;
