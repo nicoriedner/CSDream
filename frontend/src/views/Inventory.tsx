@@ -211,7 +211,6 @@ const Inventory: React.FC = () => {
                 ))}
             </div>
 
-            {/* Modal für Skin-Details anzeigen */}
             {selectedSkin && (
                 <div className="skin-details-modal">
                     <h3>{selectedSkin.skin.name}</h3>
