@@ -19,6 +19,14 @@ public class Case {
 
     private String name;
 
-    @OneToMany
+    private Long price;
+
+    @ManyToMany(fetch = FetchType.LAZY)
+    @JoinTable(
+            name = "cases_possible_skins", // Name der Join-Tabelle in deiner Datenbank
+            joinColumns = @JoinColumn(name = "case_id"), // Spalte in "cases_possible_skins", die auf die 'cases'-Tabelle verweist
+            inverseJoinColumns = @JoinColumn(name = "possible_skins_id") // Spalte in "cases_possible_skins", die auf die 'skin_catalog'-Tabelle verweist
+    )
+
     private List<SkinCatalog> possibleSkins;
 }

@@ -6,18 +6,20 @@ import htlkaindorf.backend.pojos.SkinCatalog;
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.repositories.UserSkinRepository;
+import jakarta.transaction.Transactional;
+import lombok.AllArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 
 @Service
+@AllArgsConstructor
 public class UserSkinCreation {
 
+    private static final Logger log = LoggerFactory.getLogger(UserSkinCreation.class);
     private final UserSkinRepository userSkinRepository;
-
-    public UserSkinCreation(UserSkinRepository userSkinRepository) {
-        this.userSkinRepository = userSkinRepository;
-    }
 
     public UserSkin createNewUserSkin(Integer skinCatalogId, Float floatValue, Rarity rarity, Boolean isStattrak, Float price, Integer userId) {
         UserSkin newSkin = new UserSkin();
@@ -32,6 +34,9 @@ public class UserSkinCreation {
         newSkin.setStattrak(isStattrak);
         newSkin.setPrice(price);
         newSkin.setDropDate(LocalDate.now());
+        newSkin.setUserReferenceId(userId);
+
+        log.info("Creating new user skin: " + newSkin);
 
         return userSkinRepository.save(newSkin);
     }

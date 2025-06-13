@@ -53,14 +53,14 @@ public class SkinReader {
                 boolean stattrak = Boolean.parseBoolean(parts[4]);
                 float price = Float.parseFloat(parts[5]);
                 LocalDate dropDate = LocalDate.parse(parts[6]);
-                Long userId = Long.parseLong(parts[7]);
+                Integer userId = Integer.valueOf(parts[7]);
 
                 Integer skinCatalogId = skinCatalogRepository.findById(skinId).get().getId();
                 SkinCatalog skin = skinCatalogRepository.findById(skinId).orElse(null);
-                User user = userRepository.findById(userId.intValue()).orElse(null);
 
                 UserSkin userSkin = new UserSkin();
                 userSkin.setSkinCatalogId(skinCatalogId);
+                userSkin.setUserReferenceId(userId);
                 userSkin.setFloatValue(floatValue);
                 userSkin.setExterior(exterior);
                 userSkin.setRarity(rarity);
