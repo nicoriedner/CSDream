@@ -1,11 +1,12 @@
 package htlkaindorf.backend.controller;
 
 import htlkaindorf.backend.dto.UserSkinDTO;
-import htlkaindorf.backend.pojos.UserSkin;
 import htlkaindorf.backend.service.UserSkinService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -36,8 +37,23 @@ public class UserSkinController {
     }
 
     @DeleteMapping("/remove/{userId}/{skinId}")
-    public ResponseEntity<Boolean> removeUserSkin(@PathVariable Integer userId,
-                                                  @PathVariable Integer skinId) {
-        return ResponseEntity.ok(userSkinService.removeUserSkin(userId, skinId));
+    public ResponseEntity<Float> removeUserSkin(@PathVariable Integer userId,
+                                                @PathVariable Integer skinId) {
+        try {
+            Float updatedBalance = userSkinService.sellItem(userId, skinId);
+            return ResponseEntity.ok(updatedBalance);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(404).body(-1f);
+        }
+    }
+
+    @PostMapping("/sell/{userId}/{skinId}")
+    public ResponseEntity<Float> sellSkin(@PathVariable Integer userId, @PathVariable Integer skinId) {
+        try {
+            Float newBalance = userSkinService.sellItem(userId, skinId);
+            return ResponseEntity.ok(newBalance); // Gib den neuen Guthabenwert zurück
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Fehlerbehandlung
+        }
     }
 }
