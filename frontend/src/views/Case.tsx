@@ -2,14 +2,12 @@ import { useEffect, useState } from 'react';
 import '../css/Cases.css';
 import api from '../api';
 
-// Struktur eines Cases aus dem Backend
 interface Case {
     id: number;
     name: string;
     price: number;
 }
 
-// SkinCatalog + UserSkin vom Backend
 interface SkinCatalog {
     name: string;
     imageUrl: string;
@@ -29,47 +27,57 @@ interface UserSkin {
 const CasesPage = () => {
     const [cases, setCases] = useState<Case[]>([]);
     const [selectedSkins, setSelectedSkins] = useState<UserSkin[]>([]);
-    const [isOpening, setIsOpening] = useState(false);
     const [highlightedSkin, setHighlightedSkin] = useState<UserSkin | null>(null);
     const [claimedSkin, setClaimedSkin] = useState<UserSkin | null>(null);
+    const [isOpening, setIsOpening] = useState(false);
 
     useEffect(() => {
-        api.get('/cases').then((res) => {
-            setCases(res.data);
-        });
+        api.get('/cases').then((res) => setCases(res.data));
     }, []);
 
     const openCase = async (caseId: number) => {
         setIsOpening(true);
+        setClaimedSkin(null);
         setHighlightedSkin(null);
 
         const res = await api.post(`/caseunboxing/openCase?caseId=${caseId}&userId=${localStorage.getItem('userId')}`);
         const finalSkin: UserSkin = res.data;
 
-        const fakeSkins: UserSkin[] = Array(30).fill(finalSkin).map((s, i) => ({
-            ...s,
+        const fakeSkins: UserSkin[] = Array.from({ length: 60 }, (_, i) => ({
+            ...finalSkin,
             skin: {
-                ...s.skin,
-                name: `${s.skin.name} ${i}`
+                ...finalSkin.skin,
+                name: `${finalSkin.skin.name} ${i}`
             }
         }));
 
         setSelectedSkins(fakeSkins);
 
-        let counter = 0;
-        const interval = setInterval(() => {
-            setHighlightedSkin(fakeSkins[counter]);
-            counter++;
-            if (counter >= fakeSkins.length) {
-                clearInterval(interval);
+        const strip = document.getElementById('scroll-strip');
+        if (!strip) return;
+
+        let position = 0;
+        let velocity = 50; // px/frame
+        const friction = 0.97;
+        const finalStop = 120 * 30; // center index * tile width
+
+        const animate = () => {
+            if (!strip) return;
+            if (velocity < 1 || position > finalStop) {
                 setTimeout(() => {
-                    setHighlightedSkin(finalSkin);
                     setClaimedSkin(finalSkin);
                     setIsOpening(false);
-                    alert(`${finalSkin.skin.name} zum Inventar hinzugefügt!`);
-                }, 500);
+                }, 700);
+                return;
             }
-        }, 100);
+
+            position += velocity;
+            velocity *= friction;
+            strip.style.transform = `translateX(-${position}px)`;
+            requestAnimationFrame(animate);
+        };
+
+        requestAnimationFrame(animate);
     };
 
     return (
@@ -79,12 +87,7 @@ const CasesPage = () => {
             <div className="cases-grid">
                 {cases.map((cs) => (
                     <div className="case-card" key={cs.id}>
-                        {/* Verwende überall das gleiche Case-Bild */}
-                        <img
-                            className="case-image"
-                            src="/images/case.png"
-                            alt={cs.name}
-                        />
+                        <img className="case-image" src="/images/case.png" alt={cs.name} />
                         <div className="case-content">
                             <div className="case-name">{cs.name}</div>
                             <button className="open-button" onClick={() => openCase(cs.id)} disabled={isOpening}>
@@ -97,28 +100,15 @@ const CasesPage = () => {
 
             {isOpening && (
                 <div className="case-overlay">
-                    <div className="scroll-strip">
+                    <div className="spin-indicator"></div>
+                    <div className="scroll-strip" id="scroll-strip">
                         {selectedSkins.map((skin, index) => (
-                            <div
-                                className={`skin-tile ${skin.skin.name === highlightedSkin?.skin.name ? 'highlighted' : ''}`}
-                                key={index}
-                            >
+                            <div className="skin-tile" key={index}>
                                 <img src={skin.skin.imageUrl || '/placeholder_skin.png'} alt={skin.skin.name} />
                                 <div>{skin.skin.name}</div>
                             </div>
                         ))}
                     </div>
-                </div>
-            )}
-
-            {claimedSkin && (
-                <div className="claimed-skin">
-                    <h3>Du hast gewonnen!</h3>
-                    <img src={claimedSkin.skin.imageUrl || '/placeholder_skin.png'} alt={claimedSkin.skin.name} />
-                    <p>{claimedSkin.skin.name}</p>
-                    <p>Rarity: {claimedSkin.rarity}</p>
-                    <p>Float: {claimedSkin.floatValue.toFixed(4)}</p>
-                    <p>Stattrak: {claimedSkin.stattrak ? 'Ja' : 'Nein'}</p>
                 </div>
             )}
         </div>

@@ -14,7 +14,7 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 
-@Component
+@Component("catalogReader")
 @RequiredArgsConstructor
 public class CatalogReader {
 
@@ -51,7 +51,6 @@ public class CatalogReader {
 
                 float floatMin = 0f;
                 float floatMax = 0f;
-                // Falls der Skin einen float hat
                 if (!floatRangeRaw.equalsIgnoreCase("None - None")) {
                     String[] floatRange = floatRangeRaw.split("-");
                     floatMin = Float.parseFloat(floatRange[0].trim());
@@ -77,7 +76,6 @@ public class CatalogReader {
     }
 
     private Rarity getSkinRarity(String rarityString) {
-        // gibt die Rarity zum übergebenen String zurück
         return switch (rarityString.trim().toUpperCase()) {
             case "CONSUMER GRADE" -> Rarity.CONSUMER;
             case "INDUSTRIAL GRADE" -> Rarity.INDUSTRIAL;
@@ -91,17 +89,14 @@ public class CatalogReader {
     }
 
     private String getPlainSkinName(String name) {
-        // Von den Extraordinaries den Stern entfernen
         name = name.replaceFirst("★ ", "");
 
         if (name.contains("|")) {
-            // Damit es nicht nach "Oder" sucht braucht man \\
             return name.split("\\|")[0].trim();
         }
 
         String[] parts = name.split(" ");
         if (parts.length >= 2) {
-            // Falls ein Skinname 2 Wörter enthält
             return parts[0] + " " + parts[1];
         }
 
@@ -111,7 +106,6 @@ public class CatalogReader {
     public String getSkinImageUrl(String skinName) {
         String basePath = "backend/src/main/resources/images/";
 
-        // Name von den Img Dateien
         String[] imageNames = {
                 "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",
                 "dual", "falchion", "famas", "fiveseven", "flip", "g3sg1", "galil", "glock", "gloves", "gut", "huntsman",
@@ -122,12 +116,10 @@ public class CatalogReader {
 
         for (String name : imageNames) {
             if (skinName.toLowerCase().contains(name)) {
-                // gibt den ganzen Pfad zum gesuchten Skin zurück
                 return basePath + name + ".png";
             }
         }
         if(skinName.toLowerCase().contains("wraps")) {
-            // Da Hand Wraps auch gloves sind, geben wir hier das gleiche Bild zurück
             return basePath + "gloves.png";
         }
 

@@ -7,8 +7,12 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", uses = SkinCatalogMapper.class)
 public interface UserSkinMapper {
+    @Mapping(source = "skinCatalogId", target = "skin.id")
     UserSkinDTO toDto(UserSkin userSkin);
+
     List<UserSkinDTO> toDtoList(List<UserSkin> skins);
+
     UserSkin toEntity(UserSkinDTO userSkinDTO);
+
     List<UserSkin> toEntityList(List<UserSkinDTO> userSkinDTOs);
 }

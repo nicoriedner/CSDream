@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet, Animated } from 'react-native';
+import { View, Text, TouchableOpacity, Image, ScrollView, StyleSheet } from 'react-native';
 
 interface User {
     id: number;
@@ -11,7 +11,7 @@ interface User {
     balance: number;
 }
 
-const url = '10.0.0.35';
+const url = '10.153.1.242';
 
 const ChooseUser = ({ navigation }: any) => {
     const [users, setUsers] = useState<User[]>([]);
@@ -41,13 +41,13 @@ const ChooseUser = ({ navigation }: any) => {
                         style={[styles.card, pressedId === user.id && styles.cardPressed]}
                         onPressIn={() => setPressedId(user.id)}
                         onPressOut={() => setPressedId(null)}
-                        onPress={() => navigation.navigate('balanceChange', {
+                        onPress={() => navigation.navigate('MainMenu', {
                             id: user.id,
                             username: user.username
                         })}
                         activeOpacity={0.85}
                     >
-                        <Image source={{ uri: `http://${url}:8080${user.avatar}` }} style={styles.avatar} />
+                        <Image source={{ uri: `http://${url}:8080${'/images' + user.avatar}` }} style={styles.avatar} />
                         <Text style={styles.username}>{user.username}</Text>
                     </TouchableOpacity>
                 ))}
@@ -59,12 +59,12 @@ const ChooseUser = ({ navigation }: any) => {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1d1a39', // var(--bg-dark)
+        backgroundColor: '#1d1a39',
         alignItems: 'center',
         paddingTop: 40,
     },
     heading: {
-        color: '#e2e2f2', // var(--text)
+        color: '#e2e2f2',
         fontSize: 24,
         fontWeight: 'bold',
         marginBottom: 20,
@@ -82,14 +82,14 @@ const styles = StyleSheet.create({
         padding: 16,
         marginBottom: 16,
         width: 250,
-        elevation: 8, // Android shadow
-        shadowColor: '#000', // iOS shadow
+        elevation: 8,
+        shadowColor: '#000',
         shadowOffset: { width: 0, height: 6 },
         shadowOpacity: 0.3,
         shadowRadius: 10,
     },
     cardPressed: {
-        backgroundColor: '#5c4bc5', // var(--accent)
+        backgroundColor: '#5c4bc5',
         transform: [{ scale: 0.95 }],
         shadowColor: '#fff',
         shadowOpacity: 0.5,

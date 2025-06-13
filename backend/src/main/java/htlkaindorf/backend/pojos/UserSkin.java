@@ -35,4 +35,8 @@ public class UserSkin {
 
     @Column(name = "drop_date")
     private LocalDate dropDate;
+
+    @ManyToOne
+    @JoinColumn(name = "skin_id")
+    private SkinCatalog skin;
 }
