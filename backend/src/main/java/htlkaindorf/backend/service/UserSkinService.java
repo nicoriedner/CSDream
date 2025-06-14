@@ -9,6 +9,8 @@ import htlkaindorf.backend.repositories.SkinCatalogRepository;
 import htlkaindorf.backend.repositories.UserRepository;
 import htlkaindorf.backend.repositories.UserSkinRepository;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,6 +19,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class UserSkinService {
+    private static final Logger log = LoggerFactory.getLogger(UserSkinService.class);
     private final UserSkinRepository userSkinRepository;
     private final UserSkinMapper userSkinMapper;
     private final SkinCatalogRepository skinCatalogRepository;
@@ -40,6 +43,7 @@ public class UserSkinService {
     public Boolean saveUserSkin(UserSkinDTO userSkinDTO) {
         try {
             UserSkin userSkin = userSkinMapper.toEntity(userSkinDTO);
+            log.info("ID: " + userSkin.getUserReferenceId());
             userSkinRepository.save(userSkin);
             return true;
         } catch (Exception e) {

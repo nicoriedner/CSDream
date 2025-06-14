@@ -34,14 +34,39 @@ const CasesPage: React.FC = () => {
         setIsOpening(true);
         setClaimedSkin(null);
 
-        const res = await api.post(`/caseunboxing/openCase?caseId=${caseId}&userId=${localStorage.getItem('userId')}`);
-        const finalSkin: SkinCatalog = res.data;
+        const userId = localStorage.getItem('userId');
+        if (!userId) {
+            console.error("User ID not found in local storage. Cannot open case.");
+            setIsOpening(false);
+            alert("Benutzer-ID nicht gefunden. Bitte melden Sie sich an.");
+            return;
+        }
 
-        // Speicher den Skin im Inventar des Benutzers
-        await api.post(`/api/userSkin/add/${localStorage.getItem('userId')}`, finalSkin);
+        try {
+            const res = await api.post(
+                `/caseunboxing/openCase`,
+                null,
+                {
+                    params: {
+                        caseId: caseId,
+                        userId: userId
+                    }
+                }
+            );
 
-        setClaimedSkin(finalSkin);
-        setIsOpening(false);
+            const finalSkin: SkinCatalog = res.data;
+
+            await api.post(`/userSkin/add/${userId}`, finalSkin);
+
+            setClaimedSkin(finalSkin);
+            setIsOpening(false);
+
+        } catch (err) {
+            console.error('Fehler beim Öffnen der Case:', err);
+            setIsOpening(false);
+            alert("Fehler beim Öffnen der Case. Bitte versuchen Sie es erneut.");
+        }
+
     };
 
     return (

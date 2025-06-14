@@ -1,5 +1,6 @@
 package htlkaindorf.backend.dto;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import htlkaindorf.backend.pojos.*;
 import lombok.*;
 import java.time.LocalDate;
@@ -17,5 +18,6 @@ public class UserSkinDTO {
     private Float price;
     private LocalDate dropDate;
     private SkinCatalog skin;
+    @JsonProperty("userId")
     private Integer userReferenceId;
 }

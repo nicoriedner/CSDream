@@ -35,7 +35,7 @@ const UpgraderPage = () => {
         const userId = localStorage.getItem('userId');
         if (!userId) return;
 
-        api.get(`/userskin/allByUserId/${userId}`).then((res) => {
+        api.get(`/userSkin/allByUserId/${userId}`).then((res) => {
             setUserSkins(res.data);
         });
 
@@ -73,7 +73,7 @@ const UpgraderPage = () => {
             setSelectedSkins([]); // Auswahl zurücksetzen
 
             // Lade Skins neu (verlorene werden entfernt)
-            const updatedSkins = await api.get(`/userskin/allByUserId/${userId}`);
+            const updatedSkins = await api.get(`/userSkin/allByUserId/${userId}`);
             setUserSkins(updatedSkins.data);
 
         } catch (error) {
