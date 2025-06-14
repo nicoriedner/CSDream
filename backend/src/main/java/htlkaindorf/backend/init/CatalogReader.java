@@ -104,7 +104,7 @@ public class CatalogReader {
     }
 
     public String getSkinImageUrl(String skinName) {
-        String basePath = "backend/src/main/resources/images/";
+        String basePath = "/images/";
 
         String[] imageNames = {
                 "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",

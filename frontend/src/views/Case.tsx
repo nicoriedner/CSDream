@@ -25,7 +25,7 @@ const CasesPage: React.FC = () => {
     const [claimedSkin, setClaimedSkin] = useState<SkinCatalog | null>(null);
 
     useEffect(() => {
-        api.get('/api/cases/allCases')
+        api.get('/cases/allCases')
             .then((res) => setCases(res.data))
             .catch((err) => console.error('Fehler beim Laden der Cases:', err));
     }, []);

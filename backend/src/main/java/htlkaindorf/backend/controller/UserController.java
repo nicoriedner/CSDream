@@ -2,11 +2,15 @@ package htlkaindorf.backend.controller;
 
 import htlkaindorf.backend.dto.UserDTO;
 import htlkaindorf.backend.dto.UserSkinDTO;
+import htlkaindorf.backend.init.SkinReader;
+import htlkaindorf.backend.pojos.User;
+import htlkaindorf.backend.repositories.UserRepository;
 import htlkaindorf.backend.service.UserService;
 import htlkaindorf.backend.service.UserSkinService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,6 +20,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UserController {
     private final UserService userService;
+    private final UserRepository userRepository;
+    private final SkinReader skinReader;
 
     @GetMapping("/balance/{userId}")
     public ResponseEntity<Float> getBalanceById(@PathVariable Integer userId) {

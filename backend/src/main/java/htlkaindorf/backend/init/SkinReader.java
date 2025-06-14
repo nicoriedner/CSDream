@@ -30,8 +30,7 @@ public class SkinReader {
     private final UserRepository userRepository;
 
     // im Grunde nur Testklasse für bereits erstelle Skins.
-    @PostConstruct
-    public void readSkins() {
+    public void readSkins(Integer userId) {
         InputStream inputStream = getClass().getClassLoader().getResourceAsStream("csv/userSkin.csv");
         if (inputStream == null) {
             throw new RuntimeException("CSV-Datei konnte nicht geladen werden.");
@@ -53,7 +52,6 @@ public class SkinReader {
                 boolean stattrak = Boolean.parseBoolean(parts[4]);
                 float price = Float.parseFloat(parts[5]);
                 LocalDate dropDate = LocalDate.parse(parts[6]);
-                Integer userId = Integer.valueOf(parts[7]);
 
                 Integer skinCatalogId = skinCatalogRepository.findById(skinId).get().getId();
                 SkinCatalog skin = skinCatalogRepository.findById(skinId).orElse(null);

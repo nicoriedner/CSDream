@@ -16,7 +16,7 @@ public class UserBalanceManager {
     private final UserRepository userRepository;
     private final UserSkinRepository userSkinRepository;
 
-    public Float manageUserBalance(Integer userId, Integer balanceChange) {
+    public Float manageUserBalance(Integer userId, Long balanceChange) {
         // sucht den übergebenen User
         User user = userRepository.findUserById(userId);
         if (user == null) {

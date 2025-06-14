@@ -1,6 +1,7 @@
 package htlkaindorf.backend.service;
 
 import htlkaindorf.backend.dto.UserDTO;
+import htlkaindorf.backend.init.SkinReader;
 import htlkaindorf.backend.mapper.UserMapper;
 import htlkaindorf.backend.pojos.User;
 import htlkaindorf.backend.repositories.UserRepository;
@@ -20,6 +21,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final UserMapper userMapper;
+    private final SkinReader skinReader;
 
     public Optional<User> authenticate(String username, String password) {
         User user = userRepository.findUserByUsername(username);
@@ -54,7 +56,14 @@ public class UserService {
         user.setAvatar(avatar);
         user.setBalance(100f);
 
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        try {
+            skinReader.readSkins(savedUser.getId());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return savedUser;
     }
 
     public Float getUserBalance(Integer userId) {

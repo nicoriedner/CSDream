@@ -1,5 +1,6 @@
 package htlkaindorf.backend.unboxing;
 
+import htlkaindorf.backend.config.balanceManager.UserBalanceManager;
 import htlkaindorf.backend.pojos.Case;
 import htlkaindorf.backend.pojos.Rarity;
 import htlkaindorf.backend.pojos.SkinCatalog;
@@ -17,6 +18,7 @@ import java.util.stream.Collectors;
 @AllArgsConstructor
 public class CaseUnboxing {
     private final UserSkinCreation creator;
+    private UserBalanceManager balanceManager;
 
     //    MIL_SPEC 79,92%
     //    RESTRICTED 15,98%
@@ -26,31 +28,35 @@ public class CaseUnboxing {
 
     //79,97 Milspec 15,98 restricted 3,2 classified 0,64 covert 0,26 gold
     public void unboxCase(Case caseToUnbox, Integer userId) {
-        Random rand = new Random();
-        float unboxIndex = rand.nextFloat() * 100;
-        Rarity unboxedRarity;
+        if (balanceManager.manageUserBalance(userId, caseToUnbox.getPrice() * (-1)) >= 0) {
 
-        // unboxIndex ist von den oben angegebenen Chancen abhängig.
-        if (unboxIndex <= 79.92) {
-            unboxedRarity = Rarity.MIL_SPEC;
-        } else if (unboxIndex <= 95.9) {
-            unboxedRarity = Rarity.RESTRICTED;
-        } else if (unboxIndex <= 99.1) {
-            unboxedRarity = Rarity.CLASSIFIED;
-        } else if (unboxIndex <= 99.74) {
-            unboxedRarity = Rarity.COVERT;
-        } else unboxedRarity = Rarity.EXTRAORDINARY;
 
-        SkinCatalog unboxedSkin = getSkin(unboxedRarity, caseToUnbox);
-        long statTrak = rand.nextInt(10);
+            Random rand = new Random();
+            float unboxIndex = rand.nextFloat() * 100;
+            Rarity unboxedRarity;
+
+            // unboxIndex ist von den oben angegebenen Chancen abhängig.
+            if (unboxIndex <= 79.92) {
+                unboxedRarity = Rarity.MIL_SPEC;
+            } else if (unboxIndex <= 95.9) {
+                unboxedRarity = Rarity.RESTRICTED;
+            } else if (unboxIndex <= 99.1) {
+                unboxedRarity = Rarity.CLASSIFIED;
+            } else if (unboxIndex <= 99.74) {
+                unboxedRarity = Rarity.COVERT;
+            } else unboxedRarity = Rarity.EXTRAORDINARY;
+
+            SkinCatalog unboxedSkin = getSkin(unboxedRarity, caseToUnbox);
+            long statTrak = rand.nextInt(10);
             boolean isStattrak = (statTrak == 0);
 
-        Float floatValue = getFloatValue(unboxedSkin);
+            Float floatValue = getFloatValue(unboxedSkin);
 
-        Float priceOfSkin = calculatePriceOfSkin(unboxedSkin, floatValue, isStattrak);
-        Integer skinId = unboxedSkin.getId();
+            Float priceOfSkin = calculatePriceOfSkin(unboxedSkin, floatValue, isStattrak);
+            Integer skinId = unboxedSkin.getId();
 
-        creator.createNewUserSkin(skinId, floatValue, unboxedSkin.getRarity(), isStattrak, priceOfSkin, userId);
+            creator.createNewUserSkin(skinId, floatValue, unboxedSkin.getRarity(), isStattrak, priceOfSkin, userId);
+        }
     }
 
     public SkinCatalog getSkin(Rarity rarity, Case caseToUnbox) {
