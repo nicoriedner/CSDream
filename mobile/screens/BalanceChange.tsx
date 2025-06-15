@@ -3,6 +3,7 @@ import { Text, TextInput, TouchableOpacity, View, StyleSheet } from 'react-nativ
 import axios from 'axios';
 
 const url = '10.153.1.242';
+const url1 = '10.0.0.35';
 
 const BalanceChange = ({ route }: any) => {
     const { id, username } = route.params;
@@ -12,7 +13,7 @@ const BalanceChange = ({ route }: any) => {
     useEffect(() => {
         (async () => {
             try {
-                const response = await fetch(`http://${url}:8080/api/users/balance/${id}`);
+                const response = await fetch(`http://${url1}:8080/api/users/balance/${id}`);
                 const data = await response.json();
                 setBalance(data);
             } catch (e) {
@@ -24,7 +25,7 @@ const BalanceChange = ({ route }: any) => {
     const changeBalance = async () => {
         try {
             const value = Number(newBalance);
-            await axios.patch(`http://${url}:8080/api/users/${id}/balanceChange?newBalance=${value}`);
+            await axios.patch(`http://${url1}:8080/api/users/${id}/balanceChange?newBalance=${value}`);
             setBalance(value);
             setNewBalance('');
         } catch (e) {

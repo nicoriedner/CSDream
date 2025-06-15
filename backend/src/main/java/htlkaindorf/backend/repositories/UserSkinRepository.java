@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface UserSkinRepository extends JpaRepository<UserSkin, Integer> {
+
     @Query("SELECT u FROM UserSkin u WHERE u.userReferenceId = ?1")
     List<UserSkin> findAllByUserId(Integer userId);
 
@@ -19,4 +20,5 @@ public interface UserSkinRepository extends JpaRepository<UserSkin, Integer> {
     Optional<UserSkin> findByUserReferenceIdAndSkinCatalogId(Integer userId, Integer skinCatalogId);
 
     Optional<UserSkin> findByUserReferenceIdAndId(Integer userId, Integer skinId);
+
 }

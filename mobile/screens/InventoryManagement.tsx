@@ -25,6 +25,7 @@ export interface UserSkin {
 }
 
 const url = '10.153.1.242';
+const url1 = '10.0.0.35';
 
 const InventoryManagement = ({ route }: any) => {
     const { id, username } = route.params;
@@ -34,7 +35,7 @@ const InventoryManagement = ({ route }: any) => {
     useEffect(() => {
         const loadInventory = async () => {
             try {
-                const response = await fetch(`http://${url}:8080/api/userSkin/allByUserId/${id}`);
+                const response = await fetch(`http://${url1}:8080/api/userSkin/allByUserId/${id}`);
                 const data = await response.json();
                 setSkins(data);
             } catch (err) {
@@ -44,7 +45,7 @@ const InventoryManagement = ({ route }: any) => {
 
         const loadSkinCatalog = async () => {
             try {
-                const response = await fetch(`http://${url}:8080/api/skinCatalog/all`);
+                const response = await fetch(`http://${url1}:8080/api/skinCatalog/all`);
                 const data = await response.json();
                 setSkinCatalog(data);
             } catch (err) {

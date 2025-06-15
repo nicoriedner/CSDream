@@ -1,114 +1,101 @@
-import React, { useEffect, useState } from 'react';
-import api from '../api';
-import '../css/Cases.css';
+import { useEffect, useState } from "react";
+import api from "../api";
+import "../css/Cases.css";
 
-export interface SkinCatalog {
-    id: number;
-    name: string;
-    collectionOrCase: string;
-    rarity: string;
-    floatMin: number;
-    floatMax: number;
-    imgUrl: string | null;
-}
-
-export interface Case {
+interface Case {
     id: number;
     name: string;
     price: number;
-    possibleSkins: SkinCatalog[];
 }
 
-const CasesPage: React.FC = () => {
+interface SkinCatalog {
+    id: number;
+    name: string;
+    imgUrl: string;
+}
+
+const CasesPage = () => {
     const [cases, setCases] = useState<Case[]>([]);
-    const [isOpening, setIsOpening] = useState(false);
-    const [claimedSkin, setClaimedSkin] = useState<SkinCatalog | null>(null);
+    const [loading, setLoading] = useState(true);
+    const [opening, setOpening] = useState(false);
+    const [unboxedSkin, setUnboxedSkin] = useState<SkinCatalog | null>(null);
+    const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
     useEffect(() => {
-        api.get('/cases/allCases')
+        const userId = localStorage.getItem("userId");
+        if (userId) setCurrentUserId(parseInt(userId));
+
+        api.get("/cases/allCases")
             .then((res) => setCases(res.data))
-            .catch((err) => console.error('Fehler beim Laden der Cases:', err));
+            .catch((err) => console.error("Fehler beim Laden der Cases:", err))
+            .finally(() => setLoading(false));
     }, []);
 
     const openCase = async (caseId: number) => {
-        setIsOpening(true);
-        setClaimedSkin(null);
+        if (!currentUserId) return;
 
-        const userId = localStorage.getItem('userId');
-        if (!userId) {
-            console.error("User ID not found in local storage. Cannot open case.");
-            setIsOpening(false);
-            alert("Benutzer-ID nicht gefunden. Bitte melden Sie sich an.");
-            return;
-        }
+        setOpening(true);
+        setUnboxedSkin(null);
 
         try {
-            const res = await api.post(
-                `/caseunboxing/openCase`,
-                null,
-                {
-                    params: {
-                        caseId: caseId,
-                        userId: userId
-                    }
+            const res = await api.post("/cases/caseunboxing/openCase", null, {
+                params: {
+                    caseId,
+                    userId: currentUserId
                 }
-            );
+            });
 
-            const finalSkin: SkinCatalog = res.data;
-
-            await api.post(`/userSkin/add/${userId}`, finalSkin);
-
-            setClaimedSkin(finalSkin);
-            setIsOpening(false);
-
+            // Warten für Animation
+            setTimeout(() => {
+                setUnboxedSkin(res.data);
+                setOpening(false);
+            }, 2000);
         } catch (err) {
-            console.error('Fehler beim Öffnen der Case:', err);
-            setIsOpening(false);
-            alert("Fehler beim Öffnen der Case. Bitte versuchen Sie es erneut.");
+            console.error("Fehler beim Öffnen der Case:", err);
+            setOpening(false);
         }
+    };
 
+    const getImagePath = (imgUrl: string | null) => {
+        if (!imgUrl) return "/images/placeholder.png";
+        return `/images/${imgUrl}`;
     };
 
     return (
         <div className="cases-container">
-            <h2>Case Öffnen</h2>
-
-            <div className="cases-grid">
-                {cases.map((cs) => (
-                    <div className="case-card" key={cs.id}>
-                        <img
-                            className="case-image"
-                            src={cs.possibleSkins[0]?.imgUrl || '/images/case.png'}
-                            alt={cs.name}
-                        />
-                        <div className="case-content">
-                            <div className="case-name">{cs.name}</div>
-                            <button
-                                className="open-button"
-                                onClick={() => openCase(cs.id)}
-                                disabled={isOpening}
-                            >
-                                {isOpening ? 'Öffnet...' : `Öffnen (${cs.price}C)`}
-                            </button>
+            <h2>Cases</h2>
+            {loading ? (
+                <p>Lade Cases...</p>
+            ) : (
+                <div className="case-list">
+                    {cases.map((c) => (
+                        <div key={c.id} className="case-card">
+                            <img src="/images/case.png" alt="Case" />
+                            <h3>{c.name}</h3>
+                            <p>Preis: {c.price} Coins</p>
+                            <button disabled={opening} onClick={() => openCase(c.id)}>Öffnen</button>
                         </div>
-                    </div>
-                ))}
-            </div>
+                    ))}
+                </div>
+            )}
 
-            {claimedSkin && (
-                <div className="claimed-skin">
-                    <h3>Gratulation! Du hast einen neuen Skin gewonnen:</h3>
-                    <div className="skin-card">
+            {opening && (
+                <div className="spin-animation">
+                    <div className="spinner">🎁 Öffne Case...</div>
+                </div>
+            )}
+
+            {unboxedSkin && (
+                <div className="popup-overlay">
+                    <div className="popup">
+                        <h3>Du hast gezogen:</h3>
                         <img
-                            src={claimedSkin.imgUrl || '/images/placeholder.png'}
-                            alt={claimedSkin.name}
-                            className="skin-image"
+                            src={getImagePath(unboxedSkin.imgUrl)}
+                            alt={unboxedSkin.name}
+                            onError={(e) => e.currentTarget.src = "/images/placeholder.png"}
                         />
-                        <div className="skin-info">
-                            <h3>{claimedSkin.name}</h3>
-                            <p>Rarity: {claimedSkin.rarity}</p>
-                            <p>Float: {claimedSkin.floatMin} - {claimedSkin.floatMax}</p>
-                        </div>
+                        <p>{unboxedSkin.name}</p>
+                        <button onClick={() => setUnboxedSkin(null)}>Zum Inventar hinzufügen</button>
                     </div>
                 </div>
             )}

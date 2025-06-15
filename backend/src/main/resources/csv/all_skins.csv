@@ -294,7 +294,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 293,★ Bayonet | Freehand,Unknown,Covert,0 - 0.48,bayonet.png
 294,★ Bayonet | Doppler,Unknown,Covert,0 - 0.08,bayonet.png
 295,★ Bayonet | Doppler,Unknown,Covert,0 - 0.08,bayonet.png
-296,★ Bayonet | Slaughter,Unknown,Covert,0.01 - 0.26,aug.png
+296,★ Bayonet | Slaughter,Unknown,Covert,0.01 - 0.26,bayonet.png
 297,★ Bayonet | Tiger Tooth,Unknown,Covert,0 - 0.08,bayonet.png
 298,★ Bayonet | Blue Steel,Unknown,Covert,0 - 1,bayonet.png
 299,★ Bayonet | Damascus Steel,Unknown,Covert,0 - 0.5,bayonet.png
@@ -383,48 +383,48 @@ id,name,collection_or_case,rarity,float_category,image_url
 382,CZ75-Auto | Pink Pearl,The Radiant Collection,Consumer Grade,0 - 0.7,cz75.png
 383,CZ75-Auto | Midnight Palm,The 2021 Mirage Collection,Industrial Grade,0 - 0.5,cz75.png
 384,CZ75-Auto | Jungle Dashed,The Control Collection,Consumer Grade,0.06 - 0.8,cz75.png
-385,Desert Eagle | Blaze,The Dust Collection,Restricted,0 - 0.08,default.png
-386,Desert Eagle | Hypnotic,The Arms Deal Collection,Classified,0 - 0.08,default.png
-387,Desert Eagle | Bronze Deco,The Chroma 2 Collection,Mil-Spec Grade,0 - 0.46,default.png
-388,Desert Eagle | Meteorite,The Bank Collection,Mil-Spec Grade,0 - 0.18,default.png
-389,Desert Eagle | Cobalt Disruption,The eSports 2013 Winter Collection,Classified,0 - 0.2,default.png
-390,Desert Eagle | Night Heist,The Havoc Collection,Mil-Spec Grade,0 - 0.65,default.png
-391,Desert Eagle | Emerald Jörmungandr,The Norse Collection,Restricted,0 - 0.5,default.png
-392,Desert Eagle | The Bronze,The Control Collection,Industrial Grade,0 - 0.3,default.png
-393,Desert Eagle | Golden Koi,The Bravo Collection,Covert,0 - 0.12,default.png
-394,Desert Eagle | Sunset Storm 壱,The Rising Sun Collection,Restricted,0 - 0.75,default.png
-395,Desert Eagle | Midnight Storm,The Rising Sun Collection,Industrial Grade,0 - 0.75,default.png
-396,Desert Eagle | Sunset Storm 弐,The Rising Sun Collection,Restricted,0 - 0.75,default.png
-397,Desert Eagle | Heat Treated,Limited Edition Item,Classified,0 - 1,default.png
-398,Desert Eagle | Corinthian,The Revolver Case Collection,Mil-Spec Grade,0 - 0.44,default.png
-399,Desert Eagle | Naga,The Chroma Collection,Restricted,0 - 1,default.png
-400,Desert Eagle | Directive,The Gamma 2 Collection,Restricted,0.06 - 1,default.png
-401,Desert Eagle | Kumicho Dragon,The Wildfire Collection,Classified,0 - 0.76,default.png
-402,Desert Eagle | Heirloom,The Arms Deal 3 Collection,Restricted,0 - 0.8,default.png
-403,Desert Eagle | Hand Cannon,The Cobblestone Collection,Restricted,0.01 - 0.7,default.png
-404,Desert Eagle | Pilot,The Baggage Collection,Restricted,0 - 1,default.png
-405,Desert Eagle | Printstream,The Fracture Collection,Covert,0 - 0.8,default.png
-406,Desert Eagle | Trigger Discipline,The Snakebite Collection,Restricted,0 - 0.97,default.png
-407,Desert Eagle | Conspiracy,The Breakout Collection,Classified,0 - 0.3,default.png
-408,Desert Eagle | Ocean Drive,The Operation Riptide Collection,Covert,0 - 1,default.png
-409,Desert Eagle | Blue Ply,The Prisma 2 Collection,Mil-Spec Grade,0 - 1,default.png
-410,Desert Eagle | Oxide Blaze,The Spectrum Collection,Mil-Spec Grade,0 - 0.5,default.png
-411,Desert Eagle | Starcade,The Graphic Design Collection,Classified,0 - 0.75,default.png
-412,Desert Eagle | Tilted,The Overpass 2024 Collection,Industrial Grade,0 - 0.75,default.png
-413,Desert Eagle | Calligraffiti,The Gallery Collection,Mil-Spec Grade,0 - 1,default.png
-414,Desert Eagle | Serpent Strike,The Fever Collection,Restricted,0 - 0.57,default.png
-415,Desert Eagle | Code Red,The Horizon Collection,Covert,0 - 1,default.png
-416,Desert Eagle | Light Rail,The Prisma Collection,Restricted,0 - 0.9,default.png
-417,Desert Eagle | Fennec Fox,The 2021 Mirage Collection,Classified,0 - 0.8,default.png
-418,Desert Eagle | Mecha Industries,The Danger Zone Collection,Classified,0 - 0.6,default.png
-419,Desert Eagle | Mint Fan,The Ascent Collection,Mil-Spec Grade,0 - 0.6,default.png
-420,Desert Eagle | Urban DDPAT,The Overpass Collection,Industrial Grade,0.06 - 0.8,default.png
-421,Desert Eagle | Mudder,The Lake Collection,Industrial Grade,0.06 - 0.8,default.png
-422,Desert Eagle | Urban Rubble,The Train Collection,Mil-Spec Grade,0 - 0.5,default.png
-423,Desert Eagle | Crimson Web,The eSports 2014 Summer Collection,Restricted,0.06 - 0.8,default.png
-424,Desert Eagle | Night,The Chop Shop Collection,Industrial Grade,0.06 - 0.8,default.png
-425,Desert Eagle | Mulberry,The Radiant Collection,Restricted,0 - 0.75,default.png
-426,Desert Eagle | Sputnik,The 2021 Train Collection,Mil-Spec Grade,0 - 0.5,default.png
+385,Desert Eagle | Blaze,The Dust Collection,Restricted,0 - 0.08,deagle.png
+386,Desert Eagle | Hypnotic,The Arms Deal Collection,Classified,0 - 0.08,deagle.png
+387,Desert Eagle | Bronze Deco,The Chroma 2 Collection,Mil-Spec Grade,0 - 0.46,deagle.png
+388,Desert Eagle | Meteorite,The Bank Collection,Mil-Spec Grade,0 - 0.18,deagle.png
+389,Desert Eagle | Cobalt Disruption,The eSports 2013 Winter Collection,Classified,0 - 0.2,deagle.png
+390,Desert Eagle | Night Heist,The Havoc Collection,Mil-Spec Grade,0 - 0.65,deagle.png
+391,Desert Eagle | Emerald Jörmungandr,The Norse Collection,Restricted,0 - 0.5,deagle.png
+392,Desert Eagle | The Bronze,The Control Collection,Industrial Grade,0 - 0.3,deagle.png
+393,Desert Eagle | Golden Koi,The Bravo Collection,Covert,0 - 0.12,deagle.png
+394,Desert Eagle | Sunset Storm 壱,The Rising Sun Collection,Restricted,0 - 0.75,deagle.png
+395,Desert Eagle | Midnight Storm,The Rising Sun Collection,Industrial Grade,0 - 0.75,deagle.png
+396,Desert Eagle | Sunset Storm 弐,The Rising Sun Collection,Restricted,0 - 0.75,deagle.png
+397,Desert Eagle | Heat Treated,Limited Edition Item,Classified,0 - 1,deagle.png
+398,Desert Eagle | Corinthian,The Revolver Case Collection,Mil-Spec Grade,0 - 0.44,deagle.png
+399,Desert Eagle | Naga,The Chroma Collection,Restricted,0 - 1,deagle.png
+400,Desert Eagle | Directive,The Gamma 2 Collection,Restricted,0.06 - 1,deagle.png
+401,Desert Eagle | Kumicho Dragon,The Wildfire Collection,Classified,0 - 0.76,deagle.png
+402,Desert Eagle | Heirloom,The Arms Deal 3 Collection,Restricted,0 - 0.8,deagle.png
+403,Desert Eagle | Hand Cannon,The Cobblestone Collection,Restricted,0.01 - 0.7,deagle.png
+404,Desert Eagle | Pilot,The Baggage Collection,Restricted,0 - 1,deagle.png
+405,Desert Eagle | Printstream,The Fracture Collection,Covert,0 - 0.8,deagle.png
+406,Desert Eagle | Trigger Discipline,The Snakebite Collection,Restricted,0 - 0.97,deagle.png
+407,Desert Eagle | Conspiracy,The Breakout Collection,Classified,0 - 0.3,deagle.png
+408,Desert Eagle | Ocean Drive,The Operation Riptide Collection,Covert,0 - 1,deagle.png
+409,Desert Eagle | Blue Ply,The Prisma 2 Collection,Mil-Spec Grade,0 - 1,deagle.png
+410,Desert Eagle | Oxide Blaze,The Spectrum Collection,Mil-Spec Grade,0 - 0.5,deagle.png
+411,Desert Eagle | Starcade,The Graphic Design Collection,Classified,0 - 0.75,deagle.png
+412,Desert Eagle | Tilted,The Overpass 2024 Collection,Industrial Grade,0 - 0.75,deagle.png
+413,Desert Eagle | Calligraffiti,The Gallery Collection,Mil-Spec Grade,0 - 1,deagle.png
+414,Desert Eagle | Serpent Strike,The Fever Collection,Restricted,0 - 0.57,deagle.png
+415,Desert Eagle | Code Red,The Horizon Collection,Covert,0 - 1,deagle.png
+416,Desert Eagle | Light Rail,The Prisma Collection,Restricted,0 - 0.9,deagle.png
+417,Desert Eagle | Fennec Fox,The 2021 Mirage Collection,Classified,0 - 0.8,deagle.png
+418,Desert Eagle | Mecha Industries,The Danger Zone Collection,Classified,0 - 0.6,deagle.png
+419,Desert Eagle | Mint Fan,The Ascent Collection,Mil-Spec Grade,0 - 0.6,deagle.png
+420,Desert Eagle | Urban DDPAT,The Overpass Collection,Industrial Grade,0.06 - 0.8,deagle.png
+421,Desert Eagle | Mudder,The Lake Collection,Industrial Grade,0.06 - 0.8,deagle.png
+422,Desert Eagle | Urban Rubble,The Train Collection,Mil-Spec Grade,0 - 0.5,deagle.png
+423,Desert Eagle | Crimson Web,The eSports 2014 Summer Collection,Restricted,0.06 - 0.8,deagle.png
+424,Desert Eagle | Night,The Chop Shop Collection,Industrial Grade,0.06 - 0.8,deagle.png
+425,Desert Eagle | Mulberry,The Radiant Collection,Restricted,0 - 0.75,deagle.png
+426,Desert Eagle | Sputnik,The 2021 Train Collection,Mil-Spec Grade,0 - 0.5,deagle.png
 427,Dual Berettas | Cobalt Quartz,The Lake Collection,Restricted,0 - 0.4,dual.png
 428,Dual Berettas | Heist,The Havoc Collection,Consumer Grade,0 - 0.7,dual.png
 429,Dual Berettas | Hemoglobin,The Arms Deal 2 Collection,Restricted,0 - 0.2,dual.png
@@ -719,7 +719,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 718,★ Butterfly Knife | Freehand,Knife Case,Covert,0 - 0.48,butterfly.png
 719,★ Butterfly Knife | Doppler,Knife Case,Covert,0 - 0.08,butterfly.png
 720,★ Butterfly Knife | Doppler,Knife Case,Covert,0 - 0.08,butterfly.png
-721,★ Butterfly Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+721,★ Butterfly Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,butterfly.png
 722,★ Butterfly Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,butterfly.png
 723,★ Butterfly Knife | Blue Steel,Knife Case,Covert,0 - 1,butterfly.png
 724,★ Butterfly Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,butterfly.png
@@ -747,7 +747,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 746,★ Survival Knife | Marble Fade,Knife Case,Covert,0 - 0.08,survival.png
 747,★ Survival Knife | Doppler,Knife Case,Covert,0 - 0.08,survival.png
 748,★ Survival Knife | Doppler,Knife Case,Covert,0 - 0.08,survival.png
-749,★ Survival Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+749,★ Survival Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,survival.png
 750,★ Survival Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,survival.png
 751,★ Survival Knife | Blue Steel,Knife Case,Covert,0 - 1,survival.png
 752,★ Survival Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,survival.png
@@ -762,32 +762,32 @@ id,name,collection_or_case,rarity,float_category,image_url
 761,★ Survival Knife | Safari Mesh,Knife Case,Covert,0.06 - 0.8,survival.png
 762,★ Survival Knife | Night Stripe,Knife Case,Covert,0.06 - 0.8,survival.png
 763,★ Survival Knife | Urban Masked,Knife Case,Covert,0.06 - 0.8,survival.png
-764,★ Paracord Knife | Fade,Knife Case,Covert,0 - 0.08,default.png
-765,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-766,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-767,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-768,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-769,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-770,★ Paracord Knife | Marble Fade,Knife Case,Covert,0 - 0.08,default.png
-771,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-772,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,default.png
-773,★ Paracord Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
-774,★ Paracord Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,default.png
-775,★ Paracord Knife | Blue Steel,Knife Case,Covert,0 - 1,default.png
-776,★ Paracord Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,default.png
-777,★ Paracord Knife | Stained,Knife Case,Covert,0 - 1,default.png
-778,★ Paracord Knife | Case Hardened,Knife Case,Covert,0 - 1,default.png
-779,★ Paracord Knife | Rust Coat,Knife Case,Covert,0.4 - 1,default.png
-780,★ Paracord Knife | Forest DDPAT,Knife Case,Covert,0.06 - 0.8,default.png
-781,★ Paracord Knife | Boreal Forest,Knife Case,Covert,0.06 - 0.8,default.png
-782,★ Paracord Knife | Crimson Web,Knife Case,Covert,0.06 - 0.8,default.png
-783,★ Paracord Knife | Ultraviolet,Knife Case,Covert,0.06 - 0.8,default.png
-784,★ Paracord Knife | Scorched,Knife Case,Covert,0.06 - 0.8,default.png
-785,★ Paracord Knife | Safari Mesh,Knife Case,Covert,0.06 - 0.8,default.png
-786,★ Paracord Knife | Night Stripe,Knife Case,Covert,0.06 - 0.8,default.png
-787,★ Paracord Knife | Urban Masked,Knife Case,Covert,0.06 - 0.8,default.png
+764,★ Paracord Knife | Fade,Knife Case,Covert,0 - 0.08,parachord.png
+765,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+766,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+767,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+768,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+769,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+770,★ Paracord Knife | Marble Fade,Knife Case,Covert,0 - 0.08,parachord.png
+771,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+772,★ Paracord Knife | Doppler,Knife Case,Covert,0 - 0.08,parachord.png
+773,★ Paracord Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,parachord.png
+774,★ Paracord Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,parachord.png
+775,★ Paracord Knife | Blue Steel,Knife Case,Covert,0 - 1,parachord.png
+776,★ Paracord Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,parachord.png
+777,★ Paracord Knife | Stained,Knife Case,Covert,0 - 1,parachord.png
+778,★ Paracord Knife | Case Hardened,Knife Case,Covert,0 - 1,parachord.png
+779,★ Paracord Knife | Rust Coat,Knife Case,Covert,0.4 - 1,parachord.png
+780,★ Paracord Knife | Forest DDPAT,Knife Case,Covert,0.06 - 0.8,parachord.png
+781,★ Paracord Knife | Boreal Forest,Knife Case,Covert,0.06 - 0.8,parachord.png
+782,★ Paracord Knife | Crimson Web,Knife Case,Covert,0.06 - 0.8,parachord.png
+783,★ Paracord Knife | Ultraviolet,Knife Case,Covert,0.06 - 0.8,parachord.png
+784,★ Paracord Knife | Scorched,Knife Case,Covert,0.06 - 0.8,parachord.png
+785,★ Paracord Knife | Safari Mesh,Knife Case,Covert,0.06 - 0.8,parachord.png
+786,★ Paracord Knife | Night Stripe,Knife Case,Covert,0.06 - 0.8,parachord.png
+787,★ Paracord Knife | Urban Masked,Knife Case,Covert,0.06 - 0.8,parachord.png
 788,★ Classic Knife | Fade,Knife Case,Covert,0 - 0.08,classic.png
-789,★ Classic Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+789,★ Classic Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,classic.png
 790,★ Classic Knife | Blue Steel,Knife Case,Covert,0 - 1,classic.png
 791,★ Classic Knife | Stained,Knife Case,Covert,0 - 1,classic.png
 792,★ Classic Knife | Case Hardened,Knife Case,Covert,0 - 1,classic.png
@@ -813,7 +813,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 812,★ Falchion Knife | Freehand,Knife Case,Covert,0 - 0.48,falchion.png
 813,★ Falchion Knife | Doppler,Knife Case,Covert,0 - 0.08,falchion.png
 814,★ Falchion Knife | Doppler,Knife Case,Covert,0 - 0.08,falchion.png
-815,★ Falchion Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+815,★ Falchion Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,falchion.png
 816,★ Falchion Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,falchion.png
 817,★ Falchion Knife | Blue Steel,Knife Case,Covert,0 - 1,falchion.png
 818,★ Falchion Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,falchion.png
@@ -847,7 +847,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 846,★ Flip Knife | Freehand,Knife Case,Covert,0 - 0.48,flip.png
 847,★ Flip Knife | Doppler,Knife Case,Covert,0 - 0.08,flip.png
 848,★ Flip Knife | Doppler,Knife Case,Covert,0 - 0.08,flip.png
-849,★ Flip Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+849,★ Flip Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,flip.png
 850,★ Flip Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,flip.png
 851,★ Flip Knife | Blue Steel,Knife Case,Covert,0 - 1,flip.png
 852,★ Flip Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,flip.png
@@ -909,7 +909,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 908,★ Navaja Knife | Marble Fade,Knife Case,Covert,0 - 0.08,navaja.png
 909,★ Navaja Knife | Doppler,Knife Case,Covert,0 - 0.08,navaja.png
 910,★ Navaja Knife | Doppler,Knife Case,Covert,0 - 0.08,navaja.png
-911,★ Navaja Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+911,★ Navaja Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,navaja.png
 912,★ Navaja Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,navaja.png
 913,★ Navaja Knife | Blue Steel,Knife Case,Covert,0 - 1,navaja.png
 914,★ Navaja Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,navaja.png
@@ -939,7 +939,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 938,★ Karambit | Freehand,Unknown,Covert,0 - 0.48,karambit.png
 939,★ Karambit | Doppler,Unknown,Covert,0 - 0.08,karambit.png
 940,★ Karambit | Doppler,Unknown,Covert,0 - 0.08,karambit.png
-941,★ Karambit | Slaughter,Unknown,Covert,0.01 - 0.26,aug.png
+941,★ Karambit | Slaughter,Unknown,Covert,0.01 - 0.26,karambit.png
 942,★ Karambit | Tiger Tooth,Unknown,Covert,0 - 0.08,karambit.png
 943,★ Karambit | Blue Steel,Unknown,Covert,0 - 1,karambit.png
 944,★ Karambit | Damascus Steel,Unknown,Covert,0 - 0.5,karambit.png
@@ -959,7 +959,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 958,★ Karambit | Safari Mesh,Unknown,Covert,0.06 - 0.8,karambit.png
 959,★ Karambit | Urban Masked,Unknown,Covert,0.06 - 0.8,karambit.png
 960,★ Kukri Knife | Fade,Knife Case,Covert,0 - 0.08,kukri.png
-961,★ Kukri Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+961,★ Kukri Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,kukri.png
 962,★ Kukri Knife | Blue Steel,Knife Case,Covert,0 - 1,kukri.png
 963,★ Kukri Knife | Stained,Knife Case,Covert,0 - 1,kukri.png
 964,★ Kukri Knife | Case Hardened,Knife Case,Covert,0 - 1,kukri.png
@@ -985,7 +985,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 984,★ M9 Bayonet | Freehand,Unknown,Covert,0 - 0.48,bayonet.png
 985,★ M9 Bayonet | Doppler,Unknown,Covert,0 - 0.08,bayonet.png
 986,★ M9 Bayonet | Doppler,Unknown,Covert,0 - 0.08,bayonet.png
-987,★ M9 Bayonet | Slaughter,Unknown,Covert,0.01 - 0.26,aug.png
+987,★ M9 Bayonet | Slaughter,Unknown,Covert,0.01 - 0.26,bayonet.png
 988,★ M9 Bayonet | Tiger Tooth,Unknown,Covert,0 - 0.08,bayonet.png
 989,★ M9 Bayonet | Blue Steel,Unknown,Covert,0 - 1,bayonet.png
 990,★ M9 Bayonet | Damascus Steel,Unknown,Covert,0 - 0.5,bayonet.png
@@ -1013,7 +1013,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1012,★ Nomad Knife | Marble Fade,Knife Case,Covert,0 - 0.08,nomad.png
 1013,★ Nomad Knife | Doppler,Knife Case,Covert,0 - 0.08,nomad.png
 1014,★ Nomad Knife | Doppler,Knife Case,Covert,0 - 0.08,nomad.png
-1015,★ Nomad Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1015,★ Nomad Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,nomad.png
 1016,★ Nomad Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,nomad.png
 1017,★ Nomad Knife | Blue Steel,Knife Case,Covert,0 - 1,nomad.png
 1018,★ Nomad Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,nomad.png
@@ -1043,7 +1043,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1042,★ Shadow Daggers | Freehand,Unknown,Covert,0 - 0.48,daggers.png
 1043,★ Shadow Daggers | Doppler,Unknown,Covert,0 - 0.08,daggers.png
 1044,★ Shadow Daggers | Doppler,Unknown,Covert,0 - 0.08,daggers.png
-1045,★ Shadow Daggers | Slaughter,Unknown,Covert,0.01 - 0.26,aug.png
+1045,★ Shadow Daggers | Slaughter,Unknown,Covert,0.01 - 0.26,daggers.png
 1046,★ Shadow Daggers | Tiger Tooth,Unknown,Covert,0 - 0.08,daggers.png
 1047,★ Shadow Daggers | Blue Steel,Unknown,Covert,0 - 1,daggers.png
 1048,★ Shadow Daggers | Damascus Steel,Unknown,Covert,0 - 0.5,daggers.png
@@ -1071,7 +1071,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1070,★ Skeleton Knife | Marble Fade,Knife Case,Covert,0 - 0.08,skeleton.png
 1071,★ Skeleton Knife | Doppler,Knife Case,Covert,0 - 0.08,skeleton.png
 1072,★ Skeleton Knife | Doppler,Knife Case,Covert,0 - 0.08,skeleton.png
-1073,★ Skeleton Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1073,★ Skeleton Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,skeleton.png
 1074,★ Skeleton Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,skeleton.png
 1075,★ Skeleton Knife | Blue Steel,Knife Case,Covert,0 - 1,skeleton.png
 1076,★ Skeleton Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,skeleton.png
@@ -1095,7 +1095,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1094,★ Stiletto Knife | Marble Fade,Knife Case,Covert,0 - 0.08,stiletto.png
 1095,★ Stiletto Knife | Doppler,Knife Case,Covert,0 - 0.08,stiletto.png
 1096,★ Stiletto Knife | Doppler,Knife Case,Covert,0 - 0.08,stiletto.png
-1097,★ Stiletto Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1097,★ Stiletto Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,stiletto.png
 1098,★ Stiletto Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,stiletto.png
 1099,★ Stiletto Knife | Blue Steel,Knife Case,Covert,0 - 1,stiletto.png
 1100,★ Stiletto Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,stiletto.png
@@ -1125,7 +1125,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1124,★ Bowie Knife | Freehand,Knife Case,Covert,0 - 0.48,bowie.png
 1125,★ Bowie Knife | Doppler,Knife Case,Covert,0 - 0.08,bowie.png
 1126,★ Bowie Knife | Doppler,Knife Case,Covert,0 - 0.08,bowie.png
-1127,★ Bowie Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1127,★ Bowie Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,bowie.png
 1128,★ Bowie Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,bowie.png
 1129,★ Bowie Knife | Blue Steel,Knife Case,Covert,0 - 1,bowie.png
 1130,★ Bowie Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,bowie.png
@@ -1159,7 +1159,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1158,★ Huntsman Knife | Freehand,Knife Case,Covert,0 - 0.48,huntsman.png
 1159,★ Huntsman Knife | Doppler,Knife Case,Covert,0 - 0.08,huntsman.png
 1160,★ Huntsman Knife | Doppler,Knife Case,Covert,0 - 0.08,huntsman.png
-1161,★ Huntsman Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1161,★ Huntsman Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,huntsman.png
 1162,★ Huntsman Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,huntsman.png
 1163,★ Huntsman Knife | Blue Steel,Knife Case,Covert,0 - 1,huntsman.png
 1164,★ Huntsman Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,huntsman.png
@@ -1187,7 +1187,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1186,★ Ursus Knife | Marble Fade,Knife Case,Covert,0 - 0.08,ursus.png
 1187,★ Ursus Knife | Doppler,Knife Case,Covert,0 - 0.08,ursus.png
 1188,★ Ursus Knife | Doppler,Knife Case,Covert,0 - 0.08,ursus.png
-1189,★ Ursus Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1189,★ Ursus Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,ursus.png
 1190,★ Ursus Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,ursus.png
 1191,★ Ursus Knife | Blue Steel,Knife Case,Covert,0 - 1,ursus.png
 1192,★ Ursus Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,ursus.png
@@ -1211,7 +1211,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 1210,★ Talon Knife | Marble Fade,Knife Case,Covert,0 - 0.08,talon.png
 1211,★ Talon Knife | Doppler,Knife Case,Covert,0 - 0.08,talon.png
 1212,★ Talon Knife | Doppler,Knife Case,Covert,0 - 0.08,talon.png
-1213,★ Talon Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,aug.png
+1213,★ Talon Knife | Slaughter,Knife Case,Covert,0.01 - 0.26,talon.png
 1214,★ Talon Knife | Tiger Tooth,Knife Case,Covert,0 - 0.08,talon.png
 1215,★ Talon Knife | Blue Steel,Knife Case,Covert,0 - 1,talon.png
 1216,★ Talon Knife | Damascus Steel,Knife Case,Covert,0 - 0.5,talon.png
@@ -2003,7 +2003,7 @@ id,name,collection_or_case,rarity,float_category,image_url
 2002,XM1014 | Bone Machine,The Cache Collection,Mil-Spec Grade,0 - 0.6,xm.png
 2003,XM1014 | Zombie Offensive,The Dreams & Nightmares Collection,Restricted,0 - 0.5,xm.png
 2004,XM1014 | Blue Steel,The Lake Collection,Industrial Grade,0 - 1,xm.png
-2005,XM1014 | Teclu Burner,The Revolver Case Collection,Restricted,0 - 0.65,tec.png
+2005,XM1014 | Teclu Burner,The Revolver Case Collection,Restricted,0 - 0.65,xm.png
 2006,XM1014 | XOXO,The Snakebite Collection,Classified,0 - 0.9,xm.png
 2007,XM1014 | Scumbria,The Shadow Collection,Mil-Spec Grade,0 - 1,xm.png
 2008,XM1014 | Quicksilver,The Chroma Collection,Mil-Spec Grade,0 - 0.5,xm.png

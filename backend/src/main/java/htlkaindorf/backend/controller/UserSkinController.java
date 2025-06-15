@@ -2,7 +2,6 @@ package htlkaindorf.backend.controller;
 
 import htlkaindorf.backend.dto.UpgradeRequestDTO;
 import htlkaindorf.backend.dto.UserSkinDTO;
-import htlkaindorf.backend.pojos.UpgradeRequest;
 import htlkaindorf.backend.service.UserSkinService;
 import htlkaindorf.backend.unboxing.Upgrader;
 import lombok.RequiredArgsConstructor;
@@ -55,15 +54,24 @@ public class UserSkinController {
     public ResponseEntity<Float> sellSkin(@PathVariable Integer userId, @PathVariable Integer skinId) {
         try {
             Float newBalance = userSkinService.sellItem(userId, skinId);
-            return ResponseEntity.ok(newBalance); // Gib den neuen Guthabenwert zurück
+            return ResponseEntity.ok(newBalance);
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null); // Fehlerbehandlung
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
     }
 
     @PostMapping("/upgradeSkin")
     public ResponseEntity<Float> upgradeSkin(@RequestBody UpgradeRequestDTO upgradeRequest) {
         float newBalance = upgrader.upgradeSkin(upgradeRequest.getUserSkinIds(), upgradeRequest.getChanceInPercentage(), upgradeRequest.getUserId());
+        return ResponseEntity.ok(newBalance);
+    }
+
+    @PostMapping("/sellItem")
+    public ResponseEntity<Float> sellItem(
+            @RequestParam Integer userId,
+            @RequestParam Integer skinId
+    ) {
+        Float newBalance = userSkinService.sellItem(userId, skinId);
         return ResponseEntity.ok(newBalance);
     }
 }

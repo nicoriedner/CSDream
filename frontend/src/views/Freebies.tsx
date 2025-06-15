@@ -38,6 +38,14 @@ interface Skin {
     skinCatalog?: SkinCatalog;
 }
 
+const skinImages = import.meta.glob('../assets/images/*.png', { eager: true, as: 'url' });
+
+const getImageByName = (filename: string | undefined): string => {
+    if (!filename) return skinImages['../assets/images/placeholder.png'];
+    const path = `../assets/images/${filename}`;
+    return skinImages[path] || skinImages['../assets/images/placeholder.png'];
+};
+
 const getExterior = (floatValue: number): string => {
     if (floatValue < 0.07) return "FACTORY_NEW";
     if (floatValue < 0.15) return "MINIMAL_WEAR";
@@ -57,24 +65,13 @@ const Freebies = () => {
     useEffect(() => {
         const today = new Date().toISOString().split("T")[0];
         const userIdStr = localStorage.getItem("userId");
-
-        // Bessere userId Validierung
-        if (!userIdStr) {
-            console.error("No userId found in localStorage");
-            return;
-        }
-
+        if (!userIdStr) return;
         const userId = parseInt(userIdStr, 10);
-        if (isNaN(userId)) {
-            console.error("Invalid userId in localStorage:", userIdStr);
-            return;
-        }
-
+        if (isNaN(userId)) return;
         setCurrentUserId(userId);
 
         const key = `freebieClaimedSkins_${today}_${userId}`;
         setTodayKey(key);
-
         const claimed = localStorage.getItem(key);
         if (claimed) {
             const parsed = JSON.parse(claimed);
@@ -83,7 +80,10 @@ const Freebies = () => {
         }
 
         api.get("/skinCatalog/all").then((res) => {
-            const all = res.data;
+            const all = res.data.map((skin: SkinCatalog) => ({
+                ...skin,
+                img_url: skin.img_url?.split("/").pop() || "placeholder.png"
+            }));
             const shuffled = [...all].sort(() => 0.5 - Math.random()).slice(0, 3);
             const enriched = shuffled.map((skin: SkinCatalog, idx: number) => {
                 const floatVal = parseFloat((0.1 + Math.random() * 0.8).toFixed(4));
@@ -96,15 +96,13 @@ const Freebies = () => {
                     exterior: getExterior(floatVal),
                     stattrak: Math.random() < 0.3,
                     skinCatalogId: skin.id,
-                    userId: userId, // Verwende die validierte userId
+                    userId: userId,
                     imgUrl: skin.img_url,
                     dropDate: new Date(),
                     skinCatalog: skin
                 };
             });
             setFreeSkins(enriched);
-        }).catch((err) => {
-            console.error("Error loading skin catalog:", err);
         });
     }, []);
 
@@ -115,11 +113,7 @@ const Freebies = () => {
     };
 
     const confirmClaim = async () => {
-        if (!selectedSkin || isClaimed(selectedSkin.id) || !currentUserId) {
-            console.error("Cannot claim: missing skin or userId", { selectedSkin, currentUserId });
-            return;
-        }
-
+        if (!selectedSkin || isClaimed(selectedSkin.id) || !currentUserId) return;
         try {
             const userSkinDTO: UserSkinDTO = {
                 floatValue: selectedSkin.floatValue,
@@ -127,25 +121,17 @@ const Freebies = () => {
                 skinCatalogId: selectedSkin.skinCatalogId,
                 rarity: selectedSkin.rarity,
                 stattrak: selectedSkin.stattrak,
-                userId: currentUserId, // Verwende die validierte currentUserId
+                userId: currentUserId,
                 exterior: selectedSkin.exterior,
                 dropDate: new Date().toISOString().split("T")[0]
             };
-
-            console.log("Sending UserSkinDTO:", userSkinDTO); // Debug log
-
-            const response = await api.post("/userSkin/freebie", userSkinDTO);
-            console.log("API Response:", response.data); // Debug log
-
+            await api.post("/userSkin/freebie", userSkinDTO);
             const newClaimed = [...claimedIds, selectedSkin.id];
             setClaimedIds(newClaimed);
             setConfirmedThisSession([...confirmedThisSession, selectedSkin.id]);
             localStorage.setItem(todayKey, JSON.stringify(newClaimed));
-
             setSelectedSkin(null);
-        } catch (err: any) {
-            console.error("Error claiming freebie:", err);
-            console.error("Error details:", err.response?.data); // Mehr Debug-Info
+        } catch (err) {
             alert("Fehler beim Beanspruchen.");
         }
     };
@@ -161,7 +147,6 @@ const Freebies = () => {
         alert("Freebies zurückgesetzt!");
     };
 
-    // Zeige Loading oder Error wenn keine userId vorhanden
     if (!currentUserId) {
         return (
             <div className="freebies-container">
@@ -182,7 +167,7 @@ const Freebies = () => {
                         className={`freebie-card ${isClaimed(skin.id) ? "claimed" : ""}`}
                         onClick={() => openSkin(skin)}
                     >
-                        <img src={skin.imgUrl} alt={skin.name} />
+                        <img src={getImageByName(skin.imgUrl)} alt={skin.name} />
                         <div className="freebie-info">
                             <h4>{skin.name}</h4>
                             <p>{skin.price} Coins</p>
@@ -195,10 +180,9 @@ const Freebies = () => {
             {selectedSkin && (
                 <div className="freebie-modal-bg">
                     <div className="freebie-modal">
-                        <img src={selectedSkin.imgUrl} alt={selectedSkin.name} />
+                        <img src={getImageByName(selectedSkin.imgUrl)} alt={selectedSkin.name} />
                         <h3>{selectedSkin.name}</h3>
                         <p>{selectedSkin.price} Coins</p>
-
                         {confirmedThisSession.includes(selectedSkin.id) ? (
                             <p className="claimed-text">✔️ Dem Inventar hinzugefügt</p>
                         ) : isClaimed(selectedSkin.id) ? (
@@ -206,13 +190,11 @@ const Freebies = () => {
                         ) : (
                             <button className="claim-btn" onClick={confirmClaim}>Claim</button>
                         )}
-
                         <button className="close-btn" onClick={closeModal}>Schließen</button>
                     </div>
                 </div>
             )}
 
-            {/* Test-Reset-Button */}
             <div style={{ textAlign: "center", marginTop: "2rem" }}>
                 <button
                     onClick={resetFreebies}

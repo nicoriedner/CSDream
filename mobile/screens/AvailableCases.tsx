@@ -8,6 +8,7 @@ export interface Case {
     possibleSkins: SkinCatalog[];
 }
 
+const url1 = '10.0.0.35';
 const url = '10.153.1.242';
 
 const AvailableCases = ({ route }: any) => {
@@ -17,7 +18,7 @@ const AvailableCases = ({ route }: any) => {
     useEffect(() => {
         const loadCases = async () => {
             try {
-                const response = await fetch(`http://${url}:8080/api/cases/allCases`);
+                const response = await fetch(`http://${url1}:8080/api/cases/allCases`);
                 const data = await response.json();
                 setCases(data);
             } catch (err) {

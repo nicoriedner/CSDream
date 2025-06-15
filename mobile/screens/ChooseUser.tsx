@@ -12,6 +12,7 @@ interface User {
 }
 
 const url = '10.153.1.242';
+const url1 = '10.0.0.35';
 
 const ChooseUser = ({ navigation }: any) => {
     const [users, setUsers] = useState<User[]>([]);
@@ -20,7 +21,7 @@ const ChooseUser = ({ navigation }: any) => {
     useEffect(() => {
         const loadUsers = async () => {
             try {
-                const response = await fetch(`http://${url}:8080/api/users/all`);
+                const response = await fetch(`http://${url1}:8080/api/users/all`);
                 const data: User[] = await response.json();
                 setUsers(data);
             } catch (err) {
@@ -47,7 +48,7 @@ const ChooseUser = ({ navigation }: any) => {
                         })}
                         activeOpacity={0.85}
                     >
-                        <Image source={{ uri: `http://${url}:8080${'/images' + user.avatar}` }} style={styles.avatar} />
+                        <Image source={{ uri: `http://${url1}:8080${'/images' + user.avatar}` }} style={styles.avatar} />
                         <Text style={styles.username}>{user.username}</Text>
                     </TouchableOpacity>
                 ))}
