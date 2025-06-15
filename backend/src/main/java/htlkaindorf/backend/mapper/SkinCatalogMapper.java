@@ -9,9 +9,5 @@ import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
 public interface SkinCatalogMapper {
-
-    @Mappings({
-            @Mapping(source = "id", target = "id"),
-    })
     SkinCatalogDTO toDTO(SkinCatalog skinCatalog);
 }

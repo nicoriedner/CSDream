@@ -17,4 +17,5 @@ public class SkinCatalogDTO {
     private Rarity rarity;
     private Float floatMin;
     private Float floatMax;
+    private String imgUrl;
 }

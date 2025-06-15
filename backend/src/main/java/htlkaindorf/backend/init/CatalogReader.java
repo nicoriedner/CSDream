@@ -107,15 +107,15 @@ public class CatalogReader {
         String basePath = "/images/";
 
         String[] imageNames = {
-                "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deagle",
+                "ak47", "aug", "awp", "bayonet", "bizon", "bowie", "butterfly", "classic", "cz75", "daggers", "deserteagle",
                 "dual", "falchion", "famas", "fiveseven", "flip", "g3sg1", "galil", "glock", "gloves", "gut", "huntsman",
                 "karambit", "kukri", "m4a1", "m4a4", "m9", "m249", "mac10", "mag7", "mp5", "mp7", "mp9", "navaja", "negev",
-                "nomad", "nova", "p90", "p250", "p2000", "parachord", "revolver", "sawedoff", "scar", "sg", "skeleton",
+                "nomad", "nova", "p90", "p250", "p2000", "paracord", "revolver", "sawedoff", "scar", "sg", "skeleton",
                 "ssg", "stiletto", "survival", "talon", "tec", "ump", "ursus", "usp", "xm", "zeus"
         };
 
         for (String name : imageNames) {
-            if (skinName.toLowerCase().contains(name)) {
+            if (skinName.toLowerCase().replaceAll("-", "").replaceAll(" ", "").contains(name)) {
                 return basePath + name + ".png";
             }
         }

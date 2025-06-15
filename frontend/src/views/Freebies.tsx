@@ -9,7 +9,7 @@ interface SkinCatalog {
     float_max: number;
     rarity: string;
     collection_or_case: string;
-    img_url: string;
+    imgUrl: string;
 }
 
 interface UserSkinDTO {
@@ -42,8 +42,8 @@ const skinImages = import.meta.glob('../assets/images/*.png', { eager: true, as:
 
 const getImageByName = (filename: string | undefined): string => {
     if (!filename) return skinImages['../assets/images/placeholder.png'];
-    const path = `../assets/images/${filename}`;
-    return skinImages[path] || skinImages['../assets/images/placeholder.png'];
+    const path = `../assets${filename}`;
+    return skinImages[path];
 };
 
 const getExterior = (floatValue: number): string => {
@@ -82,8 +82,9 @@ const Freebies = () => {
         api.get("/skinCatalog/all").then((res) => {
             const all = res.data.map((skin: SkinCatalog) => ({
                 ...skin,
-                img_url: skin.img_url?.split("/").pop() || "placeholder.png"
+                imgUrl: skin.imgUrl
             }));
+            console.log(res.data);
             const shuffled = [...all].sort(() => 0.5 - Math.random()).slice(0, 3);
             const enriched = shuffled.map((skin: SkinCatalog, idx: number) => {
                 const floatVal = parseFloat((0.1 + Math.random() * 0.8).toFixed(4));
@@ -97,7 +98,7 @@ const Freebies = () => {
                     stattrak: Math.random() < 0.3,
                     skinCatalogId: skin.id,
                     userId: userId,
-                    imgUrl: skin.img_url,
+                    imgUrl: skin.imgUrl,
                     dropDate: new Date(),
                     skinCatalog: skin
                 };

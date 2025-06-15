@@ -24,13 +24,12 @@ export interface UserSkin {
     userReferenceId: number;
 }
 
-const getImageByName = (name: string | null) => {
-    try {
-        if (!name) throw new Error("No name");
-        return new URL(`../assets/images/${name}`, import.meta.url).href;
-    } catch {
-        return new URL(`../assets/images/placeholder.png`, import.meta.url).href;
-    }
+const skinImages = import.meta.glob('../assets/images/*.png', { eager: true, as: 'url' });
+
+const getImageByName = (filename: string | undefined): string => {
+    if (!filename) return skinImages['../assets/images/placeholder.png'];
+    const path = `../assets${filename}`;
+    return skinImages[path];
 };
 
 const Inventory: React.FC = () => {
@@ -85,7 +84,7 @@ const Inventory: React.FC = () => {
                     <div className="skin-card" key={skin.id} onClick={() => setSelectedSkin(skin)}>
                         <img
                             src={getImageByName(skin.skin?.imgUrl)}
-                            alt={skin.skin?.name || "Unbekannt"}
+                            alt={skin.skin.name || "Unbekannt"}
                             className="skin-image"
                         />
                         <div className="skin-info">
