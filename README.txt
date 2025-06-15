@@ -29,6 +29,3 @@ Zur Erklärung der einzelnen Pages:
 - Cases -> Hier sieht man die aktuell verfügbaren Cases. Jede hat ihren Preis zu öffnen, aber je höher der Preis desto besser der reward.
 - Upgrader -> Hier kann man skins aus dem eigenen Inventar einfügen und, wenn man Glück hat, bekommt man etwas besseres.
 - Login -> Hier kann man sich mit seinem Benutzernamen und Passwort anmelden. falls noch kein Account verfügbar ist, kann man darunter auf einen Link drücken und sich so Registrieren. Dann nur noch eine weitere Anmeldung und alles ist getan.
-
-WICHTIG!
-- wenn ein skin zum User hinzugefügt wird, muss man in der DB unter userskin MANUELL die skinId und die userId auf den passenden Skin/Nutzer setzen.
