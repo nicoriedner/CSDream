@@ -8,6 +8,7 @@ import htlkaindorf.backend.repositories.UserSkinRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -18,10 +19,12 @@ public class Upgrader {
     private final UserSkinRepository userSkinRepository;
     private final UserRepository userRepository;
 
-    public float upgradeSkin(List<UserSkin> userSkins, float chanceInPercentage, int userId) {
+    public float upgradeSkin(List<Integer> userSkinIds, float chanceInPercentage, int userId) {
         float coinValue = 0f;
         Random random = new Random();
         User user = userRepository.findUserById(userId);
+
+        List<UserSkin> userSkins = userSkinRepository.findAllById(userSkinIds);
 
         for (UserSkin userSkin : userSkins) {
             coinValue += userSkin.getPrice();
@@ -30,15 +33,14 @@ public class Upgrader {
         float calculatedOdds = random.nextFloat() * 100;
 
         if (calculatedOdds < chanceInPercentage) {
-            float wonAmount = coinValue * (chanceInPercentage / 100f);
-            coinValue += wonAmount;
-            user.setBalance(user.getBalance() + wonAmount);
-            userRepository.save(user);
-        } else {
-            coinValue = 0f;
-            userSkinRepository.deleteAll(userSkins);
-        }
+            float newValue = coinValue * (chanceInPercentage / 100f);
 
-        return coinValue;
+            user.setBalance(user.getBalance() + newValue);
+            userRepository.save(user);
+            return newValue;
+        } else {
+            userSkinRepository.deleteAll(userSkins);
+            return 0f;
+        }
     }
 }

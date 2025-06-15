@@ -1,5 +1,6 @@
 package htlkaindorf.backend.controller;
 
+import htlkaindorf.backend.dto.UpgradeRequestDTO;
 import htlkaindorf.backend.dto.UserSkinDTO;
 import htlkaindorf.backend.pojos.UpgradeRequest;
 import htlkaindorf.backend.service.UserSkinService;
@@ -61,8 +62,8 @@ public class UserSkinController {
     }
 
     @PostMapping("/upgradeSkin")
-    public ResponseEntity<Float> upgradeSkin(@RequestBody UpgradeRequest upgradeRequest) {
-        float newBalance = upgrader.upgradeSkin(upgradeRequest.getUserSkins(), upgradeRequest.getChanceInPercentage(), upgradeRequest.getUserId());
+    public ResponseEntity<Float> upgradeSkin(@RequestBody UpgradeRequestDTO upgradeRequest) {
+        float newBalance = upgrader.upgradeSkin(upgradeRequest.getUserSkinIds(), upgradeRequest.getChanceInPercentage(), upgradeRequest.getUserId());
         return ResponseEntity.ok(newBalance);
     }
 }
