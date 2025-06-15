@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import api from '../api'; // API-Import
 import '../css/Upgrader.css'; // Styles
 
@@ -30,6 +30,14 @@ const UpgraderPage: React.FC = () => {
     const [balance, setBalance] = useState<number>(0);
     const [showSkinList, setShowSkinList] = useState<boolean>(false);
     const [isOpening, setIsOpening] = useState(false);
+
+    const skinImages = import.meta.glob('../assets/images/*.png', { eager: true, as: 'url' });
+
+    const getImageByName = (filename: string | undefined): string => {
+        if (!filename) return skinImages['../assets/images/placeholder.png'];
+        const path = `../assets${filename}`;
+        return skinImages[path];
+    };
 
     useEffect(() => {
         const userId = localStorage.getItem('userId');
@@ -66,7 +74,7 @@ const UpgraderPage: React.FC = () => {
     // Wählt alle verfügbaren Skins aus
     const handleAddAllSkins = () => {
         setSelectedSkins(userSkins); // Setzt die Auswahl auf alle Skins im Inventar
-        setShowSkinList(false); // Optionale: Schließt die Liste nach der Auswahl
+        setShowSkinList(false); // Schließt die Liste nach der Auswahl
         setResultMessage('Alle Skins wurden ausgewählt.');
         setTimeout(() => setResultMessage(''), 3000);
     };
@@ -76,6 +84,11 @@ const UpgraderPage: React.FC = () => {
         setSelectedSkins([]);
         setResultMessage('Auswahl geleert.');
         setTimeout(() => setResultMessage(''), 3000);
+    };
+
+    // Schließt die Skin-Auswahlliste
+    const handleCloseSkinList = () => {
+        setShowSkinList(false);
     };
 
     const handleUpgrade = async () => {
@@ -106,6 +119,9 @@ const UpgraderPage: React.FC = () => {
             setBalance(newBalance);
             setResultMessage(`Erfolg! Du hast ${wonAmount.toFixed(2)} Coins gewonnen. Neues Guthaben: ${newBalance.toFixed(2)} Coins.`);
             setSelectedSkins([]);
+            // Die Skinliste sollte bei Upgrade automatisch geschlossen werden,
+            // da die Skins konsumiert und die Auswahl geleert wird.
+            setShowSkinList(false); // Stellt sicher, dass die Liste geschlossen wird
 
             const updatedSkinsRes = await api.get(`/userSkin/allByUserId/${userId}`);
             setUserSkins(updatedSkinsRes.data);
@@ -154,8 +170,11 @@ const UpgraderPage: React.FC = () => {
                         {/* Anzeige der ausgewählten Skins als Vorschaubilder */}
                         {selectedSkins.map((skin) => (
                             <div key={skin.id} className="selected-skin-preview" onClick={() => handleSkinSelection(skin)}>
-                                <img src={skin.skin.imgUrl} alt={skin.skin.name} className="selected-skin-img" />
-                                <span className="selected-skin-name">{skin.skin.name}</span>
+                                <img
+                                    src={getImageByName(skin.skin?.imgUrl)}
+                                    alt={skin.skin.name || "Unbekannt"}
+                                    className="skin-image"
+                                /> <span className="selected-skin-name">{skin.skin.name}</span>
                             </div>
                         ))}
                         {/* Plus-Button zum Ein-/Ausblenden der Skinliste (ohne Limitprüfung) */}
@@ -167,6 +186,9 @@ const UpgraderPage: React.FC = () => {
                     {/* Skinliste zum Auswählen */}
                     {showSkinList && (
                         <div className="skin-selection-list">
+                            {/* NEU: Schließen-Button */}
+                            <button onClick={handleCloseSkinList} className="close-skinlist-button">X</button>
+
                             {userSkins.length === 0 ? (
                                 <p>Keine Skins im Inventar.</p>
                             ) : (
@@ -176,8 +198,12 @@ const UpgraderPage: React.FC = () => {
                                         className={`skin-option ${selectedSkins.some(s => s.id === skin.id) ? 'selected' : ''}`}
                                         onClick={() => handleSkinSelection(skin)}
                                     >
-                                        <img src={skin.skin.imgUrl} alt={skin.skin.name} />
-                                        <div>{skin.skin.name} ({skin.rarity})</div>
+                                        <img
+                                            src={getImageByName(skin.skin?.imgUrl)}
+                                            alt={skin.skin.name || "Unbekannt"}
+                                            className="skin-image"
+                                        />
+                                        <div>{skin.skin.name}</div>
                                     </div>
                                 ))
                             )}

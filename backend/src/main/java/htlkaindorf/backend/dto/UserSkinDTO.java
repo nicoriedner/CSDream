@@ -17,7 +17,7 @@ public class UserSkinDTO {
     private Boolean stattrak;
     private Float price;
     private LocalDate dropDate;
-    private SkinCatalog skin;
+    private SkinCatalogDTO skin;
     @JsonProperty("userId")
     private Integer userReferenceId;
 }
