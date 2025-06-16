@@ -14,11 +14,17 @@ interface SkinCatalog {
     imgUrl: string;
 }
 
+interface UserSkin {
+    id: number;
+    price: number;
+    skin: SkinCatalog;
+}
+
 const CasesPage = () => {
     const [cases, setCases] = useState<Case[]>([]);
     const [loading, setLoading] = useState(true);
     const [opening, setOpening] = useState(false);
-    const [unboxedSkin, setUnboxedSkin] = useState<SkinCatalog | null>(null);
+    const [unboxedSkin, setUnboxedSkin] = useState<UserSkin | null>(null);
     const [currentUserId, setCurrentUserId] = useState<number | null>(null);
 
     useEffect(() => {
@@ -27,7 +33,7 @@ const CasesPage = () => {
 
         api.get("/cases/allCases")
             .then((res) => setCases(res.data))
-            .catch((err) => console.error("Fehler beim Laden der Cases:", err))
+            .catch(() => {})
             .finally(() => setLoading(false));
     }, []);
 
@@ -41,23 +47,22 @@ const CasesPage = () => {
             const res = await api.post("/cases/caseunboxing/openCase", null, {
                 params: {
                     caseId,
-                    userId: currentUserId
-                }
+                    userId: currentUserId,
+                },
             });
 
-            // Warten für Animation
             setTimeout(() => {
                 setUnboxedSkin(res.data);
                 setOpening(false);
-            }, 2000);
+            }, 1000);
         } catch (err) {
-            console.error("Fehler beim Öffnen der Case:", err);
             setOpening(false);
         }
     };
 
     const getImagePath = (imgUrl: string | null) => {
         if (!imgUrl) return "/images/placeholder.png";
+        if (imgUrl.startsWith("/images/")) return imgUrl;
         return `/images/${imgUrl}`;
     };
 
@@ -73,7 +78,9 @@ const CasesPage = () => {
                             <img src="/images/case.png" alt="Case" />
                             <h3>{c.name}</h3>
                             <p>Preis: {c.price} Coins</p>
-                            <button disabled={opening} onClick={() => openCase(c.id)}>Öffnen</button>
+                            <button disabled={opening} onClick={() => openCase(c.id)}>
+                                Öffnen
+                            </button>
                         </div>
                     ))}
                 </div>
@@ -85,17 +92,20 @@ const CasesPage = () => {
                 </div>
             )}
 
-            {unboxedSkin && (
+            {unboxedSkin && unboxedSkin.skin && (
                 <div className="popup-overlay">
                     <div className="popup">
                         <h3>Du hast gezogen:</h3>
                         <img
-                            src={getImagePath(unboxedSkin.imgUrl)}
-                            alt={unboxedSkin.name}
-                            onError={(e) => e.currentTarget.src = "/images/placeholder.png"}
+                            src={getImagePath(unboxedSkin.skin.imgUrl)}
+                            alt={unboxedSkin.skin.name}
+                            onError={(e) => (e.currentTarget.src = "/images/placeholder.png")}
                         />
-                        <p>{unboxedSkin.name}</p>
-                        <button onClick={() => setUnboxedSkin(null)}>Zum Inventar hinzufügen</button>
+                        <p>
+                            <strong>{unboxedSkin.skin.name}</strong>
+                        </p>
+                        <p>Wert: {unboxedSkin.price} Coins</p>
+                        <button onClick={() => setUnboxedSkin(null)}>Schließen</button>
                     </div>
                 </div>
             )}

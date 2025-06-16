@@ -61,7 +61,17 @@ public class CaseUnboxing {
 
     public SkinCatalog getSkin(Rarity rarity, Case caseToUnbox) {
         Random rand = new Random();
-        List<SkinCatalog> skinsWithThatRarity = caseToUnbox.getPossibleSkins().stream().filter(s -> s.getRarity().equals(rarity)).collect(Collectors.toList());
+        List<SkinCatalog> skinsWithThatRarity = caseToUnbox.getPossibleSkins().stream()
+                .filter(s -> s.getRarity().equals(rarity))
+                .collect(Collectors.toList());
+
+        if (skinsWithThatRarity.isEmpty()) {
+            skinsWithThatRarity = caseToUnbox.getPossibleSkins();
+            if (skinsWithThatRarity.isEmpty()) {
+                throw new RuntimeException("Keine Skins in Case verfügbar.");
+            }
+        }
+
         return skinsWithThatRarity.get(rand.nextInt(skinsWithThatRarity.size()));
     }
 
