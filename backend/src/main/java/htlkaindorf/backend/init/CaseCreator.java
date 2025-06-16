@@ -43,6 +43,17 @@ public class CaseCreator {
         akCase.setPossibleSkins(getRandomSkinsByWeapon(List.of(Rarity.values()), "AK-47"));
         akCase.setPrice(20l);
         caseRepository.save(akCase);
+
+        Case awpCase = new Case();
+        awpCase.setName("AWP Case");
+        awpCase.setPossibleSkins(getRandomSkinsByWeapon(List.of(Rarity.values()), "AWP"));
+        awpCase.setPrice(100l);
+        caseRepository.save(awpCase);
+
+        Case knifeCase = new Case();
+        knifeCase.setName("Knife Case");
+        knifeCase.setPossibleSkins(getRandomSkinsByWeapon(List.of(Rarity.values()), "Knife"));
+        caseRepository.save(knifeCase);
     }
 
     public List<SkinCatalog> getRandomSkins(List<Rarity> rarities) {
