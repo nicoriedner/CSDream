@@ -31,7 +31,7 @@
     z-index: 1;
 }
 
-.selected-skin { /* Diese Regel ist jetzt möglicherweise redundant, da .selected-skin-preview verwendet wird */
+.selected-skin {
     background-color: var(--bg-dark);
     border-radius: 10px;
     padding: 0.5rem;
@@ -43,7 +43,7 @@
     width: 70px;
 }
 
-.selected-skin-img { /* Dies betrifft weiterhin die Bilder in .selected-skin-preview */
+.selected-skin-img {
     width: 50px;
     height: 50px;
     object-fit: contain;
@@ -129,11 +129,11 @@
     transform: translateY(-2px);
 }
 
-.upgrade-button:disabled { /* Styling für deaktivierten Upgrade-Button */
+.upgrade-button:disabled {
     background-color: #cccccc;
     cursor: not-allowed;
-    transform: none; /* Kein Transform, wenn deaktiviert */
-    box-shadow: none; /* Kein Schatten, wenn deaktiviert */
+    transform: none;
+    box-shadow: none;
 }
 
 .result-message {
@@ -154,42 +154,38 @@
     }
 }
 
-/* --- Hinzugefügte / Aktualisierte Regeln aus meinen Vorschlägen --- */
-
-/* Styling für ausgewählte Skins in der Skinliste */
 .skin-selection-list .skin-option.selected {
-    border: 3px solid #4CAF50; /* Grüner Rand */
-    box-shadow: 0 0 15px rgba(76, 175, 80, 0.7); /* Grüner Schatten */
-    background-color: rgba(76, 175, 80, 0.1); /* Leichte grüne Hintergrundfarbe */
-    transform: scale(1.02); /* Leichter Vergrößerungseffekt beim Auswählen */
-    transition: all 0.2s ease-in-out; /* Weicher Übergang für die Effekte */
+    border: 3px solid #4CAF50;
+    box-shadow: 0 0 15px rgba(76, 175, 80, 0.7);
+    background-color: rgba(76, 175, 80, 0.1);
+    transform: scale(1.02);
+    transition: all 0.2s ease-in-out;
 }
 
-/* Styling für die Anzeige der ausgewählten Skins oberhalb der Liste */
 .selected-skins-display {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     margin-top: 10px;
-    min-height: 100px; /* Gibt dem Bereich eine Mindesthöhe */
-    border: 1px dashed #ccc; /* Visueller Rahmen für den Auswahlbereich */
+    min-height: 100px;
+    border: 1px dashed #ccc;
     padding: 10px;
     border-radius: 8px;
-    justify-content: center; /* Zentriert die Elemente */
-    align-items: center; /* Zentriert die Elemente vertikal */
+    justify-content: center;
+    align-items: center;
 }
 
-.selected-skin-preview { /* Dies ersetzt die Logik von .selected-skin */
+.selected-skin-preview {
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
-    max-width: 80px; /* Maximale Breite der Vorschaubilder */
-    cursor: pointer; /* Zeigt an, dass man darauf klicken kann, um es zu entfernen */
+    max-width: 80px;
+    cursor: pointer;
 }
 
 .selected-skin-preview .selected-skin-img {
-    width: 60px; /* Kleinere Bilder für die Vorschau */
+    width: 60px;
     height: 60px;
     object-fit: contain;
     border-radius: 4px;
@@ -198,15 +194,14 @@
 
 .selected-skin-preview .selected-skin-name {
     font-size: 0.75em;
-    word-break: break-word; /* Lange Namen umbrechen */
+    word-break: break-word;
 }
 
-/* Anpassung des Plus-/Minus-Buttons */
-.plus-skin { /* Diese Regel überschreibt oder ergänzt Ihre ursprüngliche .plus-skin Regel */
+.plus-skin {
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 60px; /* Gleiche Größe wie die Vorschaubilder */
+    width: 60px;
     height: 60px;
     border: 2px dashed #666;
     border-radius: 4px;
@@ -215,26 +210,19 @@
     cursor: pointer;
     background-color: #eee;
     transition: background-color 0.2s ease;
-    /* Entferne alte styles, die im neuen Layout nicht passen, falls sie hier definiert waren.
-       Ihre ursprüngliche .plus-skin-Regel war sehr einfach, daher sollte es keine Konflikte geben. */
 }
 
 .plus-skin:hover {
     background-color: #ddd;
-    transform: none; /* Entferne den transform-Effekt, wenn er vorher definiert war */
 }
 
-/* Styling für die neuen Auswahl-Buttons */
 .selection-controls {
     display: flex;
-    gap: 10px; /* Abstand zwischen den Buttons */
-    margin-bottom: 15px; /* Abstand nach unten */
-    justify-content: center; /* Zentriert die Buttons */
+    justify-content: center;
 }
 
 .control-button {
     padding: 10px 15px;
-    background-color: #007bff; /* Eine Standard-Blaufarbe */
     color: white;
     border: none;
     border-radius: 5px;
@@ -244,10 +232,8 @@
 }
 
 .control-button:hover:not(:disabled) {
-    background-color: #0056b3; /* Dunkleres Blau beim Hover */
 }
 
 .control-button:disabled {
-    background-color: #cccccc; /* Grau, wenn deaktiviert */
     cursor: not-allowed;
 }

@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import api from '../api'; // API-Import
-import '../css/Upgrader.css'; // Styles
+import api from '../api';
+import '../css/Upgrader.css';
 
-// Interface für die Skins (unverändert)
 interface SkinCatalog {
     id: number;
     name: string;
@@ -59,34 +58,30 @@ const UpgraderPage: React.FC = () => {
             .catch((err) => console.error('Fehler beim Laden des Kontostands:', err));
     }, []);
 
-    // Wählt Skin aus oder entfernt ihn (kein Limit mehr)
     const handleSkinSelection = (skin: UserSkin) => {
         setSelectedSkins(prev => {
             const isSelected = prev.some(s => s.id === skin.id);
             if (isSelected) {
                 return prev.filter(s => s.id !== skin.id);
             } else {
-                return [...prev, skin]; // Fügt hinzu, ohne Limitprüfung
+                return [...prev, skin];
             }
         });
     };
 
-    // Wählt alle verfügbaren Skins aus
     const handleAddAllSkins = () => {
-        setSelectedSkins(userSkins); // Setzt die Auswahl auf alle Skins im Inventar
-        setShowSkinList(false); // Schließt die Liste nach der Auswahl
+        setSelectedSkins(userSkins);
+        setShowSkinList(false);
         setResultMessage('Alle Skins wurden ausgewählt.');
         setTimeout(() => setResultMessage(''), 3000);
     };
 
-    // Leert die gesamte Auswahl
     const handleClearSelection = () => {
         setSelectedSkins([]);
         setResultMessage('Auswahl geleert.');
         setTimeout(() => setResultMessage(''), 3000);
     };
 
-    // Schließt die Skin-Auswahlliste
     const handleCloseSkinList = () => {
         setShowSkinList(false);
     };
@@ -119,9 +114,7 @@ const UpgraderPage: React.FC = () => {
             setBalance(newBalance);
             setResultMessage(`Erfolg! Du hast ${wonAmount.toFixed(2)} Coins gewonnen. Neues Guthaben: ${newBalance.toFixed(2)} Coins.`);
             setSelectedSkins([]);
-            // Die Skinliste sollte bei Upgrade automatisch geschlossen werden,
-            // da die Skins konsumiert und die Auswahl geleert wird.
-            setShowSkinList(false); // Stellt sicher, dass die Liste geschlossen wird
+            setShowSkinList(false);
 
             const updatedSkinsRes = await api.get(`/userSkin/allByUserId/${userId}`);
             setUserSkins(updatedSkinsRes.data);
@@ -138,17 +131,13 @@ const UpgraderPage: React.FC = () => {
             <div className="upgrader-container">
                 <h2>Skin Upgrader</h2>
 
-                {/* Coins Anzeige */}
                 <div className="balance-display">
                     <h3>Aktuelles Guthaben: {balance?.toFixed(2)} Coins</h3>
                 </div>
 
-                {/* Skin-Auswahl */}
                 <div className="skin-selection">
-                    {/* Zähler für ausgewählte Skins (ohne Limit-Anzeige) */}
                     <h4>Ausgewählte Skins ({selectedSkins.length}):</h4>
 
-                    {/* Neue Buttons für Auswahlsteuerung */}
                     <div className="selection-controls">
                         <button
                             onClick={handleAddAllSkins}
@@ -167,7 +156,6 @@ const UpgraderPage: React.FC = () => {
                     </div>
 
                     <div className="selected-skins-display">
-                        {/* Anzeige der ausgewählten Skins als Vorschaubilder */}
                         {selectedSkins.map((skin) => (
                             <div key={skin.id} className="selected-skin-preview" onClick={() => handleSkinSelection(skin)}>
                                 <img
@@ -177,16 +165,13 @@ const UpgraderPage: React.FC = () => {
                                 /> <span className="selected-skin-name">{skin.skin.name}</span>
                             </div>
                         ))}
-                        {/* Plus-Button zum Ein-/Ausblenden der Skinliste (ohne Limitprüfung) */}
                         <div className="plus-skin" onClick={() => setShowSkinList(!showSkinList)}>
                             {showSkinList ? '-' : '+'}
                         </div>
                     </div>
 
-                    {/* Skinliste zum Auswählen */}
                     {showSkinList && (
                         <div className="skin-selection-list">
-                            {/* NEU: Schließen-Button */}
                             <button onClick={handleCloseSkinList} className="close-skinlist-button">X</button>
 
                             {userSkins.length === 0 ? (
@@ -211,7 +196,6 @@ const UpgraderPage: React.FC = () => {
                     )}
                 </div>
 
-                {/* Eingabefeld für Erfolgswahrscheinlichkeit */}
                 <div className="chance-input">
                     <label>Chance für Upgrade:</label>
                     <input
@@ -224,7 +208,6 @@ const UpgraderPage: React.FC = () => {
                     <span>%</span>
                 </div>
 
-                {/* Start Upgrade Button */}
                 <button
                     onClick={handleUpgrade}
                     className="upgrade-button"
@@ -233,7 +216,6 @@ const UpgraderPage: React.FC = () => {
                     {isOpening ? 'Upgraden...' : 'Upgrade Skins'}
                 </button>
 
-                {/* Ergebnis anzeigen */}
                 {resultMessage && <div className="result-message">{resultMessage}</div>}
             </div>
         </div>

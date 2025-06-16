@@ -7,33 +7,31 @@ import avatar2 from '../assets/profile_pics/avatar2.jpg';
 import { useState, useEffect, useRef } from 'react';
 import api from '../api';
 
-// Map zur Auswahl des Avatars anhand des Dateinamens
 const avatarMap: Record<string, string> = {
     "avatar1.jpg": avatar1,
     "avatar2.jpg": avatar2,
 };
 
 const Header = () => {
-    const { username, avatar, logout } = useAuth(); // Login-Infos aus dem Auth-Context
-    const avatarSrc = avatar && avatarMap[avatar] ? avatarMap[avatar] : avatar1; // Standardbild
-    const [dropdownOpen, setDropdownOpen] = useState(false); // Steuerung für Menü
-    const dropdownRef = useRef<HTMLDivElement>(null); // Für Klick-Outside-Erkennung
-    const [balance, setBalance] = useState<number>(0); // Coins-Anzeige
+    const { username, avatar, logout } = useAuth();
+    const avatarSrc = avatar && avatarMap[avatar] ? avatarMap[avatar] : avatar1;
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+    const dropdownRef = useRef<HTMLDivElement>(null);
+    const [balance, setBalance] = useState<number>(0);
 
-    // Holt das aktuelle Guthaben vom Backend
     const fetchBalance = () => {
         const userId = localStorage.getItem('userId');
-        console.log('Stored userId:', userId); // Debug log
+        console.log('Stored userId:', userId);
 
         if (userId && userId !== 'null' && userId !== 'undefined') {
-            console.log(`Fetching balance for user ID: ${userId}`); // Debug log
+            console.log(`Fetching balance for user ID: ${userId}`);
             api.get(`/users/balance/${userId}`).then((res) => {
-                console.log('Balance response:', res.data); // Debug log
+                console.log('Balance response:', res.data);
                 setBalance(Math.max(0, res.data));
             }).catch((error) => {
                 console.error('Error fetching balance:', error);
                 console.error('Error response:', error.response?.data);
-                setBalance(0); // Fallback bei Fehler
+                setBalance(0);
             });
         } else {
             console.log('No valid userId found in localStorage');
@@ -41,24 +39,20 @@ const Header = () => {
         }
     };
 
-    // Intervall für regelmäßige Aktualisierung der Coins
     useEffect(() => {
-        // Nur Balance fetchen wenn User eingeloggt ist
         if (username) {
             fetchBalance();
-            const interval = setInterval(fetchBalance, 5000); // alle 5 Sekunden
+            const interval = setInterval(fetchBalance, 5000);
             return () => clearInterval(interval);
         }
-    }, [username]); // Abhängigkeit von username hinzugefügt
+    }, [username]);
 
-    // Logout-Funktion
     const handleLogout = () => {
         logout();
         setDropdownOpen(false);
-        setBalance(0); // Balance zurücksetzen beim Logout
+        setBalance(0);
     };
 
-    // Klick außerhalb des Dropdowns schließt das Menü
     useEffect(() => {
         const handleClickOutside = (event: MouseEvent) => {
             if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -69,7 +63,6 @@ const Header = () => {
         return () => document.removeEventListener('mousedown', handleClickOutside);
     }, []);
 
-    // Debug: Zeige alle localStorage Werte
     useEffect(() => {
         console.log('All localStorage items:');
         for (let i = 0; i < localStorage.length; i++) {
@@ -82,29 +75,24 @@ const Header = () => {
 
     return (
         <header className="csdream-header">
-            {/* Linke Seite: Navigation */}
             <nav className="csdream-nav">
                 <Link to="/" className="nav-link"><FaHome className="nav-icon" /> Home</Link>
                 <Link to="/inventory" className="nav-link"><FaBoxOpen className="nav-icon" /> Inventory</Link>
                 <Link to="/freebies" className="nav-link"><FaDice className="nav-icon" /> Freebies</Link>
             </nav>
 
-            {/* Rechte Seite: Coins, Avatar, Dropdown */}
             <nav className="csdream-nav" ref={dropdownRef}>
                 {username ? (
                     <>
-                        {/* Coins-Anzeige */}
                         <div className="balance-display">
                             <FaCoins className="nav-icon" /> {balance.toFixed(2)} C
                         </div>
 
-                        {/* Benutzerinfo mit Avatar und Menü */}
                         <div className="user-info" onClick={() => setDropdownOpen(!dropdownOpen)}>
                             <img src={avatarSrc} alt="avatar" className="avatar-small" />
                             <span>{username}</span>
                             <FaCaretDown className="dropdown-icon" />
 
-                            {/* Dropdown-Menü */}
                             <div className={`dropdown-menu ${dropdownOpen ? 'open' : ''}`}>
                                 <button className="dropdown-item" onClick={handleLogout}>Abmelden</button>
                             </div>
